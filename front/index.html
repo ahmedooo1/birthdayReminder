@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BirthdayReminder | Fine</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- SweetAlert2 pour les toasts avancés -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <button id="burger-menu-btn" class="burger-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="logo">
+        <i class="fas fa-birthday-cake"></i>
+        <h1>BirthdayReminder</h1>
+      </div>
+      <nav class="main-nav">
+        <button id="dashboard-btn" class="nav-btn active">Tableau de bord</button>
+        <button id="groups-btn" class="nav-btn">Groupes</button>
+        <button id="profile-btn-nav" class="nav-btn">Profil</button>
+        <button id="settings-btn" class="nav-btn">Paramètres</button>
+      </nav>
+      <div class="user-section">
+        <div class="notification-bell">
+          <i class="fas fa-bell"></i>
+          <span id="notification-count" class="notification-badge hidden">0</span>
+        </div>
+        <div class="user-menu">
+          <button id="user-menu-btn" class="user-btn">
+            <i class="fas fa-user"></i>
+            <span id="username-display">Invité</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="user-dropdown" class="user-dropdown hidden">
+            <button id="profile-btn" class="dropdown-item">
+              <i class="fas fa-user-edit"></i> Profil
+            </button>
+            <button id="logout-btn" class="dropdown-item">
+              <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Dashboard View -->
+      <section id="dashboard-view" class="view active">
+        <div class="dashboard-header">
+          <h2>Tableau de bord</h2>
+          <div class="dashboard-actions">
+            <button id="add-birthday-btn" class="btn primary-btn">
+              <i class="fas fa-plus"></i> Nouvel anniversaire
+            </button>
+          </div>
+        </div>
+
+        <div class="upcoming-birthdays">
+          <h3>Anniversaires à venir</h3>
+          <div id="upcoming-birthdays-list" class="birthdays-list">
+            <!-- Upcoming birthdays will be inserted here -->
+            <div class="empty-state">
+              <i class="fas fa-calendar-day"></i>
+              <p>Aucun anniversaire à venir</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-section">
+          <h3>Calendrier</h3>
+          <div class="calendar-controls">
+            <button id="prev-month" class="btn icon-btn"><i class="fas fa-chevron-left"></i></button>
+            <h4 id="current-month">Juin 2023</h4>
+            <button id="next-month" class="btn icon-btn"><i class="fas fa-chevron-right"></i></button>
+          </div>
+          <div id="calendar" class="calendar">
+            <!-- Calendar will be generated here -->
+          </div>
+        </div>
+      </section>      <!-- Groups View -->
+      <section id="groups-view" class="view">
+        <div class="groups-header">
+          <h2>Mes Groupes</h2>
+          <div class="dashboard-actions">
+            <button id="join-group-btn" class="btn secondary-btn">
+              <i class="fas fa-sign-in-alt"></i> Rejoindre un groupe
+            </button>
+            <button id="add-group-btn" class="btn primary-btn">
+              <i class="fas fa-plus"></i> Créer un groupe
+            </button>
+          </div>
+        </div>
+
+        <div class="join-group-section">
+          <h3>Rejoindre un groupe existant</h3>
+          <p>Entrez le code d'accès fourni par l'administrateur du groupe</p>
+          <div class="join-form">
+            <input type="text" id="access-code-input" class="text-input" placeholder="Entrez le code d'accès" style="text-transform: uppercase; width: 70%; margin-right: 10px; font-weight: 500; letter-spacing: 1px;">
+            <button id="join-group-submit" class="btn primary-btn">Rejoindre</button>
+          </div>
+        </div>
+
+        <div id="groups-grid" class="groups-grid" style="margin-top: 20px;">
+          <!-- Groups will be inserted here -->
+          <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <p>Aucun groupe trouvé</p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Créez votre premier groupe ou rejoignez-en un avec un code d'accès</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Group Details View -->
+      <section id="group-details-view" class="view">
+        <div class="group-details-header">
+          <button id="back-to-groups" class="btn icon-btn">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <h2 id="group-name">Nom du groupe</h2>
+          <div class="group-actions">
+            <button id="edit-group-btn" class="btn secondary-btn">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <button id="delete-group-btn" class="btn danger-btn">
+              <i class="fas fa-trash"></i> Supprimer
+            </button>
+          </div>
+        </div>
+
+        <div class="group-members">
+          <h3>Membres</h3>
+          <div id="group-members-list" class="members-list">
+            <!-- Members will be inserted here -->
+          </div>
+        </div>
+
+        <div class="group-birthdays">
+          <div class="group-birthdays-header">
+            <h3>Anniversaires</h3>
+            <button id="add-group-birthday-btn" class="btn primary-btn">
+              <i class="fas fa-plus"></i> Ajouter
+            </button>
+          </div>
+          <div id="group-birthdays-list" class="birthdays-list">
+            <!-- Birthdays will be inserted here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings View -->
+      <section id="settings-view" class="view">
+        <h2>Paramètres</h2>
+        
+        <div class="settings-section">
+          <h3>Apparence</h3>
+          <div class="setting-item">
+            <label for="notification-days">Jours avant l'anniversaire pour notifier</label>
+            <select id="notification-days" class="select-input">
+              <option value="0">Le jour même</option>
+              <option value="1">1 jour avant</option>
+              <option value="3">3 jours avant</option>
+              <option value="7">1 semaine avant</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="theme-select">Thème d'affichage</label>
+            <select id="theme-select" class="select-input">
+              <option value="light">Clair</option>
+              <option value="dark">Sombre</option>
+              <option value="system">Système</option>
+            </select>
+          </div>
+        </div>
+      </section>      <!-- Profile View -->
+      <section id="profile-view" class="view">
+        <div class="profile-container">
+          <div class="profile-sidebar">
+            <div class="profile-avatar">
+              <img id="profile-avatar-img" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiM0MzYxZWUiLz4KPHN2ZyB4PSIzMCIgeT0iMzAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyQzEzLjEgMiAxNCAyLjkgMTQgNEMxNCA1LjEgMTMuMSA2IDEyIDZDMTAuOSA2IDEwIDUuMSAxMCA0QzEwIDIuOSAxMC45IDIgMTIgMlpNMjEgOVYyMkgxNVYxMy41QzE1IDEzLjIgMTQuOCAxMyAxNC41IDEzSDkuNUM5LjIgMTMgOSAxMy4yIDkgMTMuNVYyMkgzVjlMMTIgMkwyMSA5WiIvPgo8L3N2Zz4KPC9zdmc+" alt="Avatar" />
+              <button id="change-avatar-btn" class="btn icon-btn" title="Changer l'avatar">
+                <i class="fas fa-camera"></i>
+              </button>
+              <input type="file" id="avatar-upload-input" accept="image/*" style="display: none;" />
+            </div>
+            <h3 id="profile-username-display">Utilisateur</h3>
+            <p id="profile-email-display">email@example.com</p>
+            
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <span class="profile-stat-number" id="profile-birthdays-count">0</span>
+                <span class="profile-stat-label">Anniversaires</span>
+              </div>
+              <div class="profile-stat">
+                <span class="profile-stat-number" id="profile-groups-count">0</span>
+                <span class="profile-stat-label">Groupes</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-content">
+            <div class="profile-tabs">
+              <button class="tab-link active" data-tab="general">
+                <i class="fas fa-user"></i> Informations générales
+              </button>
+              <button class="tab-link" data-tab="security">
+                <i class="fas fa-lock"></i> Sécurité
+              </button>
+            </div>
+
+            <div class="tab-content active" id="general">
+              <h3><i class="fas fa-user-edit"></i> Informations personnelles</h3>
+              
+              <form id="profile-form">
+                <div class="profile-form-section">
+                  <h4><i class="fas fa-id-card"></i> Identité</h4>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="profile-first-name">Prénom</label>
+                      <input type="text" id="profile-first-name" class="text-input" placeholder="Votre prénom" />
+                    </div>
+                    <div class="form-group">
+                      <label for="profile-last-name">Nom</label>
+                      <input type="text" id="profile-last-name" class="text-input" placeholder="Votre nom" />
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="profile-email">Adresse e-mail</label>
+                    <input type="email" id="profile-email" class="text-input" required placeholder="votre@email.com" />
+                  </div>
+                </div>
+
+                <div class="profile-form-section">
+                  <h4><i class="fas fa-bell"></i> Préférences de notification</h4>
+                  
+                  <div class="form-group-checkbox">
+                    <input type="checkbox" id="profile-email-notifications" />
+                    <label for="profile-email-notifications">
+                      <strong>Recevoir les rappels par e-mail</strong><br>
+                      <small>Vous recevrez des notifications par e-mail pour les anniversaires à venir</small>
+                    </label>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="profile-notification-days">
+                      <i class="fas fa-calendar-alt"></i> Délai de notification (jours à l'avance)
+                    </label>
+                    <input type="number" id="profile-notification-days" class="text-input" min="0" max="30" value="7" placeholder="7" />
+                    <small class="form-help">Nombre de jours avant l'anniversaire pour recevoir la notification</small>
+                  </div>
+                </div>
+
+                <div class="profile-actions">
+                  <button type="submit" class="btn primary-btn">
+                    <i class="fas fa-save"></i> Enregistrer les modifications
+                  </button>
+                  <button type="button" class="btn secondary-btn" id="reset-profile-btn">
+                    <i class="fas fa-undo"></i> Annuler les modifications
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="tab-content" id="security">
+              <h3><i class="fas fa-shield-alt"></i> Sécurité du compte</h3>
+              
+              <div class="security-notice">
+                <i class="fas fa-info-circle"></i>
+                <div class="security-notice-content">
+                  <h5>Sécurité de votre mot de passe</h5>
+                  <p>Utilisez un mot de passe fort d'au moins 8 caractères avec des lettres, chiffres et symboles.</p>
+                </div>
+              </div>
+              
+              <form id="password-form">
+                <div class="profile-form-section">
+                  <h4><i class="fas fa-key"></i> Changer le mot de passe</h4>
+                  
+                  <div class="form-group">
+                    <label for="current-password">Mot de passe actuel</label>
+                    <input type="password" id="current-password" class="text-input" required placeholder="Entrez votre mot de passe actuel" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="new-password">Nouveau mot de passe</label>
+                      <input type="password" id="new-password" class="text-input" required placeholder="Nouveau mot de passe" />
+                      <div id="password-strength" class="password-strength" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                      <label for="confirm-new-password">Confirmer le nouveau mot de passe</label>
+                      <input type="password" id="confirm-new-password" class="text-input" required placeholder="Confirmez le mot de passe" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-actions">
+                  <button type="button" id="save-password-btn" class="btn danger-btn">
+                    <i class="fas fa-key"></i> Changer le mot de passe
+                  </button>
+                  <button type="button" class="btn secondary-btn" id="cancel-password-btn">
+                    <i class="fas fa-times"></i> Annuler
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+
+    <!-- Add/Edit Birthday Modal -->
+    <div id="birthday-modal" class="modal hidden">
+      <div class="modal-header">
+        <h3 id="birthday-modal-title">Ajouter un anniversaire</h3>
+        <button id="close-birthday-modal" class="btn icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="birthday-form">
+          <input type="hidden" id="birthday-id">
+          <div class="form-group">
+            <label for="birthday-name">Nom</label>
+            <input type="text" id="birthday-name" class="text-input" required>
+          </div>
+          <div class="form-group">
+            <label for="birthday-date">Date de naissance</label>
+            <input type="date" id="birthday-date" class="text-input" required>
+          </div>
+          <div class="form-group">
+            <label for="birthday-group">Groupe</label>
+            <select id="birthday-group" class="select-input">
+              <option value="">Aucun groupe</option>
+              <!-- Groups will be inserted here -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="birthday-notes">Notes</label>
+            <textarea id="birthday-notes" class="text-input" rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-birthday-btn" class="btn secondary-btn">Annuler</button>
+            <button type="submit" id="save-birthday-btn" class="btn primary-btn">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add/Edit Group Modal -->
+    <div id="group-modal" class="modal hidden">
+      <div class="modal-header">
+        <h3 id="group-modal-title">Ajouter un groupe</h3>
+        <button id="close-group-modal" class="btn icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="group-form">
+          <input type="hidden" id="group-id">
+          <div class="form-group">
+            <label for="group-name-input">Nom du groupe</label>
+            <input type="text" id="group-name-input" class="text-input" required>
+          </div>
+          <div class="form-group">
+            <label for="group-description">Description</label>
+            <textarea id="group-description" class="text-input" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="group-color">Couleur</label>
+            <input type="color" id="group-color" class="color-input" value="#4361ee">
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-group-btn" class="btn secondary-btn">Annuler</button>
+            <button type="submit" id="save-group-btn" class="btn primary-btn">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Notification Center Modal -->
+    <div id="notification-modal" class="modal notification-modal hidden">
+      <div class="modal-header">
+        <h3>Notifications</h3>
+        <button id="close-notification-modal" class="btn icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="notifications-list" class="notifications-list">
+          <!-- Notifications will be inserted here -->
+          <div class="empty-state">
+            <i class="fas fa-bell-slash"></i>
+            <p>Aucune notification</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="clear-notifications-btn" class="btn secondary-btn">Tout effacer</button>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal confirm-modal hidden">
+      <div class="modal-header">
+        <h3 id="confirm-title">Confirmation</h3>
+        <button id="close-confirm-modal" class="btn icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-confirm-btn" class="btn secondary-btn">Annuler</button>
+        <button id="confirm-action-btn" class="btn danger-btn">Confirmer</button>
+      </div>    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal auth-modal hidden">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h2 id="auth-title">Connexion</h2>
+        <p id="auth-subtitle">Connectez-vous pour accéder à vos anniversaires</p>
+      </div>
+      
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form">
+        <div class="form-group">
+          <label for="login-username">Nom d'utilisateur ou email</label>
+          <input type="text" id="login-username" required>
+        </div>        <div class="form-group">
+          <label for="login-password">Mot de passe</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <button type="submit" class="btn primary-btn full-width">
+          <i class="fas fa-sign-in-alt"></i> Se connecter
+        </button>
+        <div class="forgot-password-link mt-2">
+          <button type="button" class="btn link-btn" onclick="authManager.showForgotPasswordForm()">
+            Mot de passe oublié ?
+          </button>
+        </div>
+      </form><!-- Register Form -->
+      <form id="register-form" class="auth-form hidden">
+        <div class="form-group">
+          <label for="register-username">Nom d'utilisateur</label>
+          <input type="text" id="register-username" required>
+        </div>
+        <div class="form-group">
+          <label for="register-email">Adresse email</label>
+          <input type="email" id="register-email" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">Mot de passe</label>
+          <input type="password" id="register-password" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Confirmer le mot de passe</label>
+          <input type="password" id="register-confirm-password" required>
+        </div>
+        <button type="submit" class="btn primary-btn full-width">
+          <i class="fas fa-user-plus"></i> S'inscrire
+        </button>      </form>
+
+      <!-- Forgot Password Form -->
+      <form id="forgot-password-form" class="auth-form hidden">
+        <div class="text-center mb-3">
+          <h3>Mot de passe oublié</h3>
+          <p class="text-muted">Entrez votre email pour recevoir un lien de réinitialisation</p>
+        </div>
+        <div class="form-group">
+          <label for="forgot-email">Adresse email</label>
+          <input type="email" id="forgot-email" required>
+        </div>
+        <button type="submit" class="btn primary-btn full-width">
+          <i class="fas fa-paper-plane"></i> Envoyer le lien
+        </button>
+      </form>
+
+      <!-- Reset Password Form -->
+      <form id="reset-password-form" class="auth-form hidden">
+        <div class="text-center mb-3">
+          <h3>Nouveau mot de passe</h3>
+          <p class="text-muted">Créez votre nouveau mot de passe</p>
+        </div>
+        <div class="form-group">
+          <label for="reset-new-password">Nouveau mot de passe</label>
+          <input type="password" id="reset-new-password" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label for="reset-confirm-password">Confirmer le mot de passe</label>
+          <input type="password" id="reset-confirm-password" required minlength="6">
+        </div>
+        <button type="submit" class="btn primary-btn full-width">
+          <i class="fas fa-key"></i> Modifier le mot de passe
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        <p id="auth-switch-text">Pas encore de compte ?</p>
+        <button id="auth-switch-btn" class="btn link-btn">S'inscrire</button>
+      </div>
+
+      <div id="auth-error" class="error-message hidden"></div>
+      <div id="auth-loading" class="loading-spinner hidden">
+        <i class="fas fa-spinner fa-spin"></i> Connexion en cours...
+      </div>
+
+      <div class="demo-accounts">
+        <h4>Comptes de démonstration :</h4>
+        <div class="demo-buttons">
+          <button class="btn demo-btn" data-username="admin" data-password="admin123">
+            Admin / admin123
+          </button>
+          <button class="btn demo-btn" data-username="marie" data-password="marie123">
+            Marie / marie123
+          </button>
+          <button class="btn demo-btn" data-username="jean" data-password="jean123">
+            Jean / jean123
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Important: Load scripts in the correct order -->
+  <script src="toast-manager.js"></script>
+  <script src="profile-manager.js"></script>
+  <script src="auth-manager.js"></script>
+  <script src="data-manager.js"></script>
+  <script src="notification-manager.js"></script>
+  <script src="calendar.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

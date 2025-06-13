@@ -1,0 +1,3509 @@
+/* Base Styles */
+:root {
+    --primary-color: #4361ee;
+    --primary-light: #4895ef;
+    --primary-dark: #3f37c9;
+    --secondary-color: #560bad;
+    --accent-color: #f72585;
+    --success-color: #4cc9f0;
+    --warning-color: #f8961e;
+    --danger-color: #e63946;
+
+    /* Light Theme (Default) */
+    --bg-color: #f8f9fa; /* var(--gray-100) */
+    --text-color: #212529; /* var(--gray-900) */
+    --card-bg-color: white;
+    --input-bg-color: white;
+    --input-border-color: var(--gray-300);
+    --header-bg-color: white;
+    --modal-bg-color: white;
+    --text-muted-color: var(--gray-600);
+
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+
+  /* Dark Theme Variables */
+body.dark-theme {
+    --bg-color: #121212; /* Even darker background for more depth */
+    --text-color: #e0e0e0; /* Slightly off-white for better readability */
+    --card-bg-color: #1e1e1e; /* Distinct card background */
+    --input-bg-color: #2a2a2a; /* Darker input fields */
+    --input-border-color: #444444; /* Lighter border for inputs */
+    --header-bg-color: #1e1e1e; /* Header same as cards for consistency */
+    --modal-bg-color: #252525; /* Slightly lighter modal background */
+    --text-muted-color: #a0a0a0; /* Lighter muted text */
+
+    --primary-color: #6c8cff; /* Brighter primary for dark mode */
+    --primary-light: #8fa9ff;
+    --primary-dark: #4a6def;
+    
+    --gray-100: #2b2b2b; /* Dark theme equivalent for light gray elements */
+    --gray-200: #3a3a3a;
+    --gray-300: #4a4a4a;
+    --gray-400: #5a5a5a;
+    --gray-600: #a0a0a0; /* Used for some text, ensure it's light enough */
+    --gray-700: #c0c0c0; /* Used for some text, ensure it's light enough */
+
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); /* More subtle shadow for dark */
+}
+
+/* System Theme - applies dark variables when OS is dark */
+@media (prefers-color-scheme: dark) {
+  body.system-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg-color: #1e1e1e;
+    --input-bg-color: #2a2a2a;
+    --input-border-color: #444444;
+    --header-bg-color: #1e1e1e;
+    --modal-bg-color: #252525;
+    --text-muted-color: #a0a0a0;
+    --primary-color: #6c8cff;
+    --primary-light: #8fa9ff;
+    --primary-dark: #4a6def;
+    --gray-100: #2b2b2b;
+    --gray-200: #3a3a3a;
+    --gray-300: #4a4a4a;
+    --gray-400: #5a5a5a;
+    --gray-600: #a0a0a0;
+    --gray-700: #c0c0c0;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  }
+}
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color); /* Use theme variable */
+    background-color: var(--bg-color); /* Use theme variable */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+  }
+  
+  /* Utility Classes */
+  .hidden {
+    display: none !important;
+  }
+  
+  /* Layout */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--header-bg-color); /* Use theme variable */
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    margin-right: 2rem;
+  }
+  
+  .logo i {
+    font-size: 1.5rem;
+  }
+  
+  .logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .burger-menu-btn {
+    display: none; /* Hidden by default, shown in media queries */
+    background: none;
+    border: none;
+    color: var(--gray-700);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it's above other header elements */
+  }
+  
+  .main-nav {
+    display: flex;
+    gap: 1rem;
+    position: relative; /* Added previously, ensure it's still relevant */
+  }
+  
+  .nav-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: var(--border-radius);
+  }
+  
+  .nav-btn:hover {
+    color: var(--primary-color);
+    background-color: var(--gray-200); /* Adjusted for theme */
+  }
+  
+  .nav-btn.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: rgba(var(--primary-rgb, 67, 97, 238), 0.1); /* Added fallback and placeholder for RGB var */
+  }
+  
+  .notification-bell {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--gray-600);
+    transition: var(--transition);
+  }
+  
+  .notification-bell:hover {
+    color: var(--primary-color);
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--danger-color);
+    color: white;
+    font-size: 0.7rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  /* Views */
+  .view {
+    display: none;
+  }
+  
+  .view.active {
+    display: block;
+  }
+  
+  /* Dashboard */
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .upcoming-birthdays {
+    background-color: var(--card-bg-color); /* Use theme variable */
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+  }
+  
+  .upcoming-birthdays h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color); /* Use theme variable */
+  }
+  
+  .birthdays-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  
+  .birthday-card {
+    background-color: var(--gray-100); 
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-left: 4px solid var(--primary-color);
+    transition: var(--transition);
+    color: var(--text-color); /* Ensure text color contrasts with new bg */
+  }
+  
+  .birthday-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+  }
+  
+  .birthday-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .birthday-card-name {
+    font-weight: 600;
+    color: var(--text-color); /* Use theme variable */
+  }
+  
+  .birthday-card-date {
+    color: var(--text-muted-color); /* Use theme variable */
+    font-size: 0.9rem;
+  }
+  
+  .birthday-card-group {
+    display: inline-block;
+    background-color: rgba(var(--primary-rgb, 108, 140, 255), 0.15); /* Adjusted for dark theme primary */
+    color: var(--primary-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .birthday-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Calendar */
+  .calendar-section {
+    background-color: var(--card-bg-color); /* Use theme variable */
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .calendar-section h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color); /* Use theme variable */
+  }
+  
+  .calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted-color); /* Use theme variable */
+    padding: 0.5rem;
+  }
+  
+  .calendar-day {
+    aspect-ratio: 1;
+    border-radius: var(--border-radius);
+    background-color: var(--gray-100); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-color); /* Ensure text color contrasts */
+  }
+  
+  .calendar-day:hover {
+    background-color: var(--gray-200); 
+  }
+  
+  .calendar-day.today {
+    background-color: rgba(var(--primary-rgb, 108, 140, 255), 0.2); /* Adjusted for dark theme primary */
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color); /* Make date number stand out */
+  }
+  
+  .calendar-day.has-birthday {
+    position: relative;
+  }
+  
+  .calendar-day.has-birthday::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+  }
+  
+  .calendar-day-number {
+    font-weight: 600;
+  }
+  
+  .calendar-day.other-month {
+    color: var(--text-muted-color); 
+    background-color: transparent; /* Make it less prominent */
+    opacity: 0.6;
+  }
+  
+  /* Groups */
+  .groups-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .groups-grid { /* Changed from .groups-list to .groups-grid to match HTML */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem; /* Adjusted gap */
+  }
+  
+  /* New Group Item Card Styles */
+  .group-item-card {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    transition: var(--transition);
+    border-left: 5px solid var(--group-color, var(--primary-color)); /* Dynamic border color */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes footer to the bottom */
+    min-height: 180px; /* Ensure cards have a minimum height */
+  }
+  
+  .group-item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .group-item-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    margin-bottom: 1rem;
+  }
+  
+  .group-item-card-name {
+    font-weight: 600;
+    font-size: 1.25rem; /* Slightly larger name */
+    color: var(--text-color);
+    margin-right: 0.5rem; /* Space between name and count */
+  }
+  
+  .group-item-card-count {
+    background-color: var(--gray-200);
+    color: var(--text-muted-color);
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    display: inline-flex; /* To align icon and text */
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap; /* Prevent wrapping */
+  }
+  
+  .group-item-card-description {
+    color: var(--text-muted-color);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    flex-grow: 1; /* Allows description to take available space */
+    line-height: 1.4;
+  }
+  
+  .group-item-card-description em {
+    color: var(--gray-500);
+  }
+  
+  .group-item-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* Pushes footer to the bottom */
+    padding-top: 1rem; /* Space above footer */
+    border-top: 1px solid var(--gray-200); /* Subtle separator */
+  }
+  
+  .group-item-card-next {
+    font-size: 0.85rem;
+    color: var(--text-muted-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .group-item-card .view-group-btn {
+    color: var(--primary-color);
+    padding: 0.4rem;
+  }
+  
+  .group-item-card .view-group-btn:hover {
+    background-color: rgba(var(--primary-rgb, 67, 97, 238), 0.1);
+  }
+  
+  /* Ensure the old .group-card styles are removed or updated if they conflict */
+  
+  /* Connection Status */
+  .connection-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--gray-100); 
+    border-radius: var(--border-radius);
+    color: var(--text-color); /* Ensure text color contrasts */
+  }
+  
+  .status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  
+  .status-indicator.online {
+    background-color: #4caf50;
+  }
+  
+  .status-indicator.offline {
+    background-color: var(--danger-color);
+  }
+  
+  .status-text {
+    font-size: 0.9rem;
+  }
+  
+  /* Switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gray-400); /* Themed switch background */
+    transition: var(--transition);
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition);
+  }
+  
+  input:checked + .slider {
+    background-color: var(--primary-color);
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px var(--primary-color);
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  .slider.round {
+    border-radius: 24px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  /* Modals */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--modal-bg-color); /* Use theme variable */
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    z-index: 1001;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--gray-300); /* Themed border */
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    border-top: 1px solid var(--gray-300); /* Themed border */
+  }
+  
+  .notification-modal {
+    max-width: 400px;
+  }
+  
+  .notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .notification-item {
+    padding: 1rem;
+    background-color: var(--gray-100); /* Themed notification item */
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+    color: var(--text-color); /* Ensure text color contrasts */
+  }
+  
+  .notification-item.unread {
+    background-color: rgba(var(--primary-rgb, 108, 140, 255), 0.1); /* Adjusted for dark theme primary */
+  }
+  
+  .notification-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .notification-message {
+    font-size: 0.9rem;
+    color: var(--text-muted-color); /* Use themed muted text */
+  }
+  
+  .notification-time {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+  
+  .confirm-modal {
+    max-width: 400px;
+  }
+  
+  /* Forms */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color); /* Use theme variable */
+  }
+  
+  .text-input, .select-input, .color-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--input-border-color); /* Use theme variable */
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    background-color: var(--input-bg-color); /* Use theme variable */
+    color: var(--text-color); /* Use theme variable */
+    transition: var(--transition);
+  }
+  
+  .text-input:focus, .select-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 108, 140, 255), 0.2); /* Adjusted for dark theme primary */
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  /* Buttons */
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .primary-btn:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .secondary-btn {
+    background-color: var(--gray-300); /* Darker secondary button */
+    color: var(--text-color); /* Ensure text is readable */
+  }
+  
+  .secondary-btn:hover {
+    background-color: var(--gray-400); /* Darker hover for secondary */
+  }
+  
+  .danger-btn {
+    background-color: var(--danger-color);
+    color: white;
+  }
+  
+  .danger-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .icon-btn {
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-muted-color); /* Use themed muted text for icons */
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .icon-btn:hover {
+    color: var(--primary-color);
+  }
+  
+  /* Bouton états spéciaux pour notifications */
+  .btn-success {
+    background-color: #22c55e;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background-color: #16a34a;
+  }
+  
+  .btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #dc2626;
+  }
+  
+  .btn-warning {
+    background-color: var(--warning-color);
+    color: white;
+  }
+  
+  .btn-warning:hover {
+    background-color: #d97706;
+  }
+  
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .btn:disabled:hover {
+    background-color: inherit;
+  }
+  
+  /* Styles pour les boutons de notification dans les paramètres */
+  .notification-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .notification-buttons .btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .setting-note {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+  
+  .setting-note i {
+    margin-right: 0.25rem;
+    color: var(--primary-color);
+  }
+  
+  /* Authentication Modal */
+.auth-modal {
+  position: fixed !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.auth-modal.hidden {
+  display: none !important;
+}
+
+.auth-modal.fade-out {
+  opacity: 0 !important;
+}
+
+.auth-container {
+  background: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--box-shadow);
+  animation: slideIn 0.3s ease;
+  color: var(--text-color); /* Ensure auth container text is themed */
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: var(--text-muted-color); /* Use theme variable */
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color); /* Use theme variable */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--input-border-color); /* Use theme variable */
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  background-color: var(--input-bg-color); /* Use theme variable */
+  color: var(--text-color); /* Use theme variable */
+  transition: var(--transition);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 108, 140, 255), 0.2); /* Adjusted for dark theme primary */
+}
+
+.full-width {
+  width: 100%;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.auth-switch p {
+  color: var(--text-muted-color); /* Use theme variable */
+  margin-bottom: 0.5rem;
+}
+
+.forgot-password-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.forgot-password-link .link-btn {
+  font-size: 0.9rem;
+  padding: 0.25rem 0;
+}
+
+.success-icon {
+  margin-bottom: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--gray-600);
+}
+
+.text-muted.small {
+  font-size: 0.875rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.link-btn:hover {
+  color: var(--primary-dark);
+}
+
+.error-message {
+  background: rgba(var(--danger-rgb, 230, 57, 70), 0.1); /* Placeholder for danger RGB */
+  color: var(--danger-color);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  border: 1px solid rgba(var(--danger-rgb, 230, 57, 70), 0.2); /* Placeholder for danger RGB */
+}
+
+/* Add these if you don't have them, for rgba() theming */
+:root {
+  /* ... existing root variables ... */
+  --primary-rgb: 67, 97, 238; /* Default light theme primary RGB */
+  --danger-rgb: 230, 57, 70;  /* Default light theme danger RGB */
+}
+
+body.dark-theme {
+  /* ... existing dark theme variables ... */
+  --primary-rgb: 108, 140, 255; /* Dark theme primary RGB */
+  --danger-rgb: 255, 100, 110; /* Example: Brighter danger for dark theme */
+}
+
+@media (prefers-color-scheme: dark) {
+  body.system-theme {
+    /* ... existing system theme variables ... */
+    --primary-rgb: 108, 140, 255;
+    --danger-rgb: 255, 100, 110;
+  }
+}
+
+/* Ensure calendar day numbers are clearly visible in dark mode */
+body.dark-theme .calendar-day-number {
+    color: var(--text-color);
+}
+
+body.dark-theme .calendar-day.today .calendar-day-number {
+    color: var(--primary-color); /* Make today's number match primary color */
+}
+
+/* Ensure burger menu is visible in dark mode */
+body.dark-theme .burger-menu-btn {
+    color: var(--text-muted-color);
+}
+
+/* Adjust active nav button for dark theme if needed */
+body.dark-theme .nav-btn.active {
+    background-color: rgba(var(--primary-rgb), 0.2); /* Ensure primary-rgb is set for dark */
+}
+
+/* Adjust secondary button text color for dark theme explicitly */
+body.dark-theme .secondary-btn {
+    color: var(--text-color);
+}
+body.dark-theme .secondary-btn:hover {
+    background-color: var(--gray-400);
+    color: var(--text-color); /* Keep text color consistent on hover */
+}
+
+/* Adjust join form input text color for dark theme */
+body.dark-theme .join-form input.text-input {
+    color: var(--text-color);
+    background-color: var(--input-bg-color);
+    border-color: var(--input-border-color);
+}
+
+/* Adjust access code display in dark mode */
+body.dark-theme .access-code-display {
+    background-color: var(--gray-200);
+    color: var(--text-color);
+    border: 1px solid var(--gray-300);
+}
+body.dark-theme .access-code-display .access-code-label {
+    color: var(--text-muted-color);
+}
+body.dark-theme .access-code-display .access-code-value {
+    color: var(--primary-color);
+}
+
+/* Adjust profile view text colors */
+body.dark-theme #profile-view .profile-sidebar h3,
+body.dark-theme #profile-view .profile-sidebar p {
+    color: var(--text-color);
+}
+
+body.dark-theme #profile-view .profile-content h3,
+body.dark-theme #profile-view .profile-content label {
+    color: var(--text-color);
+}
+
+body.dark-theme #profile-view .tab-link {
+    color: var(--text-muted-color);
+}
+body.dark-theme #profile-view .tab-link.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Ensure empty state icons and text are visible */
+body.dark-theme .empty-state i {
+    color: var(--text-muted-color);
+}
+body.dark-theme .empty-state p {
+    color: var(--text-color);
+}
+
+
+.user-menu {
+  position: relative;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--header-bg-color); /* Use theme variable for consistency */
+  border: 1px solid var(--input-border-color); /* Use theme variable */
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-color); /* Ensure text is visible */
+}
+
+.user-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--bg-color); /* Use theme variable for consistency */
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  min-width: 180px;
+  background: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  z-index: 1100;
+  border: 1px solid var(--input-border-color);
+  padding: 0.5rem 0;
+  animation: fadeInDropdown 0.18s;
+}
+
+@keyframes fadeInDropdown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-dropdown.hidden {
+  display: none;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1.2rem;
+  color: var(--text-color);
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background: var(--gray-200);
+  color: var(--primary-color);
+}
+
+.user-dropdown .divider {
+  height: 1px;
+  background: var(--input-border-color);
+  margin: 0.4rem 0;
+}
+
+.user-dropdown .dropdown-header {
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 0.5rem 1.2rem 0.2rem 1.2rem;
+  font-size: 0.95rem;
+}
+
+/* Dark theme specific adjustments for user dropdown */
+body.dark-theme .user-dropdown {
+    background: var(--card-bg-color);
+    border-color: var(--input-border-color);
+}
+
+body.dark-theme .dropdown-item {
+    color: var(--text-color);
+}
+
+body.dark-theme .dropdown-item:hover {
+    background-color: var(--gray-200);
+    color: var(--primary-color);
+}
+
+body.dark-theme .user-btn {
+    background: var(--header-bg-color);
+    border-color: var(--input-border-color);
+    color: var(--text-color);
+}
+
+body.dark-theme .user-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--gray-200);
+}
+
+body.dark-theme .notification-bell {
+    color: var(--text-muted-color);
+}
+
+body.dark-theme .notification-bell:hover {
+    color: var(--primary-color);
+}
+
+/* System theme for dropdown */
+@media (prefers-color-scheme: dark) {
+  body.system-theme .user-dropdown {
+    background: var(--card-bg-color);
+    border-color: var(--input-border-color);
+  }
+
+  body.system-theme .dropdown-item {
+    color: var(--text-color);
+  }
+
+  body.system-theme .dropdown-item:hover {
+    background-color: var(--gray-200);
+    color: var(--primary-color);
+  }
+
+  body.system-theme .user-btn {
+    background: var(--header-bg-color);
+    border-color: var(--input-border-color);
+    color: var(--text-color);
+  }
+
+  body.system-theme .user-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--gray-200);
+  }
+
+  body.system-theme .notification-bell {
+    color: var(--text-muted-color);
+  }
+
+  body.system-theme .notification-bell:hover {
+    color: var(--primary-color);
+  }
+}
+
+/* User section styling */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.user-btn {
+  color: var(--text-color); /* Ensure text is visible */
+}
+
+.user-btn span {
+  color: var(--text-color); /* Ensure username is visible */
+}
+
+.user-btn i {
+  color: var(--text-muted-color); /* Icons slightly muted */
+}
+
+/* Profile View Styling */
+.profile-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.profile-sidebar {
+  background-color: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.profile-avatar {
+  position: relative;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.profile-avatar img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primary-color);
+  transition: var(--transition);
+}
+
+.profile-avatar img:hover {
+  transform: scale(1.05);
+}
+
+#change-avatar-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+#change-avatar-btn:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.1);
+}
+
+#profile-username-display {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+#profile-email-display {
+  color: var(--text-muted-color);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-300);
+}
+
+.profile-stat {
+  text-align: center;
+}
+
+.profile-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  display: block;
+}
+
+.profile-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-content {
+  background-color: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.profile-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--gray-300);
+  background-color: var(--gray-100);
+}
+
+.tab-link {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  color: var(--text-muted-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-link:hover {
+  background-color: var(--gray-200);
+  color: var(--text-color);
+}
+
+.tab-link.active {
+  background-color: var(--card-bg-color);
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+  display: none;
+  padding: 2rem;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content h3 {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+.profile-form-section {
+  margin-bottom: 2rem;
+}
+
+.profile-form-section:last-child {
+  margin-bottom: 0;
+}
+
+.profile-form-section h4 {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-form-section h4 i {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: var(--gray-100);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--input-border-color);
+  transition: var(--transition);
+}
+
+.form-group-checkbox:hover {
+  background-color: var(--gray-200);
+}
+
+.form-group-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.form-group-checkbox label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.password-strength {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.password-strength.weak {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.password-strength.medium {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.password-strength.strong {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-300);
+  margin-top: 2rem;
+}
+
+/* Security section specific styling */
+.security-notice {
+  background-color: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.security-notice i {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  margin-top: 0.1rem;
+}
+
+.security-notice-content h5 {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.security-notice-content p {
+  color: var(--text-color);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Responsive design for profile */
+@media screen and (max-width: 768px) {
+  .profile-container {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  .profile-sidebar {
+    grid-column: 1 !important;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-main {
+    grid-column: 1 !important;
+  }
+  
+  .profile-header {
+    flex-direction: column !important;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .profile-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    margin: 0 auto !important;
+  }
+  
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  .profile-stat {
+    padding: 0.75rem !important;
+  }
+  
+  .profile-tabs {
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+  }
+  
+  .profile-tab {
+    flex: 1 !important;
+    min-width: 120px !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  .profile-content {
+    padding: 1rem !important;
+  }
+  
+  .profile-form .form-group {
+    margin-bottom: 1rem !important;
+  }
+  
+  .profile-form input,
+  .profile-form textarea {
+    font-size: 16px !important; /* Empêcher le zoom sur iOS */
+  }
+}
+
+/* Petits écrans mobiles */
+@media screen and (max-width: 480px) {
+  .profile-stats {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .profile-tab {
+    min-width: 100px !important;
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+  
+  .profile-avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .profile-content {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Finalisation de la responsivité du profil pour mobile */
+@media screen and (max-width: 768px) {
+  /* Profile mobile complet */
+  .profile-container {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  .profile-sidebar {
+    grid-column: 1 !important;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-main {
+    grid-column: 1 !important;
+  }
+  
+  .profile-header {
+    flex-direction: column !important;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .profile-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    margin: 0 auto !important;
+  }
+  
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  .profile-stat {
+    padding: 0.75rem !important;
+  }
+  
+  .profile-tabs {
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+  }
+  
+  .profile-tab {
+    flex: 1 !important;
+    min-width: 120px !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  .profile-content {
+    padding: 1rem !important;
+  }
+  
+  .profile-form .form-group {
+    margin-bottom: 1rem !important;
+  }
+  
+  .profile-form input,
+  .profile-form textarea {
+    font-size: 16px !important; /* Empêcher le zoom sur iOS */
+  }
+}
+
+/* Petits écrans mobiles */
+@media screen and (max-width: 480px) {
+  .profile-stats {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .profile-tab {
+    min-width: 100px !important;
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+  
+  .profile-avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .profile-content {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Mode paysage pour mobiles */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .auth-container {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  
+  /* Réduire les paddings en mode paysage */
+  .upcoming-birthdays,
+  .calendar-section,
+  .settings-section,
+  .group-card {
+    padding: 0.75rem;
+  }
+}
+
+/* Écrans très larges (min-width: 1200px) */
+@media screen and (min-width: 1200px) {
+  .main-content {
+    max-width: 1400px;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .calendar {
+    gap: 0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.75rem;
+  }
+}
+
+/* Amélioration de l'accessibilité touch */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .nav-btn,
+  .icon-btn,
+  .dropdown-item,
+  .calendar-day,
+  .birthday-card,
+  .group-card {
+    min-height: 44px;
+  }
+  
+  .user-btn {
+    min-height: 40px;
+  }
+  
+  /* Augmenter les zones de touch */
+  .notification-bell {
+    padding: 0.5rem;
+  }
+  
+  .burger-menu-btn {
+    padding: 0.5rem;
+  }
+}
+
+/* Réduction de mouvement pour utilisateurs sensibles */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Contraste élevé */
+@media (prefers-contrast: high) {
+  :root {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  body.dark-theme {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .nav-btn.active {
+    border: 2px solid var(--primary-color);
+  }
+}
+
+/* System theme for profile */
+@media (prefers-color-scheme: dark) {
+  body.system-theme .security-notice {
+    background-color: rgba(var(--primary-rgb), 0.15);
+    border-color: rgba(var(--primary-rgb), 0.3);
+  }
+}
+
+/* =========================== */
+/* RESPONSIVE DESIGN COMPLET   */
+/* =========================== */
+
+/* Tablettes et écrans moyens (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Tablettes et smartphones (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  /* Header responsive */
+  .header {
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo i {
+    font-size: 1.3rem;
+  }
+  
+  /* Afficher le burger menu */
+  .burger-menu-btn {
+    display: block !important;
+    order: 2;
+  }
+  
+  /* Masquer la navigation principale par défaut */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg-color);
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    border-top: 1px solid var(--gray-300);
+    z-index: 999;
+  }
+  
+  /* Afficher la navigation quand active */
+  .main-nav.active {
+    display: flex !important;
+  }
+  
+  .nav-btn {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-300);
+    border-radius: 0;
+    text-align: left;
+  }
+  
+  .nav-btn:last-child {
+    border-bottom: none;
+  }
+  
+  /* Section utilisateur responsive */
+  .user-section {
+    order: 3;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .user-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .user-dropdown {
+    right: 0;
+    min-width: 180px;
+  }
+  
+  .notification-bell {
+    font-size: 1.1rem;
+  }
+  
+  /* Contenu principal */
+  .main-content {
+    padding: 1rem;
+  }
+  
+  /* Dashboard responsive */
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.875rem;
+  }
+  
+  .birthday-card-actions {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  /* Groupes responsive */
+  .groups-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .group-card {
+    padding: 1rem;
+  }
+  
+  .group-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .group-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  /* Détails du groupe responsive */
+  .group-details-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .group-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .members-list {
+    justify-content: center;
+  }
+  
+  .member-item {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  /* Calendrier responsive */
+  .calendar-section {
+    padding: 1rem;
+  }
+  
+  .calendar-controls {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .calendar {
+    gap: 0.25rem;
+  }
+  
+  .calendar-day {
+    padding: 0.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .calendar-day-header {
+    padding: 0.25rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Paramètres responsive */
+  .settings-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 0;
+  }
+  
+  .setting-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  /* Modales responsive */
+  .modal {
+    width: 95%;
+    max-width: 450px;
+    margin: 1rem;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+  }
+  
+  /* Formulaires responsive */
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+  
+  /* Auth modal responsive */
+  .auth-container {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: 350px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  /* Profile déjà géré dans les styles existants */
+}
+
+/* Smartphones en mode portrait (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  /* Header très petit écran */
+  .header {
+    padding: 0.75rem;
+  }
+  
+  .logo {
+    gap: 0.25rem;
+  }
+  
+  .logo h1 {
+    font-size: 1rem;
+  }
+  
+  .logo i {
+    font-size: 1.1rem;
+  }
+  
+  .burger-menu-btn {
+    font-size: 1.3rem;
+  }
+  
+  .user-section {
+    margin-top: 0.25rem;
+  }
+  
+  .user-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .user-btn span {
+    display: none; /* Masquer le nom d'utilisateur sur très petits écrans */
+  }
+  
+  .notification-bell {
+    font-size: 1rem;
+  }
+  
+  /* Contenu principal très petit écran */
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  /* Dashboard très petit écran */
+  .dashboard-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.75rem;
+  }
+  
+  .birthday-card-name {
+    font-size: 0.95rem;
+  }
+  
+  .birthday-card-date {
+    font-size: 0.8rem;
+  }
+  
+  .birthday-card-group {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+  
+  /* Groupes très petit écran */
+  .group-card {
+    padding: 0.75rem;
+  }
+  
+  .group-card-name {
+    font-size: 1.1rem;
+  }
+  
+  .group-card-description {
+    font-size: 0.85rem;
+  }
+  
+  /* Calendrier très petit écran */
+  .calendar-section {
+    padding:  0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.1rem;
+    font-size: 0.75rem;
+  }
+  
+  .calendar-day-header {
+    padding: 0.1rem;
+    font-size: 0.7rem;
+  }
+  
+  /* Paramètres très petit écran */
+  .settings-section {
+    padding: 0.75rem;
+  }
+  
+  .setting-item {
+    padding: 0.75rem 0;
+  }
+  
+  /* Modales très petit écran */
+  .modal {
+    width: 98%;
+    margin: 0.5rem;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 0.75rem;
+  }
+  
+  /* Auth modal très petit écran */
+  .auth-container {
+    margin: 0.5rem;
+    padding: 1rem;
+    max-width: 320px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .auth-header p {
+    font-size: 0.85rem;
+  }
+  
+  /* Boutons plus grands pour touch */
+  .btn {
+    min-height: 44px; /* Taille minimale recommandée pour touch */
+    padding: 0.75rem 1rem;
+  }
+  
+  .icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .nav-btn {
+    min-height: 48px;
+  }
+}
+
+/* Mode paysage pour mobiles */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .auth-container {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  
+  /* Réduire les paddings en mode paysage */
+  .upcoming-birthdays,
+  .calendar-section,
+  .settings-section,
+  .group-card {
+    padding: 0.75rem;
+  }
+}
+
+/* Écrans très larges (min-width: 1200px) */
+@media screen and (min-width: 1200px) {
+  .main-content {
+    max-width: 1400px;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .calendar {
+    gap: 0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.75rem;
+  }
+}
+
+/* Amélioration de l'accessibilité touch */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .nav-btn,
+  .icon-btn,
+  .dropdown-item,
+  .calendar-day,
+  .birthday-card,
+  .group-card {
+    min-height: 44px;
+  }
+  
+  .user-btn {
+    min-height: 40px;
+  }
+  
+  /* Augmenter les zones de touch */
+  .notification-bell {
+    padding: 0.5rem;
+  }
+  
+  .burger-menu-btn {
+    padding: 0.5rem;
+  }
+}
+
+/* Réduction de mouvement pour utilisateurs sensibles */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Contraste élevé */
+@media (prefers-contrast: high) {
+  :root {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  body.dark-theme {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .nav-btn.active {
+    border: 2px solid var(--primary-color);
+  }
+}
+
+/* System theme for profile */
+@media (prefers-color-scheme: dark) {
+  body.system-theme .security-notice {
+    background-color: rgba(var(--primary-rgb), 0.15);
+    border-color: rgba(var(--primary-rgb), 0.3);
+  }
+}
+
+/* =========================== */
+/* RESPONSIVE DESIGN COMPLET   */
+/* =========================== */
+
+/* Tablettes et écrans moyens (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Tablettes et smartphones (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  /* Header responsive */
+  .header {
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo i {
+    font-size: 1.3rem;
+  }
+  
+  /* Afficher le burger menu */
+  .burger-menu-btn {
+    display: block !important;
+    order: 2;
+  }
+  
+  /* Masquer la navigation principale par défaut */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg-color);
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    border-top: 1px solid var(--gray-300);
+    z-index: 999;
+  }
+  
+  /* Afficher la navigation quand active */
+  .main-nav.active {
+    display: flex !important;
+  }
+  
+  .nav-btn {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-300);
+    border-radius: 0;
+    text-align: left;
+  }
+  
+  .nav-btn:last-child {
+    border-bottom: none;
+  }
+  
+  /* Section utilisateur responsive */
+  .user-section {
+    order: 3;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .user-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .user-dropdown {
+    right: 0;
+    min-width: 180px;
+  }
+  
+  .notification-bell {
+    font-size: 1.1rem;
+  }
+  
+  /* Contenu principal */
+  .main-content {
+    padding: 1rem;
+  }
+  
+  /* Dashboard responsive */
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.875rem;
+  }
+  
+  .birthday-card-actions {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  /* Groupes responsive */
+  .groups-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .group-card {
+    padding: 1rem;
+  }
+  
+  .group-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .group-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  /* Détails du groupe responsive */
+  .group-details-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .group-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .members-list {
+    justify-content: center;
+  }
+  
+  .member-item {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  /* Calendrier responsive */
+  .calendar-section {
+    padding: 1rem;
+  }
+  
+  .calendar-controls {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .calendar {
+    gap: 0.25rem;
+  }
+  
+  .calendar-day {
+    padding: 0.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .calendar-day-header {
+    padding: 0.25rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Paramètres responsive */
+  .settings-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 0;
+  }
+  
+  .setting-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  /* Modales responsive */
+  .modal {
+    width: 95%;
+    max-width: 450px;
+    margin: 1rem;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+  }
+  
+  /* Formulaires responsive */
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+  
+  /* Auth modal responsive */
+  .auth-container {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: 350px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  /* Profile déjà géré dans les styles existants */
+}
+
+/* Smartphones en mode portrait (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  /* Header très petit écran */
+  .header {
+    padding: 0.75rem;
+  }
+  
+  .logo {
+    gap: 0.25rem;
+  }
+  
+  .logo h1 {
+    font-size: 1rem;
+  }
+  
+  .logo i {
+    font-size: 1.1rem;
+  }
+  
+  .burger-menu-btn {
+    font-size: 1.3rem;
+  }
+  
+  .user-section {
+    margin-top: 0.25rem;
+  }
+  
+  .user-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .user-btn span {
+    display: none; /* Masquer le nom d'utilisateur sur très petits écrans */
+  }
+  
+  .notification-bell {
+    font-size: 1rem;
+  }
+  
+  /* Contenu principal très petit écran */
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  /* Dashboard très petit écran */
+  .dashboard-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.75rem;
+  }
+  
+  .birthday-card-name {
+    font-size: 0.95rem;
+  }
+  
+  .birthday-card-date {
+    font-size: 0.8rem;
+  }
+  
+  .birthday-card-group {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+  
+  /* Groupes très petit écran */
+  .group-card {
+    padding: 0.75rem;
+  }
+  
+  .group-card-name {
+    font-size: 1.1rem;
+  }
+  
+  .group-card-description {
+    font-size: 0.85rem;
+  }
+  
+  /* Calendrier très petit écran */
+  .calendar-section {
+    padding:  0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.1rem;
+    font-size: 0.75rem;
+  }
+  
+  .calendar-day-header {
+    padding: 0.1rem;
+    font-size: 0.7rem;
+  }
+  
+  /* Paramètres très petit écran */
+  .settings-section {
+    padding: 0.75rem;
+  }
+  
+  .setting-item {
+    padding: 0.75rem 0;
+  }
+  
+  /* Modales très petit écran */
+  .modal {
+    width: 98%;
+    margin: 0.5rem;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 0.75rem;
+  }
+  
+  /* Auth modal très petit écran */
+  .auth-container {
+    margin: 0.5rem;
+    padding: 1rem;
+    max-width: 320px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .auth-header p {
+    font-size: 0.85rem;
+  }
+  
+  /* Boutons plus grands pour touch */
+  .btn {
+    min-height: 44px; /* Taille minimale recommandée pour touch */
+    padding: 0.75rem 1rem;
+  }
+  
+  .icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .nav-btn {
+    min-height: 48px;
+  }
+}
+
+/* Mode paysage pour mobiles */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .auth-container {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  
+  /* Réduire les paddings en mode paysage */
+  .upcoming-birthdays,
+  .calendar-section,
+  .settings-section,
+  .group-card {
+    padding: 0.75rem;
+  }
+}
+
+/* Écrans très larges (min-width: 1200px) */
+@media screen and (min-width: 1200px) {
+  .main-content {
+    max-width: 1400px;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .calendar {
+    gap: 0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.75rem;
+  }
+}
+
+/* Amélioration de l'accessibilité touch */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .nav-btn,
+  .icon-btn,
+  .dropdown-item,
+  .calendar-day,
+  .birthday-card,
+  .group-card {
+    min-height: 44px;
+  }
+  
+  .user-btn {
+    min-height: 40px;
+  }
+  
+  /* Augmenter les zones de touch */
+  .notification-bell {
+    padding: 0.5rem;
+  }
+  
+  .burger-menu-btn {
+    padding: 0.5rem;
+  }
+}
+
+/* Réduction de mouvement pour utilisateurs sensibles */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Contraste élevé */
+@media (prefers-contrast: high) {
+  :root {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  body.dark-theme {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .nav-btn.active {
+    border: 2px solid var(--primary-color);
+  }
+}
+
+/* System theme for profile */
+@media (prefers-color-scheme: dark) {
+  body.system-theme .security-notice {
+    background-color: rgba(var(--primary-rgb), 0.15);
+    border-color: rgba(var(--primary-rgb), 0.3);
+  }
+}
+
+/* =========================== */
+/* RESPONSIVE DESIGN COMPLET   */
+/* =========================== */
+
+/* Tablettes et écrans moyens (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Tablettes et smartphones (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  /* Header responsive */
+  .header {
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo i {
+    font-size: 1.3rem;
+  }
+  
+  /* Afficher le burger menu */
+  .burger-menu-btn {
+    display: block !important;
+    order: 2;
+  }
+  
+  /* Masquer la navigation principale par défaut */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg-color);
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    border-top: 1px solid var(--gray-300);
+    z-index: 999;
+  }
+  
+  /* Afficher la navigation quand active */
+  .main-nav.active {
+    display: flex !important;
+  }
+  
+  .nav-btn {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-300);
+    border-radius: 0;
+    text-align: left;
+  }
+  
+  .nav-btn:last-child {
+    border-bottom: none;
+  }
+  
+  /* Section utilisateur responsive */
+  .user-section {
+    order: 3;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .user-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .user-dropdown {
+    right: 0;
+    min-width: 180px;
+  }
+  
+  .notification-bell {
+    font-size: 1.1rem;
+  }
+  
+  /* Contenu principal */
+  .main-content {
+    padding: 1rem;
+  }
+  
+  /* Dashboard responsive */
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.875rem;
+  }
+  
+  .birthday-card-actions {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  /* Groupes responsive */
+  .groups-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .group-card {
+    padding: 1rem;
+  }
+  
+  .group-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .group-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  /* Détails du groupe responsive */
+  .group-details-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .group-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .members-list {
+    justify-content: center;
+  }
+  
+  .member-item {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  /* Calendrier responsive */
+  .calendar-section {
+    padding: 1rem;
+  }
+  
+  .calendar-controls {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .calendar {
+    gap: 0.25rem;
+  }
+  
+  .calendar-day {
+    padding: 0.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .calendar-day-header {
+    padding: 0.25rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Paramètres responsive */
+  .settings-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 0;
+  }
+  
+  .setting-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  /* Modales responsive */
+  .modal {
+    width: 95%;
+    max-width: 450px;
+    margin: 1rem;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+  }
+  
+  /* Formulaires responsive */
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+  
+  /* Auth modal responsive */
+  .auth-container {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: 350px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  /* Profile déjà géré dans les styles existants */
+}
+
+/* Smartphones en mode portrait (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  /* Header très petit écran */
+  .header {
+    padding: 0.75rem;
+  }
+  
+  .logo {
+    gap: 0.25rem;
+  }
+  
+  .logo h1 {
+    font-size: 1rem;
+  }
+  
+  .logo i {
+    font-size: 1.1rem;
+  }
+  
+  .burger-menu-btn {
+    font-size: 1.3rem;
+  }
+  
+  .user-section {
+    margin-top: 0.25rem;
+  }
+  
+  .user-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .user-btn span {
+    display: none; /* Masquer le nom d'utilisateur sur très petits écrans */
+  }
+  
+  .notification-bell {
+    font-size: 1rem;
+  }
+  
+  /* Contenu principal très petit écran */
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  /* Dashboard très petit écran */
+  .dashboard-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.75rem;
+  }
+  
+  .birthday-card-name {
+    font-size: 0.95rem;
+  }
+  
+  .birthday-card-date {
+    font-size: 0.8rem;
+  }
+  
+  .birthday-card-group {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+  
+  /* Groupes très petit écran */
+  .group-card {
+    padding: 0.75rem;
+  }
+  
+  .group-card-name {
+    font-size: 1.1rem;
+  }
+  
+  .group-card-description {
+    font-size: 0.85rem;
+  }
+  
+  /* Calendrier très petit écran */
+  .calendar-section {
+    padding:  0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.1rem;
+    font-size: 0.75rem;
+  }
+  
+  .calendar-day-header {
+    padding: 0.1rem;
+    font-size: 0.7rem;
+  }
+  
+  /* Paramètres très petit écran */
+  .settings-section {
+    padding: 0.75rem;
+  }
+  
+  .setting-item {
+    padding: 0.75rem 0;
+  }
+  
+  /* Modales très petit écran */
+  .modal {
+    width: 98%;
+    margin: 0.5rem;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 0.75rem;
+  }
+  
+  /* Auth modal très petit écran */
+  .auth-container {
+    margin: 0.5rem;
+    padding: 1rem;
+    max-width: 320px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .auth-header p {
+    font-size: 0.85rem;
+  }
+  
+  /* Boutons plus grands pour touch */
+  .btn {
+    min-height: 44px; /* Taille minimale recommandée pour touch */
+    padding: 0.75rem 1rem;
+  }
+  
+  .icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .nav-btn {
+    min-height: 48px;
+  }
+}
+
+/* Mode paysage pour mobiles */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .auth-container {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  
+  /* Réduire les paddings en mode paysage */
+  .upcoming-birthdays,
+  .calendar-section,
+  .settings-section,
+  .group-card {
+    padding: 0.75rem;
+  }
+}
+
+/* Écrans très larges (min-width: 1200px) */
+@media screen and (min-width: 1200px) {
+  .main-content {
+    max-width: 1400px;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+  
+  .calendar {
+    gap: 0.75rem;
+  }
+  
+  .calendar-day {
+    padding: 0.75rem;
+  }
+}
+
+/* Amélioration de l'accessibilité touch */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .nav-btn,
+  .icon-btn,
+  .dropdown-item,
+  .calendar-day,
+  .birthday-card,
+  .group-card {
+    min-height: 44px;
+  }
+  
+  .user-btn {
+    min-height: 40px;
+  }
+  
+  /* Augmenter les zones de touch */
+  .notification-bell {
+    padding: 0.5rem;
+  }
+  
+  .burger-menu-btn {
+    padding: 0.5rem;
+  }
+}
+
+/* Réduction de mouvement pour utilisateurs sensibles */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Contraste élevé */
+@media (prefers-contrast: high) {
+  :root {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  body.dark-theme {
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .nav-btn.active {
+    border: 2px solid var(--primary-color);
+  }
+}
+
+/* Group Details */
+.group-details-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem; /* Increased bottom margin */
+  padding-bottom: 1rem; /* Added padding bottom */
+  border-bottom: 1px solid var(--gray-300); /* Separator */
+}
+
+.group-details-header h2 {
+  flex: 1;
+  font-size: 1.8rem; /* Slightly larger title */
+  color: var(--text-color);
+}
+
+.group-actions {
+  display: flex;
+  gap: 0.75rem; /* Adjusted gap */
+}
+
+/* Access Code Display in Group Details */
+.access-code-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--gray-100);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  margin-right: auto; /* Pushes it to the left if space allows */
+}
+
+.access-code-label {
+  font-weight: 500;
+  color: var(--text-muted-color);
+}
+
+.access-code-value {
+  font-weight: 600;
+  color: var(--primary-color);
+  background-color: var(--card-bg-color);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.copy-access-code i {
+  color: var(--primary-color);
+}
+
+.group-members,
+.group-birthdays {
+  background-color: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  padding: 2rem; /* Increased padding */
+  box-shadow: var(--box-shadow);
+  margin-bottom: 2.5rem; /* Increased bottom margin */
+}
+
+.group-members h3,
+.group-birthdays h3 {
+  font-size: 1.4rem; /* Slightly larger section titles */
+  margin-bottom: 1.5rem; /* Increased margin */
+  color: var(--text-color);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* Consistent gap */
+}
+
+.member-item {
+  background-color: var(--gray-100);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.25rem; /* Adjusted padding */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Adjusted gap */
+  color: var(--text-color);
+  font-size: 0.95rem; /* Slightly larger font */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+.member-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.member-item i { /* If you add icons to member items */
+  color: var(--primary-color);
+}
+
+.member-name {
+  font-weight: 500;
+}
+
+.group-birthdays-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem; /* Increased margin */
+  /* Removed border-bottom from here, h3 has it now */
+}
+
+/* Birthday cards within group details - can be slightly more compact */
+#group-details-view .birthdays-list {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjust minmax if needed */
+  gap: 1.5rem; /* Consistent gap */
+}
+
+#group-details-view .birthday-card {
+  padding: 1.25rem; /* Slightly adjusted padding */
+  /* Add any other specific overrides for birthday cards in this view */
+}
+
+#group-details-view .empty-state {
+  padding: 2rem;
+  background-color: var(--gray-100);
+  border-radius: var(--border-radius);
+}
