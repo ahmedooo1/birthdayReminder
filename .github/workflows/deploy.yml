@@ -45,7 +45,6 @@ jobs:
             --filter="protect birthday_reminder.db"
             --filter="protect api/env.php"
             --filter="protect uploads/"
-            # Add other rsync arguments or filters if needed
 
       - name: Run post-deployment commands
         uses: appleboy/ssh-action@v1.0.3 # Check for the latest version
