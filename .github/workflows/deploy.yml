@@ -40,11 +40,7 @@ jobs:
           SOURCE: "./" # Deploy the entire checkout (including vendor)
           TARGET: ${{ secrets.TARGET_DIR }}
           EXCLUDE: "/.git/, /.github/" # Exclude these from the source before sending
-          ARGS: >- # Rsync arguments
-            -avzr --delete
-            --filter="protect birthday_reminder.db"
-            --filter="protect api/env.php"
-            --filter="protect uploads/"
+          ARGS: "-avzr --delete --filter='protect birthday_reminder.db' --filter='protect api/env.php' --filter='protect uploads/'" # Rsync arguments on a single line
 
       - name: Run post-deployment commands
         uses: appleboy/ssh-action@v1.0.3 # Check for the latest version
