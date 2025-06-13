@@ -1,9 +1,9 @@
-name: Deploy to VPS
+name: Deploy to VPS (Simplified)
 
 on:
   push:
     branches:
-      - main # Or your default branch (e.g., master)
+      - main # Ou votre branche par défaut (ex: master)
 
 jobs:
   deploy:
@@ -15,15 +15,16 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1' # IMPORTANT: Match your server's PHP version
-          extensions: mbstring, xml, curl, zip, pdo_mysql, pdo_sqlite # Add extensions your project needs
+          php-version: '8.1' # IMPORTANT: Ajustez à la version PHP de votre serveur
+          extensions: mbstring, xml, curl, zip, pdo_mysql, pdo_sqlite # Extensions nécessaires
           tools: composer
 
+      # Optionnel: Supprimez si vous voulez plus simple, mais cela accélère les builds futurs
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: vendor # Directory to cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('''**/composer.lock''') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
@@ -31,80 +32,47 @@ jobs:
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Deploy application files
-        uses: easingthemes/ssh-deploy@v5.1.0 # Check for the latest version
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
-          REMOTE_PORT: ${{ secrets.SSH_PORT }} # Added SSH port
-          SOURCE: "./" # Deploy the entire checkout (including vendor)
+          REMOTE_PORT: ${{ secrets.SSH_PORT }} # Port SSH, défaut 22 si non spécifié dans les secrets
+          SOURCE: "./"
           TARGET: ${{ secrets.TARGET_DIR }}
-          EXCLUDE: "/.git/, /.github/" # Exclude these from the source before sending
-          ARGS: "-avzr --delete --filter='protect birthday_reminder.db' --filter='protect api/env.php' --filter='protect uploads/'" # Rsync arguments on a single line
+          EXCLUDE: "/.git/, /.github/"
+          # Arguments Rsync: -avzr, --delete, et filtres pour protéger certains fichiers/dossiers
+          ARGS: "-avzr --delete --filter protect birthday_reminder.db --filter protect api/env.php --filter protect uploads/"
 
-      - name: Run post-deployment commands
-        uses: appleboy/ssh-action@v1.0.3 # Check for the latest version
+      - name: Basic Post-Deployment Commands
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }} # Added SSH port
+          port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -e # Exit immediately if a command exits with a non-zero status.
+            set -e
             cd ${{ secrets.TARGET_DIR }}
             echo "Current directory: $(pwd)"
 
-            echo "Setting permissions..."
-            # IMPORTANT: Adjust www-data:www-data to your web server's user and group
-            # Ensure SSH_USER has sudo privileges for these commands.
+            echo "Setting basic ownership (www-data:www-data)..."
+            # IMPORTANT: Ajustez www-data:www-data si votre serveur web utilise un autre utilisateur/groupe
             sudo chown -R www-data:www-data .
+
+            echo "Setting basic directory permissions (755)..."
             sudo find . -type d -exec chmod 755 {} \;
+
+            echo "Setting basic file permissions (644)..."
             sudo find . -type f -exec chmod 644 {} \;
 
-            # Specific writable permissions for server-managed items if they exist
-            if [ -d "uploads" ]; then
-              sudo chmod -R 775 uploads/
-              sudo chown -R www-data:www-data uploads/
-              echo "Set writable permissions for uploads/"
-            fi
+            # Redémarrage simplifié des services
+            # IMPORTANT: Vérifiez les noms exacts des services sur votre VPS
+            echo "Attempting to reload Nginx..."
+            sudo systemctl reload nginx || echo "Nginx reload failed or service not found (nginx)."
 
-            if [ -f "birthday_reminder.db" ]; then
-              # Ensure the database file and its directory are writable by the web server/PHP process
-              # The parent directory also needs correct permissions if PHP creates the DB.
-              DB_DIR=$(dirname "birthday_reminder.db")
-              if [ "$DB_DIR" != "." ]; then # If DB is in a subdirectory
-                sudo chown www-data:www-data "$DB_DIR"
-                sudo chmod 775 "$DB_DIR"
-              fi
-              sudo chown www-data:www-data birthday_reminder.db
-              sudo chmod 664 birthday_reminder.db # Writable by owner and group
-              echo "Set permissions for birthday_reminder.db"
-            fi
-            
-            if [ -f "api/env.php" ]; then
-              # Secure env.php: readable by web server, writable only by deploy user or root
-              sudo chown ${{ secrets.SSH_USER }}:www-data api/env.php
-              sudo chmod 640 api/env.php
-              echo "Set permissions for api/env.php"
-            fi
+            echo "Attempting to restart PHP-FPM (php8.1-fpm)..."
+            # IMPORTANT: Ajustez php8.1-fpm au nom de votre service PHP-FPM (ex: php7.4-fpm, php8.2-fpm)
+            sudo systemctl restart php8.1-fpm || echo "PHP-FPM restart failed or service not found (php8.1-fpm)."
 
-            echo "Restarting services..."
-            # IMPORTANT: Adjust service names if different (e.g., php8.1-fpm.service, nginx.service)
-            PHP_FPM_SERVICE_NAME="php8.1-fpm.service" # Example, change if needed
-            NGINX_SERVICE_NAME="nginx.service"
-
-            if systemctl list-units --full -all | grep -q "$PHP_FPM_SERVICE_NAME"; then
-              sudo systemctl restart $PHP_FPM_SERVICE_NAME
-              echo "PHP-FPM ($PHP_FPM_SERVICE_NAME) restarted."
-            else
-              echo "Warning: PHP-FPM service ($PHP_FPM_SERVICE_NAME) not found or name differs. Not restarted."
-            fi
-
-            if systemctl list-units --full -all | grep -q "$NGINX_SERVICE_NAME"; then
-              sudo systemctl reload $NGINX_SERVICE_NAME
-              echo "Nginx ($NGINX_SERVICE_NAME) reloaded."
-            else
-              echo "Warning: Nginx service ($NGINX_SERVICE_NAME) not found or name differs. Not reloaded."
-            fi
-            
-            echo "Deployment script finished successfully."
+            echo "Simplified post-deployment script finished."
