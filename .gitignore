@@ -1,0 +1,30 @@
+/vendor/
+/composer.lock
+*.log
+*.sqlite
+*.db
+*.db-journal
+/birthday_reminder.db
+/uploads/
+.env
+api/env.php
+
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin folder
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
