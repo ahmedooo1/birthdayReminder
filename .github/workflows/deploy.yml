@@ -41,8 +41,6 @@ jobs:
           SOURCE: "./"
           TARGET: ${{ secrets.TARGET_DIR }}
           EXCLUDE: "/.git/, /.github/"
-          # Arguments Rsync: -avzr, --delete, et filtres pour protéger certains fichiers/dossiers
-          ARGS: "-avzr --delete --filter protect birthday_reminder.db --filter protect api/env.php --filter protect uploads/"
 
       - name: Basic Post-Deployment Commands
         uses: appleboy/ssh-action@v1.0.3
