@@ -17,6 +17,8 @@ jobs:
           php-version: '8.2' # IMPORTANT: Ajustez à la version PHP de votre serveur
           extensions: mbstring, xml, curl, zip, pdo_mysql, pdo_sqlite # Extensions nécessaires
           tools: composer
+      - name: Lister les fichiers présents
+        run: ls -alh /home/runner/work/birthdayReminder/birthdayReminder/
 
       # Optionnel: Supprimez si vous voulez plus simple, mais cela accélère les builds futurs
       - name: Cache Composer dependencies
@@ -26,8 +28,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-      - name: Lister les fichiers présents
-        run: ls -alh /home/runner/work/birthdayReminder/birthdayReminder/
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
