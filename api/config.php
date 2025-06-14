@@ -18,18 +18,31 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . $origin);
 } else {
-    // Fallback to production domain
-    header('Access-Control-Allow-Origin: https://rappelanniv.aa-world.store');
+    // Pour les requêtes sans origine (comme les navigateurs mobiles)
+    // ou pour des domaines non listés, utiliser un wildcard sécurisé
+    if (empty($origin)) {
+        header('Access-Control-Allow-Origin: https://rappelanniv.aa-world.store');
+    } else {
+        // Log l'origine pour debug
+        error_log("CORS: Unknown origin: " . $origin);
+        header('Access-Control-Allow-Origin: https://rappelanniv.aa-world.store');
+    }
 }
 
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, X-API-Key, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, X-API-Key, Authorization, X-Requested-With');
 header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Max-Age: 86400'); // Cache preflight for 24 hours
+
+// Ajout d'headers de sécurité pour les mobiles
+header('Vary: Origin');
+header('X-Content-Type-Options: nosniff');
 
 // Handle preflight requests
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200); // Explicitly set 200 OK for OPTIONS
-    // The headers set above will be sent.
+    // Send minimal response for preflight
+    echo json_encode(['status' => 'ok']);
     exit(0);
 }
 
