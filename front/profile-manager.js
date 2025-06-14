@@ -352,20 +352,30 @@ class ProfileManager {    constructor(dataManager, toastManager) {
     async refreshUserData() {
         try {
             // Forcer le rechargement depuis l'API au lieu du cache
+            console.log('[ProfileManager] Attempting to refresh user data from API...');
             const freshUserData = await this.dataManager.apiRequest('auth.php?action=profile', 'GET', null, true);
-            if (freshUserData) {
+            console.log('[ProfileManager] Fresh user data received from API:', JSON.stringify(freshUserData, null, 2));
+            
+            if (freshUserData && freshUserData.success !== false) { // Check if freshUserData is not an error response
                 this.currentUser = freshUserData;
                 
                 // Mettre à jour le localStorage avec les nouvelles données
                 localStorage.setItem('user_data', JSON.stringify(freshUserData));
+                console.log('[ProfileManager] User data updated in localStorage.');
                 
                 // Re-remplir le formulaire avec les données fraîches
                 this.populateProfileForm(freshUserData);
+                console.log('[ProfileManager] Profile form repopulated.');
                 
-                console.log('Données utilisateur actualisées:', freshUserData);
+                console.log('[ProfileManager] Données utilisateur actualisées:', freshUserData);
+            } else {
+                console.error('[ProfileManager] Failed to refresh user data or received error:', freshUserData);
+                // Optionally, show a toast to the user if freshUserData indicates an error
+                // this.toast.error('Erreur', 'Impossible de rafraîchir les données du profil après la mise à jour.');
             }
         } catch (error) {
-            console.error('Erreur lors de l\'actualisation des données utilisateur:', error);
+            console.error('[ProfileManager] Erreur lors de l\'actualisation des données utilisateur:', error);
+            // this.toast.error('Erreur', 'Une erreur technique est survenue lors du rafraîchissement des données.');
         }
     }
 
