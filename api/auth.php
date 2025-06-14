@@ -604,50 +604,54 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             
         case 'forgot_password':
             // Demande de réinitialisation de mot de passe
-            $data = json_decode(file_get_contents('php://input'), true);
-            $email = $data['email'] ?? '';
-            
+            // Correction : lire l'email depuis JSON ou POST
+            $email = $_POST['email'] ?? '';
+            if (empty($email)) {
+                $data = json_decode(file_get_contents('php://input'), true);
+                if (isset($data['email'])) {
+                    $email = $data['email'];
+                }
+            }
             if (empty($email)) {
                 sendResponse(['error' => 'Email requis'], 400);
             }
-            
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 sendResponse(['error' => 'Email invalide'], 400);
             }
-            
+
             try {
                 // Vérifier si l'utilisateur existe
                 $stmt = $pdo->prepare("SELECT id, first_name, last_name FROM users WHERE email = ?");
                 $stmt->execute([$email]);
                 $user = $stmt->fetch();
-                
+                $debugInfo['user_found'] = $user ? true : false;
+
                 if (!$user) {
-                    // Ne pas révéler si l'email existe ou non pour des raisons de sécurité
                     sendResponse([
                         'success' => true, 
                         'message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.'
                     ]);
                     break;
                 }
-                
+
                 // Générer un token sécurisé
                 $resetToken = bin2hex(random_bytes(32));
-                $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token valide 1 heure
-                
+                $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
                 // Enregistrer le token en base
                 $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?");
                 $stmt->execute([$resetToken, $expiresAt, $user['id']]);
-                
+
                 // Envoyer l'email de réinitialisation
                 $resetUrl = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . 
                            '://' . $_SERVER['HTTP_HOST'] . 
                            '/front/index.html?reset_token=' . $resetToken;
-                
+
                 $userName = trim($user['first_name'] . ' ' . $user['last_name']);
                 if (empty($userName)) {
                     $userName = 'Utilisateur';
                 }
-                
+
                 $subject = 'Réinitialisation de votre mot de passe - Birthday Reminder';
                 $message = '
                 <html>
@@ -674,58 +678,32 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                     </div>
                 </body>
                 </html>';
-                
+
                 require_once 'utils.php';
                 $emailSent = sendEmail($email, $subject, $message);
-                
-                // Mode debug temporaire pour diagnostiquer le problème
-                $debug = isset($_GET['debug']) && $_GET['debug'] === 'true';
-                
-                if ($debug) {
-                    // Mode debug : retourner des informations détaillées
-                    sendResponse([
-                        'success' => true,
-                        'debug' => true,
-                        'message' => 'Mode debug activé',
-                        'email_found' => true,
-                        'email_sent' => $emailSent,
-                        'reset_url' => $resetUrl,
-                        'user_name' => $userName,
-                        'email_config' => [
-                            'host' => env('MAIL_HOST'),
-                            'username' => env('MAIL_USERNAME'),
-                            'from_address' => env('MAIL_FROM_ADDRESS')
-                        ]
-                    ]);
-                } else {
-                    // Mode normal : toujours retourner un succès pour des raisons de sécurité
+                $debugInfo['reset_url'] = $resetUrl;
+                $debugInfo['email_sent'] = $emailSent;
+
+                if ($emailSent) {
                     sendResponse([
                         'success' => true, 
-                        'message' => 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.'
+                        'message' => 'Un email de réinitialisation a été envoyé à votre adresse.'
                     ]);
+                } else {
+                    sendResponse(['error' => 'Erreur lors de l\'envoi de l\'email'], 500);
                 }
-                
-                // Logger l'échec d'envoi d'email pour le débogage
-                if (!$emailSent) {
-                    error_log("Échec d'envoi d'email de réinitialisation pour: $email");
-                }
-                
+
             } catch (PDOException $e) {
                 error_log("Erreur forgot_password: " . $e->getMessage());
-                // Même en cas d'erreur DB, ne pas révéler d'informations
-                sendResponse([
-                    'success' => true, 
-                    'message' => 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.'
-                ]);
+                sendResponse(['error' => 'Erreur serveur'], 500);
             }
             break;
             
         case 'reset_password':
             // Réinitialisation effective du mot de passe
-            $data = json_decode(file_get_contents('php://input'), true);
-            $token = $data['token'] ?? '';
-            $newPassword = $data['new_password'] ?? '';
-            $confirmPassword = $data['confirm_password'] ?? '';
+            $token = $_POST['token'] ?? '';
+            $newPassword = $_POST['new_password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
             
             if (empty($token) || empty($newPassword) || empty($confirmPassword)) {
                 sendResponse(['error' => 'Tous les champs sont requis'], 400);
