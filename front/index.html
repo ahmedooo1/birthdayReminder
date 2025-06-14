@@ -216,9 +216,13 @@
             <div class="tab-content active" id="general">
               <h3><i class="fas fa-user-edit"></i> Informations personnelles</h3>
               
-              <form id="profile-form">
-                <div class="profile-form-section">
+              <form id="profile-form">                <div class="profile-form-section">
                   <h4><i class="fas fa-id-card"></i> Identité</h4>
+                  <div class="form-group">
+                    <label for="profile-username">Nom d'utilisateur</label>
+                    <input type="text" id="profile-username" class="text-input" placeholder="Votre nom d'utilisateur" />
+                    <small class="form-help">Le nom d'utilisateur doit être unique et ne peut contenir que des lettres, chiffres, et tirets</small>
+                  </div>
                   <div class="form-row">
                     <div class="form-group">
                       <label for="profile-first-name">Prénom</label>

@@ -142,6 +142,24 @@ class ProfileManager {
             console.error('Erreur lors du chargement du profil:', error);
             this.toast.error('Erreur', 'Impossible de charger le profil');
         }
+    }    /**
+     * Mettre à jour les statistiques du profil
+     */
+    async updateProfileStats() {
+        const birthdaysCountElement = document.getElementById('profile-birthdays-count');
+        const groupsCountElement = document.getElementById('profile-groups-count');
+
+        if (birthdaysCountElement) {
+            // Compter le nombre total d'anniversaires
+            const birthdaysCount = this.dataManager.data.birthdays.length;
+            birthdaysCountElement.textContent = birthdaysCount;
+        }
+
+        if (groupsCountElement) {
+            // Compter le nombre total de groupes
+            const groupsCount = this.dataManager.data.groups.length;
+            groupsCountElement.textContent = groupsCount;
+        }
     }
 
     /**
@@ -162,13 +180,18 @@ class ProfileManager {
             avatarImg.src = this.generateAvatarUrl(initials);
         } else if (avatarImg && user.avatar) {
             avatarImg.src = user.avatar;
-        }        // Formulaire principal
+        }
+
+        // Mettre à jour les statistiques du profil
+        this.updateProfileStats();        // Formulaire principal
+        const usernameInput = document.getElementById('profile-username');
         const firstNameInput = document.getElementById('profile-first-name');
         const lastNameInput = document.getElementById('profile-last-name');
         const emailInput = document.getElementById('profile-email');
         const emailNotificationsCheckbox = document.getElementById('profile-email-notifications');
         const notificationDaysInput = document.getElementById('profile-notification-days');
 
+        if (usernameInput) usernameInput.value = user.username || '';
         if (firstNameInput) firstNameInput.value = user.first_name || '';
         if (lastNameInput) lastNameInput.value = user.last_name || '';
         if (emailInput) emailInput.value = user.email || '';
@@ -225,10 +248,9 @@ class ProfileManager {
     /**
      * Sauvegarder le profil
      */    async saveProfile() {
-        const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');
-
-        try {
+        const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');        try {
             const formData = {
+                username: document.getElementById('profile-username').value.trim(),
                 first_name: document.getElementById('profile-first-name').value.trim(),
                 last_name: document.getElementById('profile-last-name').value.trim(),
                 email: document.getElementById('profile-email').value.trim()
@@ -253,11 +275,31 @@ class ProfileManager {
                 return;
             }
 
+            if (!formData.username) {
+                loadingToast.remove();
+                this.toast.error('Erreur', 'Le nom d\'utilisateur est requis');
+                return;
+            }
+
+            // Validation du nom d'utilisateur (seulement lettres, chiffres, tirets et underscores)
+            const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+            if (!usernameRegex.test(formData.username)) {
+                loadingToast.remove();
+                this.toast.error('Erreur', 'Le nom d\'utilisateur ne peut contenir que des lettres, chiffres, tirets et underscores');
+                return;
+            }
+
             const result = await this.dataManager.updateProfile(formData);
-            
-            if (result.success) {
+              if (result.success) {
                 this.currentUser = { ...this.currentUser, ...formData, email_notifications: formData.email_notifications ? 1 : 0 }; // Update local state
                 this.populateProfileForm(this.currentUser); // Re-populate to reflect changes
+                
+                // Mettre à jour l'affichage du nom d'utilisateur dans l'en-tête
+                const headerUsernameDisplay = document.querySelector('.user-btn span');
+                if (headerUsernameDisplay && formData.username) {
+                    headerUsernameDisplay.textContent = formData.username;
+                }
+                
                 loadingToast.remove();
                 this.toast.success('Profil mis à jour', 'Vos informations ont été enregistrées.');
             } else {

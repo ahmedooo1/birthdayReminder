@@ -10,13 +10,28 @@ class ToastManager {
         if (!this.container) {
             this.createContainer();
         }
-    }
-
-    createContainer() {
+    }    createContainer() {
         this.container = document.createElement('div');
         this.container.id = 'toast-container';
+        
+        // Enhanced mobile detection and positioning
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            this.container.classList.add('mobile-toast-container');
+        }
+        
         document.body.appendChild(this.container);
-    }    /**
+        
+        // Listen for window resize to adjust positioning
+        window.addEventListener('resize', () => {
+            const newIsMobile = window.innerWidth <= 768;
+            if (newIsMobile && !this.container.classList.contains('mobile-toast-container')) {
+                this.container.classList.add('mobile-toast-container');
+            } else if (!newIsMobile && this.container.classList.contains('mobile-toast-container')) {
+                this.container.classList.remove('mobile-toast-container');
+            }
+        });
+    }/**
      * Afficher un toast de succès
      * @param {string} title - Titre du toast
      * @param {string} message - Message du toast
@@ -71,27 +86,33 @@ class ToastManager {
      * @param {string} message - Message du toast
      * @param {number} duration - Durée d'affichage (ms)
      * @param {object} options - Options supplémentaires
-     */
-    show(type, title, message = '', duration = this.defaultDuration, options = {}) {
+     */    show(type, title, message = '', duration = this.defaultDuration, options = {}) {
         const toast = this.createToast(type, title, message, duration, options);
+        
+        // Enhanced mobile handling
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            toast.classList.add('mobile-toast');
+        }
+        
         this.container.appendChild(toast);
         this.toasts.push(toast);
 
-        // Animation d'entrée
+        // Animation d'entrée - enhanced for mobile
         setTimeout(() => {
             toast.classList.add('show');
         }, 10);
 
-        // Auto-suppression
+        // Auto-suppression avec gestion mobile
         const autoRemoveTimeout = setTimeout(() => {
             this.remove(toast);
-        }, duration);
+        }, isMobile ? duration + 1000 : duration); // Longer duration on mobile
 
         // Sauvegarder le timeout pour pouvoir l'annuler
         toast.autoRemoveTimeout = autoRemoveTimeout;
 
         return toast;
-    }    /**
+    }/**
      * Créer un élément toast
      */
     createToast(type, title, message, duration, options = {}) {
