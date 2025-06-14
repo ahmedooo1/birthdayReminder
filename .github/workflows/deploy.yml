@@ -17,8 +17,6 @@ jobs:
           php-version: '8.2' # IMPORTANT: Ajustez à la version PHP de votre serveur
           extensions: mbstring, xml, curl, zip, pdo_mysql, pdo_sqlite # Extensions nécessaires
           tools: composer
-      - name: Lister les fichiers présents
-        run: ls -alh /home/runner/work/birthdayReminder/birthdayReminder/
 
       # Optionnel: Supprimez si vous voulez plus simple, mais cela accélère les builds futurs
       - name: Cache Composer dependencies
@@ -51,13 +49,18 @@ jobs:
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
           SOURCE: "./"
           TARGET: ${{ secrets.TARGET_DIR }}
-          EXCLUDE: "/.git/, /.github/, /node_modules/, /.env, /.DS_Store"
+          EXCLUDE: "/.git/, /.github/, /node_modules/, /.env, /.DS_Store"         
           SCRIPT_BEFORE: |
+            # Ensure target directory exists
             mkdir -p ${{ secrets.TARGET_DIR }}
+            # Fix ownership and permissions before deployment
+            sudo chown -R ${{ secrets.SSH_USER }}:${{ secrets.SSH_USER }} ${{ secrets.TARGET_DIR }} || true
+            sudo chmod -R 755 ${{ secrets.TARGET_DIR }} || true
+            # Create backup if directory exists and has content
             if [ -d "${{ secrets.TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.TARGET_DIR }})" ]; then
-              cp -r ${{ secrets.TARGET_DIR }} ${{ secrets.TARGET_DIR }}_backup_$(date +%Y%m%d_%H%M%S) || true
+              sudo cp -r ${{ secrets.TARGET_DIR }} ${{ secrets.TARGET_DIR }}_backup_$(date +%Y%m%d_%H%M%S) || true
             fi
-          ARGS: "-rlgoDzvc --delete --force --ignore-errors"
+          ARGS: "-rlgoDzv --delete --force --no-group --no-owner"
 
       - name: Basic Post-Deployment Commands
         uses: appleboy/ssh-action@v1.0.3
