@@ -1,6 +1,8 @@
 // AuthManager pour BirthdayReminder
-class AuthManager {
-  constructor() {
+class AuthManager {  constructor() {
+    console.log('Initializing AuthManager...');
+    
+    // Get DOM elements - with fallback retry mechanism
     this.authModal = document.getElementById('auth-modal');
     this.loginForm = document.getElementById('login-form');
     this.registerForm = document.getElementById('register-form');
@@ -12,12 +14,25 @@ class AuthManager {
     this.logoutBtn = document.getElementById('logout-btn');
     this.profileBtn = document.getElementById('profile-btn');
     this.demoBtns = document.querySelectorAll('.demo-btn');
-    this.init();
-  }  init() {
+    
+    console.log('AuthManager elements found:', {
+      authModal: !!this.authModal,
+      loginForm: !!this.loginForm,
+      registerForm: !!this.registerForm,
+      authSwitchBtn: !!this.authSwitchBtn,
+      authError: !!this.authError
+    });
+    
+    this.init();  }
+  
+  init() {
+    console.log('AuthManager init called');
+    
     // Vérifier s'il y a un token de réinitialisation dans l'URL
     const urlParams = new URLSearchParams(window.location.search);
     const resetToken = urlParams.get('reset_token');
-      if (resetToken) {
+    
+    if (resetToken) {
       console.log('Token de réinitialisation détecté:', resetToken);
       // S'assurer que le DOM est prêt et attendre un peu
       setTimeout(() => {
@@ -33,16 +48,22 @@ class AuthManager {
 
     // Vérifier la session au chargement
     const sessionToken = localStorage.getItem('session_token');
+    console.log('Session token found:', !!sessionToken);
+    
     if (sessionToken) {
+      console.log('Verifying session token...');
       this.verifySession(sessionToken).then(isValid => {
+        console.log('Session verification result:', isValid);
         if (isValid) {
           this.hideAuthModal();
           document.dispatchEvent(new Event('authSuccess'));
         } else {
+          console.log('Session invalid, showing auth modal');
           this.showAuthModal();
         }
       });
     } else {
+      console.log('No session token, showing auth modal');
       this.showAuthModal();
     }
     this.setupEvents();
@@ -106,9 +127,28 @@ class AuthManager {
         });
       });
     }
-  }
-  showAuthModal(skipFormSwitch = false) {
-    if (this.authModal) this.authModal.classList.remove('hidden');
+  }  showAuthModal(skipFormSwitch = false) {
+    console.log('showAuthModal called - skipFormSwitch:', skipFormSwitch);
+    
+    // Re-get elements if they weren't found initially
+    if (!this.authModal) {
+      this.authModal = document.getElementById('auth-modal');
+      console.log('Re-fetched auth modal:', this.authModal);
+    }
+    if (!this.authError) {
+      this.authError = document.getElementById('auth-error');
+    }
+    if (!this.authLoading) {
+      this.authLoading = document.getElementById('auth-loading');
+    }
+    
+    if (this.authModal) {
+      console.log('Showing auth modal - removing hidden class');
+      this.authModal.classList.remove('hidden');
+    } else {
+      console.error('Auth modal element not found!');
+    }
+    
     if (this.authError) this.authError.classList.add('hidden');
     if (this.authLoading) this.authLoading.classList.add('hidden');
     if (!skipFormSwitch) {

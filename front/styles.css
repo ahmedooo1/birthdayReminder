@@ -352,13 +352,54 @@ body.dark-theme {
   .notification-bell:active {
     background-color: var(--gray-200);
     transform: scale(0.95);
-  }
-   #access-code-input{ 
+  }  /* Access Code Input - Enhanced Styling */
+  #access-code-input {
     text-transform: uppercase;
     width: 70%;
-    margin-right: 10px;
-    font-weight: 500;
+    margin-right: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--input-border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  #access-code-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 67, 97, 238), 0.15),
+                0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: var(--card-bg-color);
+    transform: translateY(-1px);
+  }
+
+  #access-code-input::placeholder {
+    color: var(--text-muted-color);
+    font-weight: 400;
     letter-spacing: 1px;
+    text-transform: none;
+    opacity: 0.7;
+  }
+
+  /* Dark theme adjustments for access code input */
+  body.dark-theme #access-code-input {
+    background-color: var(--input-bg-color);
+    border-color: var(--input-border-color);
+    color: var(--text-color);
+  }
+
+  body.dark-theme #access-code-input:focus {
+    border-color: var(--primary-color);
+    background-color: var(--card-bg-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 108, 140, 255), 0.2),
+                0 4px 12px rgba(0, 0, 0, 0.3);
   }
   .main-content {
     flex: 1;
