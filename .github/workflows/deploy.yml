@@ -57,9 +57,9 @@ jobs:
             sudo chown -R ${{ secrets.SSH_USER }}:${{ secrets.SSH_USER }} ${{ secrets.TARGET_DIR }} || true
             sudo chmod -R 755 ${{ secrets.TARGET_DIR }} || true
             # Create backup if directory exists and has content
-            if [ -d "${{ secrets.TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.TARGET_DIR }})" ]; then
-              sudo cp -r ${{ secrets.TARGET_DIR }} ${{ secrets.TARGET_DIR }}_backup_$(date +%Y%m%d_%H%M%S) || true
-            fi
+            # if [ -d "${{ secrets.TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.TARGET_DIR }})" ]; then
+            #   sudo cp -r ${{ secrets.TARGET_DIR }} ${{ secrets.TARGET_DIR }}_backup_$(date +%Y%m%d_%H%M%S) || true
+            # fi
           ARGS: "-rlgoDzv --delete --force --no-group --no-owner"
 
       - name: Basic Post-Deployment Commands
