@@ -885,15 +885,18 @@ class DataManager {    constructor() {
         ...profileData,
         session_token: token,
         csrf_token: 'dummy_token' // Temporary until CSRF is implemented
-      });
-
-      // Update local storage with new data
-      if (response.success) {
+      });      // Update local storage with new data from API response (not form data)
+      if (response.success && response.updated_user_data) {
+        localStorage.setItem('user_data', JSON.stringify(response.updated_user_data));
+        console.log('[DataManager] Updated localStorage with fresh user data from API response');
+      } else if (response.success) {
+        // Fallback: if no updated_user_data in response, merge form data with existing
         const userData = localStorage.getItem('user_data');
         if (userData) {
           const currentUser = JSON.parse(userData);
           const updatedUser = { ...currentUser, ...profileData };
           localStorage.setItem('user_data', JSON.stringify(updatedUser));
+          console.log('[DataManager] Fallback: Updated localStorage by merging form data with existing user data');
         }
       }
 
