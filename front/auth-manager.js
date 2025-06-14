@@ -345,16 +345,15 @@ class AuthManager {  constructor() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
-
   // Demande de réinitialisation de mot de passe
   async forgotPassword(email) {
     try {
-      const response = await fetch('/api/auth.php?action=forgot_password', {
+      const response = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=forgot_password', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: `email=${encodeURIComponent(email)}`
+        body: JSON.stringify({ email: email })
       });
 
       const data = await response.json();
@@ -372,16 +371,19 @@ class AuthManager {  constructor() {
       return false;
     }
   }
-
   // Réinitialisation du mot de passe avec token
   async resetPassword(token, newPassword, confirmPassword) {
     try {
-      const response = await fetch('/api/auth.php?action=reset_password', {
+      const response = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=reset_password', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: `token=${encodeURIComponent(token)}&new_password=${encodeURIComponent(newPassword)}&confirm_password=${encodeURIComponent(confirmPassword)}`
+        body: JSON.stringify({
+          token: token,
+          new_password: newPassword,
+          confirm_password: confirmPassword
+        })
       });
 
       const data = await response.json();
