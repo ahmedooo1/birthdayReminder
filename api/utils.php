@@ -123,6 +123,8 @@ function generateAccessCode($length = 6) {
  * @return bool Succès de l'envoi
  */
 function sendEmail($to, $subject, $message, $headers = []) {
+    error_log("sendEmail called. To: " . $to . ", Subject: " . $subject);
+
     // Récupérer les paramètres d'email depuis la configuration
     $emailHost = env('MAIL_HOST', 'smtp.gmail.com');
     $emailPort = env('MAIL_PORT', 587);
@@ -131,10 +133,12 @@ function sendEmail($to, $subject, $message, $headers = []) {
     $emailFromName = env('MAIL_FROM_NAME', 'Birthday Reminder');
     $emailFromAddress = env('MAIL_FROM_ADDRESS', '');
     $emailEncryption = env('MAIL_ENCRYPTION', 'tls');
-    
+
+    error_log("Mail Config: Host=" . $emailHost . ", Port=" . $emailPort . ", Username=" . $emailUsername . ", FromAddress=" . $emailFromAddress . ", Encryption=" . $emailEncryption . ", Password set: " . (empty($emailPassword) ? 'No' : 'Yes'));
+
     // Si les paramètres d'email ne sont pas configurés, journaliser et retourner false
     if (empty($emailUsername) || empty($emailPassword) || empty($emailFromAddress)) {
-        error_log('Configuration email incomplète. Email non envoyé.');
+        error_log('Configuration email incomplète. Email non envoyé. Username empty: ' . empty($emailUsername) . ', Password empty: ' . empty($emailPassword) . ', FromAddress empty: ' . empty($emailFromAddress));
         return false;
     }
     
@@ -172,7 +176,7 @@ function sendEmail($to, $subject, $message, $headers = []) {
         return true;
         
     } catch (Exception $e) {
-        error_log("Erreur lors de l'envoi de l'email à $to: " . $mail->ErrorInfo);
+        error_log("PHPMailer Exception caught for email to $to: " . $e->getMessage() . " | Mailer ErrorInfo: " . $mail->ErrorInfo);
         return false;
     }
 }
