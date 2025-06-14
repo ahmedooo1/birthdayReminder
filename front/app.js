@@ -128,7 +128,7 @@ function checkConnectionStatus() {
     return;
   }
   
-  fetch('http://localhost:8000/api/settings.php', {
+  fetch('https://rappelanniv.aa-world.store/api/settings.php', {
     headers: {
       'Authorization': `Bearer ${sessionToken}`
     }
@@ -985,7 +985,7 @@ function setupModals() {
           throw new Error('Session expirée');
         }
         
-        const response = await fetch('http://localhost:8000/api/test_reminders.php', {
+        const response = await fetch('https://rappelanniv.aa-world.store/api/test_reminders.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

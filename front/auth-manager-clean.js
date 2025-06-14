@@ -98,7 +98,7 @@ class AuthManager {
     if (!password) password = document.getElementById('login-password').value;
     this.setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/auth.php?action=login', {
+      const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -128,7 +128,7 @@ class AuthManager {
     }
     this.setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/auth.php?action=register', {
+      const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
@@ -149,7 +149,7 @@ class AuthManager {
 
   async verifySession(token) {
     try {
-      const res = await fetch('http://localhost:8000/api/auth.php?action=verify', {
+      const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_token: token })
@@ -170,7 +170,7 @@ class AuthManager {
     const token = localStorage.getItem('session_token');
     if (!token) return;
     try {
-      await fetch('http://localhost:8000/api/auth.php?action=logout', {
+      await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_token: token })

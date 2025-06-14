@@ -7,6 +7,7 @@ require_once __DIR__ . '/error_handler.php';
 
 // Enable CORS
 $allowedOrigins = [
+    'https://rappelanniv.aa-world.store', // Production domain
     'http://localhost:5500',
     'http://127.0.0.1:5500',
     'http://localhost:3000', // For development
@@ -17,8 +18,8 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . $origin);
 } else {
-    // Fallback to localhost:5500 for backward compatibility
-    header('Access-Control-Allow-Origin: http://localhost:5500');
+    // Fallback to production domain
+    header('Access-Control-Allow-Origin: https://rappelanniv.aa-world.store');
 }
 
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');

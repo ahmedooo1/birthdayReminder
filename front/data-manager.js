@@ -2,9 +2,8 @@
 * Data Manager for Birthday Reminder App
 * Handles all data operations including saving, loading, and manipulating data
 */
-class DataManager {
-    constructor() {
-        this.apiUrl = 'http://localhost:8000/api/'; // Added trailing slash
+class DataManager {    constructor() {
+        this.apiUrl = 'https://rappelanniv.aa-world.store/api/'; // Updated to public API URL
         this.data = {
             groups: [],
             birthdays: [],
