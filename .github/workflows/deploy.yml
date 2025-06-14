@@ -1,0 +1,96 @@
+name: Deploy to VPS (Simplified)
+
+on:
+  push:
+    branches:
+      - main # Ou votre branche par défaut (ex: master)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4     
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' # IMPORTANT: Ajustez à la version PHP de votre serveur
+          extensions: mbstring, xml, curl, zip, pdo_mysql, pdo_sqlite # Extensions nécessaires
+          tools: composer
+
+      # Optionnel: Supprimez si vous voulez plus simple, mais cela accélère les builds futurs
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Prepare deployment files
+        run: |
+          # Remove potentially problematic files and directories
+          rm -rf .git .github
+          # Remove any symbolic links that might cause issues
+          find . -type l -delete || true
+          # Set proper permissions before deployment
+          find . -type f -exec chmod 644 {} \;
+          find . -type d -exec chmod 755 {} \;
+
+      - name: Deploy application files
+        uses: easingthemes/ssh-deploy@v5.1.0
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          SOURCE: "./"
+          TARGET: ${{ secrets.TARGET_DIR }}
+          EXCLUDE: "/.git/, /.github/, /node_modules/, /.env, /.DS_Store"
+          SCRIPT_BEFORE: |
+            mkdir -p ${{ secrets.TARGET_DIR }}
+            if [ -d "${{ secrets.TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.TARGET_DIR }})" ]; then
+              cp -r ${{ secrets.TARGET_DIR }} ${{ secrets.TARGET_DIR }}_backup_$(date +%Y%m%d_%H%M%S) || true
+            fi
+          ARGS: "-rlgoDzvc --delete --force --ignore-errors"
+
+      - name: Basic Post-Deployment Commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.TARGET_DIR }}
+            echo "Current directory: $(pwd)"
+
+            echo "Setting basic ownership (www-data:www-data)..."
+            # IMPORTANT: Ajustez www-data:www-data si votre serveur web utilise un autre utilisateur/groupe
+            sudo chown -R www-data:www-data . || echo "Failed to set ownership, continuing..."
+
+            echo "Setting basic directory permissions (755)..."
+            sudo find . -type d -exec chmod 755 {} \; || echo "Failed to set directory permissions, continuing..."
+
+            echo "Setting basic file permissions (644)..."
+            sudo find . -type f -exec chmod 644 {} \; || echo "Failed to set file permissions, continuing..."
+
+            # Make executable files executable
+            echo "Setting executable permissions for specific files..."
+            sudo chmod +x *.bat || true
+            sudo chmod +x api/*.php || true
+
+            # Redémarrage simplifié des services
+            # IMPORTANT: Vérifiez les noms exacts des services sur votre VPS
+            echo "Attempting to reload Nginx..."
+            sudo systemctl reload nginx || echo "Nginx reload failed or service not found (nginx)."
+
+            echo "Attempting to restart PHP-FPM (php8.2-fpm)..."
+            # IMPORTANT: Ajustez php8.2-fpm au nom de votre service PHP-FPM (ex: php7.4-fpm, php8.2-fpm)
+            sudo systemctl restart php8.2-fpm || echo "PHP-FPM restart failed or service not found (php8.2-fpm)."
+
+            echo "Simplified post-deployment script finished."
