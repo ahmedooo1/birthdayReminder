@@ -1613,11 +1613,12 @@ body.dark-theme .notification-bell:hover {
   /* Enhanced Groups Mobile Styles */
   .groups-header h2 {
     font-size: 1.3rem !important;
-    margin-bottom: 1rem !important;
+    /* margin-bottom: 1rem !important; */ /* Removed as .groups-header now has margin-bottom */
+    text-align: center; /* Center title on very small screens */
   }
   
   .join-group-section {
-    padding: 1rem !important;
+    padding: 1rem !important; /* Slightly less padding for very small screens */
     margin-bottom: 1.5rem !important;
   }
   
@@ -1627,206 +1628,209 @@ body.dark-theme .notification-bell:hover {
   }
   
   .join-group-section p {
-    font-size: 0.9rem !important;
+    font-size: 0.85rem !important;
     margin-bottom: 1rem !important;
-    color: var(--text-muted-color) !important;
   }
   
   .join-form {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.75rem !important;
+    /* display: flex !important; */ /* Already there */
+    /* flex-direction: column !important; */ /* Already there */
+    gap: 0.75rem !important; /* Adjust gap for very small screens */
   }
   
   #access-code-input {
-    padding: 0.875rem !important;
-    font-size: 16px !important;
-    text-align: center !important;
-    border: 2px solid var(--input-border-color) !important;
+    /* padding: 0.875rem !important; */ /* Handled by general mobile styles */
+    /* font-size: 16px !important; */ /* Handled by general mobile styles */
+    /* text-align: center !important; */ /* Inherited or set */
+    /* border: 2px solid var(--input-border-color) !important; */ /* Handled by general mobile styles */
+    /* border-radius: var(--border-radius) !important; */ /* Handled by general mobile styles */
+    font-weight: 600 !important; /* Specific to this input */
+    letter-spacing: 2px !important; /* Specific to this input */
+    /* width: 100%; */ /* Inherited from 768px styles */
+    /* text-transform: uppercase; */ /* Inherited from 768px styles */
+  }
+  
+  /* #join-group-submit width is inherited */
+  
+  /* Profile mobile enhancements */
+  .profile-container {
+    padding: 0 !important;
+  }
+  
+  .profile-sidebar {
     border-radius: var(--border-radius) !important;
-    font-weight: 600 !important;
-    letter-spacing: 2px !important;
-  }
-  
-  #access-code-input:focus {
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
-  }
-  
-  #join-group-submit {
-    padding: 0.875rem !important;
-    font-weight: 600 !important;
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .group-item-card {
-    padding: 1rem !important;
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
-    transition: all 0.3s ease !important;
-  }
-  
-  .group-item-card:active {
-    transform: scale(0.98) !important;
-  }
-  
-  .group-item-card-name {
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.5rem !important;
-  }
-  
-  .group-item-card-description {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
     margin-bottom: 1rem !important;
   }
   
-  .group-item-card-footer {
-    gap: 0.5rem !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
+  .profile-content {
+    border-radius: var(--border-radius) !important;
   }
   
-  .group-item-card .view-group-btn {
-    align-self: flex-end !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.85rem !important;
-    border-radius: calc(var(--border-radius) - 2px) !important;
+  .tab-link {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
-
-  /* Enhanced Group Details Mobile Styles */
-  .group-details-header {
-    padding: 1rem !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 1rem !important;
-    background-color: var(--card-bg-color) !important;
+  
+  .tab-link:active {
+    background-color: var(--gray-300) !important;
+  }
+  
+  .profile-avatar {
+    margin-bottom: 1rem !important;
+  }
+  
+  #change-avatar-btn {
+    touch-action: manipulation !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  #change-avatar-btn:active {
+    transform: scale(0.95) !important;
+  }
+  
+  /* Groups mobile enhancements */
+  .group-card {
     border-radius: var(--border-radius) !important;
     box-shadow: var(--box-shadow) !important;
-    margin-bottom: 1.5rem !important;
+    transition: all 0.2s ease !important;
+    touch-action: manipulation !important;
   }
   
-  .group-details-header h2 {
-    font-size: 1.2rem !important;
-    margin: 0 !important;
-    word-break: break-word !important;
-    color: var(--text-color) !important;
+  .group-card:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
   }
   
-  #back-to-groups {
-    order: -1 !important;
-    width: auto !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.85rem !important;
-    background-color: var(--gray-100) !important;
-    color: var(--text-color) !important;
-    border: none !important;
-    border-radius: var(--border-radius) !important;
+  .group-card-actions {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid var(--gray-200) !important;
   }
   
   .access-code-display {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 0.875rem !important;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
-    color: white !important;
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
+    touch-action: manipulation !important;
+    user-select: all !important;
+    cursor: pointer !important;
   }
   
-  .access-code-label {
-    color: rgba(255,255,255,0.9) !important;
-    font-size: 0.85rem !important;
+  .access-code-display:active {
+    background-color: var(--primary-dark) !important;
+    transform: scale(0.98) !important;
   }
   
-  .access-code-value {
-    background-color: rgba(255,255,255,0.2) !important;
-    color: white !important;
-    font-weight: 700 !important;
-    font-size: 1rem !important;
-    padding: 0.375rem 0.75rem !important;
-    border-radius: calc(var(--border-radius) - 2px) !important;
-    letter-spacing: 2px !important;
-  }
-  
-  .group-actions {
-    width: 100% !important;
-    flex-direction: column !important;
-    gap: 0.75rem !important;
-  }
-  
-  .group-actions .btn {
-    width: 100% !important;
-    padding: 0.875rem !important;
-    font-weight: 600 !important;
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .group-members,
-  .group-birthdays {
-    padding: 1rem !important;
-    margin-bottom: 1.5rem !important;
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
-  }
-  
-  .group-members h3,
-  .group-birthdays h3 {
-    font-size: 1.1rem !important;
-    margin-bottom: 1rem !important;
-    color: var(--text-color) !important;
-    padding-bottom: 0.5rem !important;
-    border-bottom: 2px solid var(--gray-200) !important;
-  }
-  
-  .members-list {
-    gap: 0.75rem !important;
-  }
-  
+  /* Cards clickables améliorées */
+  .group-item-card,
+  .birthday-card,
   .member-item {
-    padding: 0.875rem !important;
-    border-radius: var(--border-radius) !important;
-    background-color: var(--gray-100) !important;
-    border-left: 4px solid var(--primary-color) !important;
-    transition: all 0.3s ease !important;
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
   
-  .member-item:hover {
-    background-color: var(--gray-200) !important;
-    transform: translateX(4px) !important;
+  .group-item-card:active,
+  .birthday-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
   }
   
-  .birthday-card {
+  /* Améliorer les modales pour mobile */
+  .modal {
     padding: 1rem !important;
-    border-radius: var(--border-radius) !important;
-    margin-bottom: 0.75rem !important;
-    border-left: 4px solid var(--accent-color) !important;
-    transition: all 0.3s ease !important;
   }
   
-  .birthday-card:hover {
-    transform: translateX(4px) !important;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+  .modal .modal-header,
+  .modal .modal-body,
+  .modal .modal-footer {
+    padding: 1rem !important;
   }
   
-  .birthday-card h4 {
-    font-size: 1rem !important;
-    margin-bottom: 0.25rem !important;
-    color: var(--text-color) !important;
-  }
-  
-  .birthday-card p {
-    font-size: 0.85rem !important;
-    color: var(--text-muted-color) !important;
-    margin-bottom: 0.25rem !important;
-  }
-  
-  .birthday-card .birthday-actions {
-    margin-top: 0.75rem !important;
-    display: flex !important;
+  /* Navigation améliorée */
+  .main-nav {
     gap: 0.5rem !important;
-    justify-content: flex-end !important;
+  }
+  
+  .nav-btn {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--border-radius) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les dropdowns */
+  .user-dropdown {
+    min-width: 200px !important;
+    padding: 0.5rem !important;
+  }
+  
+  .dropdown-item {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    border-radius: calc(var(--border-radius) - 2px) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les formulaires */
+  .form-group {
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .form-group label {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+  }
+  
+  /* Style pour les messages d'erreur */
+  .error-message {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #dc2626 !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Style pour les messages de succès */
+  .success-message {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #22c55e !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Loading states améliorés */
+  .loading-spinner {
+    padding: 1rem !important;
+    text-align: center !important;
+    color: var(--primary-color) !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Améliorer l'empty state */
+  .empty-state {
+    padding: 2rem 1rem !important;
+    text-align: center !important;
+    background-color: var(--gray-100) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-muted-color) !important;
+  }
+  
+  .empty-state i {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+    color: var(--gray-400) !important;
+  }
+  
+  .empty-state p {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem !important;
   }
 }
 
@@ -1964,6 +1968,19 @@ body.dark-theme .notification-bell:hover {
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
+    margin-bottom: 2rem; /* Added space below the header block */
+  }
+
+  /* Style for the action buttons container in groups header */
+  .groups-header .dashboard-actions {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 0.75rem; /* Space between stacked buttons */
+  }
+
+  .groups-header .dashboard-actions .btn {
+    width: 100%; /* Make buttons full width */
+    justify-content: center; /* Center text/icon within buttons */
   }
   
   .groups-list {
@@ -1998,444 +2015,1040 @@ body.dark-theme .notification-bell:hover {
     flex: 1;
     min-width: 120px;
   }
-  
-  /* Group Details mobile improvements */
-  .group-details-container {
-    padding: 0;
-    margin: 0;
+
+  /* Styling for the "Join Group" section */
+  .join-group-section {
+    padding: 1.5rem 1rem !important;
+    margin-bottom: 2rem !important;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+
+  .join-group-section h3 {
+    text-align: center;
+    font-size: 1.2rem !important; /* Slightly larger */
+    margin-bottom: 0.75rem !important;
+  }
+
+  .join-group-section p {
+    text-align: center;
+    font-size: 0.9rem !important;
+    margin-bottom: 1.5rem !important;
+    color: var(--text-muted-color) !important;
+  }
+
+  .join-form {
+    display: flex !important; /* Should already be set by more specific rules */
+    flex-direction: column !important; /* Should already be set */
+    gap: 1rem !important; /* Increased gap between input and button */
+  }
+
+  #access-code-input {
+    width: 100%; /* Ensure full width */
+    text-align: center !important; /* Existing */
+    font-weight: 600 !important; /* Existing from 480px, ensure consistency */
+    letter-spacing: 2px !important; /* Existing from 480px */
+    text-transform: uppercase; /* Moved from inline style */
+    /* Other properties like padding, font-size, border are handled by general mobile input styles */
+  }
+
+  #join-group-submit {
+    width: 100%; /* Ensure full width */
+    /* Other properties like padding, font-weight are handled by general mobile button styles */
+  }
+
+  /* Profile mobile enhancements */
+  .profile-container {
+    padding: 0 !important;
   }
   
-  .group-details-header {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
+  .profile-sidebar {
+    border-radius: var(--border-radius) !important;
+    margin-bottom: 1rem !important;
   }
   
-  .group-info h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
+  .profile-content {
+    border-radius: var(--border-radius) !important;
   }
   
-  .group-actions {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  .tab-link {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
   
-  .group-actions .btn {
-    flex: 1;
-    min-width: 100px;
+  .tab-link:active {
+    background-color: var(--gray-300) !important;
+  }
+  
+  .profile-avatar {
+    margin-bottom: 1rem !important;
+  }
+  
+  #change-avatar-btn {
+    touch-action: manipulation !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  #change-avatar-btn:active {
+    transform: scale(0.95) !important;
+  }
+  
+  /* Groups mobile enhancements */
+  .group-card {
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    transition: all 0.2s ease !important;
+    touch-action: manipulation !important;
+  }
+  
+  .group-card:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  }
+  
+  .group-card-actions {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid var(--gray-200) !important;
   }
   
   .access-code-display {
-    padding: 1rem;
-    font-size: 1.1rem;
-    text-align: center;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: var(--border-radius);
-    margin: 1rem 0;
+    touch-action: manipulation !important;
+    user-select: all !important;
+    cursor: pointer !important;
   }
   
-  .access-code-display strong {
-    display: block;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    margin-top: 0.5rem;
+  .access-code-display:active {
+    background-color: var(--primary-dark) !important;
+    transform: scale(0.98) !important;
   }
   
-  /* Détails du groupe responsive */
-  .group-details-header {
+  /* Cards clickables améliorées */
+  .group-item-card,
+  .birthday-card,
+  .member-item {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  .group-item-card:active,
+  .birthday-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  /* Améliorer les modales pour mobile */
+  .modal {
+    padding: 1rem !important;
+  }
+  
+  .modal .modal-header,
+  .modal .modal-body,
+  .modal .modal-footer {
+    padding: 1rem !important;
+  }
+  
+  /* Navigation améliorée */
+  .main-nav {
+    gap: 0.5rem !important;
+  }
+  
+  .nav-btn {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--border-radius) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les dropdowns */
+  .user-dropdown {
+    min-width: 200px !important;
+    padding: 0.5rem !important;
+  }
+  
+  .dropdown-item {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    border-radius: calc(var(--border-radius) - 2px) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les formulaires */
+  .form-group {
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .form-group label {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+  }
+  
+  /* Style pour les messages d'erreur */
+  .error-message {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #dc2626 !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Style pour les messages de succès */
+  .success-message {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #22c55e !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Loading states améliorés */
+  .loading-spinner {
+    padding: 1rem !important;
+    text-align: center !important;
+    color: var(--primary-color) !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Améliorer l'empty state */
+  .empty-state {
+    padding: 2rem 1rem !important;
+    text-align: center !important;
+    background-color: var(--gray-100) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-muted-color) !important;
+  }
+  
+  .empty-state i {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+    color: var(--gray-400) !important;
+  }
+  
+  .empty-state p {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* =========================== */
+/* RESPONSIVE DESIGN COMPLET   */
+/* =========================== */
+
+/* Tablettes et écrans moyens (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+  
+  .dashboard-header {
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
   }
   
-  .group-actions {
-    justify-content: center;
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Tablettes et smartphones (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  /* Header responsive */
+  .header {
+    padding: 1rem;
     flex-wrap: wrap;
   }
   
-  .members-list {
-    justify-content: center;
+  .logo h1 {
+    font-size: 1.2rem;
   }
   
-  .member-item {
+  .logo i {
+    font-size: 1.3rem;
+  }
+  
+  /* Afficher le burger menu */
+  .burger-menu-btn {
+    display: block !important;
+    order: 2;
+  }
+  
+  /* Masquer la navigation principale par défaut */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg-color);
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    border-top: 1px solid var(--gray-300);
+    z-index: 999;
+  }
+  
+  /* Afficher la navigation quand active */
+  .main-nav.active {
+    display: flex !important;
+  }
+  
+  .nav-btn {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-300);
+    border-radius: 0;
+    text-align: left;
+  }
+  
+  .nav-btn:last-child {
+    border-bottom: none;
+  }
+  
+  /* Section utilisateur responsive */
+  .user-section {
+    order: 3;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .user-btn {
     font-size: 0.9rem;
     padding: 0.4rem 0.8rem;
   }
   
-  /* Calendrier responsive */
-  .calendar-section {
+  .user-dropdown {
+    right: 0;
+    min-width: 180px;
+  }
+  
+  .notification-bell {
+    font-size: 1.1rem;
+  }
+  
+  /* Contenu principal */
+  .main-content {
     padding: 1rem;
   }
   
-  .calendar-controls {
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  /* Dashboard responsive */
+  .dashboard-header h2 {
+    font-size: 1.5rem;
   }
   
-  .calendar {
-    gap: 0.25rem;
-  }
-  
-  .calendar-day {
-    padding: 0.25rem;
-    font-size: 0.85rem;
-  }
-  
-  .calendar-day-header {
-    padding: 0.25rem;
-    font-size: 0.8rem;
-  }
-  
-  /* Paramètres responsive */
-  .settings-section {
+  .upcoming-birthdays {
     padding: 1rem;
     margin-bottom: 1.5rem;
   }
   
-  .setting-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.875rem 0;
-  }
-  
-  .setting-actions {
-    width: 100%;
-    justify-content: flex-start;
-  }
-  
-  /* Modales responsive */
-  .modal {
-    width: 95%;
-    max-width: 450px;
-    margin: 1rem;
-  }
-  
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding: 1rem;
-  }
-  
-  .modal-footer {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .modal-footer .btn {
-    width: 100%;
-  }
-  
-  /* Formulaires responsive */
-  .form-actions {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .form-actions .btn {
-    width: 100%;
-  }
-  
-  /* Auth modal responsive */
-  .auth-container {
-    margin: 1rem;
-    padding: 1.5rem;
-    max-width: 350px;
-  }
-  
-  .auth-header h2 {
-    font-size: 1.3rem;
-  }
-    /* Profile responsive */
-  .profile-container {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .profile-sidebar {
-    position: static;
-    padding: 1.5rem;
-    text-align: center;
-  }
-  
-  .profile-sidebar h3,
-  .profile-sidebar p {
-    text-align: center;
-  }
-  
-  .profile-stats {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-    text-align: center;
-  }
-  
-  .profile-stat {
-    padding: 0.5rem;
-  }
-  
-  .profile-stat-number {
-    font-size: 1.2rem;
-  }
-  
-  .profile-stat-label {
-    font-size: 0.7rem;
-  }
-  
-  .profile-content {
-    margin: 0;
-  }
-  
-  .profile-tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .tab-link {
-    flex: none;
-    min-width: 120px;
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .tab-content {
-    padding: 1.5rem;
-  }
-  
-  .form-row {
+  .birthdays-list {
     grid-template-columns: 1fr;
     gap: 0.75rem;
-  }
-  
-  .profile-avatar img {
-    width: 100px;
-    height: 100px;
-  }
-  
-  #change-avatar-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.8rem;
-  }
-}
-
-/* Smartphones en mode portrait (max-width: 480px) */
-@media screen and (max-width: 480px) {
-  /* Header très petit écran */
-  .header {
-    padding: 0.75rem;
-  }
-  
-  .logo {
-    gap: 0.25rem;
-  }
-  
-  .logo h1 {
-    font-size: 1rem;
-  }
-  
-  .logo i {
-    font-size: 1.1rem;
-  }
-  
-  .burger-menu-btn {
-    font-size: 1.3rem;
-  }
-  
-  .user-section {
-    margin-top: 0.25rem;
-  }
-  
-  .user-btn {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.6rem;
-  }
-  
-  .user-btn span {
-    display: none; /* Masquer le nom d'utilisateur sur très petits écrans */
-  }
-  
-  .notification-bell {
-    font-size: 1rem;
-  }
-  
-  /* Contenu principal très petit écran */
-  .main-content {
-    padding: 0.75rem;
-  }
-  
-  /* Dashboard très petit écran */
-  .dashboard-header h2 {
-    font-size: 1.3rem;
-  }
-  
-  .upcoming-birthdays {
-    padding: 0.75rem;
   }
   
   .birthday-card {
-    padding: 0.75rem;
+    padding: 0.875rem;
   }
   
-  .birthday-card-name {
-    font-size: 0.95rem;
+  .birthday-card-actions {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+    /* Groupes responsive */
+  .groups-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 2rem; /* Added space below the header block */
+  }
+
+  /* Style for the action buttons container in groups header */
+  .groups-header .dashboard-actions {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 0.75rem; /* Space between stacked buttons */
+  }
+
+  .groups-header .dashboard-actions .btn {
+    width: 100%; /* Make buttons full width */
+    justify-content: center; /* Center text/icon within buttons */
   }
   
-  .birthday-card-date {
-    font-size: 0.8rem;
+  .groups-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
-  .birthday-card-group {
-    font-size: 0.75rem;
-    padding: 0.15rem 0.4rem;
-  }
-    /* Groupes très petit écran */
   .group-card {
-    padding: 0.75rem;
-  }
-  
-  .group-card-name {
-    font-size: 1.1rem;
-  }
-  
-  .group-card-description {
-    font-size: 0.85rem;
-  }
-  
-  .group-card-actions .btn {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
-  }
-  
-  .group-actions .btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
-  }
-  
-  /* Profile très petit écran */
-  .profile-sidebar {
     padding: 1rem;
   }
   
-  .profile-avatar img {
-    width: 80px;
-    height: 80px;
-  }
-  
-  #change-avatar-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 0.7rem;
-  }
-  
-  #profile-username-display {
-    font-size: 1.2rem;
-  }
-  
-  #profile-email-display {
-    font-size: 0.85rem;
-  }
-  
-  .profile-stats {
-    grid-template-columns: repeat(2, 1fr);
+  .group-card-header {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 0.5rem;
   }
   
-  .profile-stat-number {
-    font-size: 1rem;
+  .group-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
   
-  .profile-stat-label {
-    font-size: 0.65rem;
+  .group-card-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .group-card-actions .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  /* Styling for the "Join Group" section */
+  .join-group-section {
+    padding: 1.5rem 1rem !important;
+    margin-bottom: 2rem !important;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+
+  .join-group-section h3 {
+    text-align: center;
+    font-size: 1.2rem !important; /* Slightly larger */
+    margin-bottom: 0.75rem !important;
+  }
+
+  .join-group-section p {
+    text-align: center;
+    font-size: 0.9rem !important;
+    margin-bottom: 1.5rem !important;
+    color: var(--text-muted-color) !important;
+  }
+
+  .join-form {
+    display: flex !important; /* Should already be set by more specific rules */
+    flex-direction: column !important; /* Should already be set */
+    gap: 1rem !important; /* Increased gap between input and button */
+  }
+
+  #access-code-input {
+    width: 100%; /* Ensure full width */
+    text-align: center !important; /* Existing */
+    font-weight: 600 !important; /* Existing from 480px, ensure consistency */
+    letter-spacing: 2px !important; /* Existing from 480px */
+    text-transform: uppercase; /* Moved from inline style */
+    /* Other properties like padding, font-size, border are handled by general mobile input styles */
+  }
+
+  #join-group-submit {
+    width: 100%; /* Ensure full width */
+    /* Other properties like padding, font-weight are handled by general mobile button styles */
+  }
+
+  /* Profile mobile enhancements */
+  .profile-container {
+    padding: 0 !important;
+  }
+  
+  .profile-sidebar {
+    border-radius: var(--border-radius) !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .profile-content {
+    border-radius: var(--border-radius) !important;
   }
   
   .tab-link {
-    min-width: 100px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
   
-  .tab-content {
-    padding: 1rem;
+  .tab-link:active {
+    background-color: var(--gray-300) !important;
   }
   
-  .tab-content h3 {
-    font-size: 1.1rem;
+  .profile-avatar {
+    margin-bottom: 1rem !important;
   }
   
-  .profile-form-section h4 {
-    font-size: 1rem;
+  #change-avatar-btn {
+    touch-action: manipulation !important;
+    transition: all 0.2s ease !important;
   }
   
-  /* Calendrier très petit écran */
-  .calendar-section {
-    padding:  0.75rem;
+  #change-avatar-btn:active {
+    transform: scale(0.95) !important;
   }
   
-  .calendar-day {
-    padding: 0.1rem;
-    font-size: 0.75rem;
+  /* Groups mobile enhancements */
+  .group-card {
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    transition: all 0.2s ease !important;
+    touch-action: manipulation !important;
   }
   
-  .calendar-day-header {
-    padding: 0.1rem;
-    font-size: 0.7rem;
+  .group-card:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
   }
   
-  /* Paramètres très petit écran */
-  .settings-section {
-    padding: 0.75rem;
+  .group-card-actions {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid var(--gray-200) !important;
   }
   
-  .setting-item {
-    padding: 0.75rem 0;
+  .access-code-display {
+    touch-action: manipulation !important;
+    user-select: all !important;
+    cursor: pointer !important;
   }
   
-  /* Modales très petit écran */
+  .access-code-display:active {
+    background-color: var(--primary-dark) !important;
+    transform: scale(0.98) !important;
+  }
+  
+  /* Cards clickables améliorées */
+  .group-item-card,
+  .birthday-card,
+  .member-item {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  .group-item-card:active,
+  .birthday-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  /* Améliorer les modales pour mobile */
   .modal {
-    width: 98%;
-    margin: 0.5rem;
+    padding: 1rem !important;
   }
   
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding: 0.75rem;
+  .modal .modal-header,
+  .modal .modal-body,
+  .modal .modal-footer {
+    padding: 1rem !important;
   }
   
-  /* Auth modal très petit écran */
-  .auth-container {
-    margin: 0.5rem;
-    padding: 1rem;
-    max-width: 320px;
-  }
-  
-  .auth-header h2 {
-    font-size: 1.2rem;
-  }
-  
-  .auth-header p {
-    font-size: 0.85rem;
-  }
-  
-  /* Boutons plus grands pour touch */
-  .btn {
-    min-height: 44px; /* Taille minimale recommandée pour touch */
-    padding: 0.75rem 1rem;
-  }
-  
-  .icon-btn {
-    min-width: 44px;
-    min-height: 44px;
+  /* Navigation améliorée */
+  .main-nav {
+    gap: 0.5rem !important;
   }
   
   .nav-btn {
-    min-height: 48px;
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--border-radius) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les dropdowns */
+  .user-dropdown {
+    min-width: 200px !important;
+    padding: 0.5rem !important;
+  }
+  
+  .dropdown-item {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    border-radius: calc(var(--border-radius) - 2px) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les formulaires */
+  .form-group {
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .form-group label {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+  }
+  
+  /* Style pour les messages d'erreur */
+  .error-message {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #dc2626 !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Style pour les messages de succès */
+  .success-message {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #22c55e !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Loading states améliorés */
+  .loading-spinner {
+    padding: 1rem !important;
+    text-align: center !important;
+    color: var(--primary-color) !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Améliorer l'empty state */
+  .empty-state {
+    padding: 2rem 1rem !important;
+    text-align: center !important;
+    background-color: var(--gray-100) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-muted-color) !important;
+  }
+  
+  .empty-state i {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+    color: var(--gray-400) !important;
+  }
+  
+  .empty-state p {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* =========================== */
+/* RESPONSIVE DESIGN COMPLET   */
+/* =========================== */
+
+/* Tablettes et écrans moyens (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .groups-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Tablettes et smartphones (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  /* Header responsive */
+  .header {
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo i {
+    font-size: 1.3rem;
+  }
+  
+  /* Afficher le burger menu */
+  .burger-menu-btn {
+    display: block !important;
+    order: 2;
+  }
+  
+  /* Masquer la navigation principale par défaut */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg-color);
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    border-top: 1px solid var(--gray-300);
+    z-index: 999;
+  }
+  
+  /* Afficher la navigation quand active */
+  .main-nav.active {
+    display: flex !important;
+  }
+  
+  .nav-btn {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-300);
+    border-radius: 0;
+    text-align: left;
+  }
+  
+  .nav-btn:last-child {
+    border-bottom: none;
+  }
+  
+  /* Section utilisateur responsive */
+  .user-section {
+    order: 3;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .user-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .user-dropdown {
+    right: 0;
+    min-width: 180px;
+  }
+  
+  .notification-bell {
+    font-size: 1.1rem;
+  }
+  
+  /* Contenu principal */
+  .main-content {
+    padding: 1rem;
+  }
+  
+  /* Dashboard responsive */
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .upcoming-birthdays {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .birthday-card {
+    padding: 0.875rem;
+  }
+  
+  .birthday-card-actions {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+    /* Groupes responsive */
+  .groups-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 2rem; /* Added space below the header block */
+  }
+
+  /* Style for the action buttons container in groups header */
+  .groups-header .dashboard-actions {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 0.75rem; /* Space between stacked buttons */
+  }
+
+  .groups-header .dashboard-actions .btn {
+    width: 100%; /* Make buttons full width */
+    justify-content: center; /* Center text/icon within buttons */
+  }
+  
+  .groups-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .group-card {
+    padding: 1rem;
+  }
+  
+  .group-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .group-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .group-card-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .group-card-actions .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  /* Styling for the "Join Group" section */
+  .join-group-section {
+    padding: 1.5rem 1rem !important;
+    margin-bottom: 2rem !important;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+
+  .join-group-section h3 {
+    text-align: center;
+    font-size: 1.2rem !important; /* Slightly larger */
+    margin-bottom: 0.75rem !important;
+  }
+
+  .join-group-section p {
+    text-align: center;
+    font-size: 0.9rem !important;
+    margin-bottom: 1.5rem !important;
+    color: var(--text-muted-color) !important;
+  }
+
+  .join-form {
+    display: flex !important; /* Should already be set by more specific rules */
+    flex-direction: column !important; /* Should already be set */
+    gap: 1rem !important; /* Increased gap between input and button */
+  }
+
+  #access-code-input {
+    width: 100%; /* Ensure full width */
+    text-align: center !important; /* Existing */
+    font-weight: 600 !important; /* Existing from 480px, ensure consistency */
+    letter-spacing: 2px !important; /* Existing from 480px */
+    text-transform: uppercase; /* Moved from inline style */
+    /* Other properties like padding, font-size, border are handled by general mobile input styles */
+  }
+
+  #join-group-submit {
+    width: 100%; /* Ensure full width */
+    /* Other properties like padding, font-weight are handled by general mobile button styles */
+  }
+
+  /* Profile mobile enhancements */
+  .profile-container {
+    padding: 0 !important;
+  }
+  
+  .profile-sidebar {
+    border-radius: var(--border-radius) !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .profile-content {
+    border-radius: var(--border-radius) !important;
+  }
+  
+  .tab-link {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  .tab-link:active {
+    background-color: var(--gray-300) !important;
+  }
+  
+  .profile-avatar {
+    margin-bottom: 1rem !important;
+  }
+  
+  #change-avatar-btn {
+    touch-action: manipulation !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  #change-avatar-btn:active {
+    transform: scale(0.95) !important;
+  }
+  
+  /* Groups mobile enhancements */
+  .group-card {
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    transition: all 0.2s ease !important;
+    touch-action: manipulation !important;
+  }
+  
+  .group-card:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  }
+  
+  .group-card-actions {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid var(--gray-200) !important;
+  }
+  
+  .access-code-display {
+    touch-action: manipulation !important;
+    user-select: all !important;
+    cursor: pointer !important;
+  }
+  
+  .access-code-display:active {
+    background-color: var(--primary-dark) !important;
+    transform: scale(0.98) !important;
+  }
+  
+  /* Cards clickables améliorées */
+  .group-item-card,
+  .birthday-card,
+  .member-item {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  .group-item-card:active,
+  .birthday-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  /* Améliorer les modales pour mobile */
+  .modal {
+    padding: 1rem !important;
+  }
+  
+  .modal .modal-header,
+  .modal .modal-body,
+  .modal .modal-footer {
+    padding: 1rem !important;
+  }
+  
+  /* Navigation améliorée */
+  .main-nav {
+    gap: 0.5rem !important;
+  }
+  
+  .nav-btn {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--border-radius) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les dropdowns */
+  .user-dropdown {
+    min-width: 200px !important;
+    padding: 0.5rem !important;
+  }
+  
+  .dropdown-item {
+    padding: 0.75rem 1rem !important;
+    min-height: 44px !important;
+    border-radius: calc(var(--border-radius) - 2px) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Améliorer les formulaires */
+  .form-group {
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .form-group label {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+  }
+  
+  /* Style pour les messages d'erreur */
+  .error-message {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #dc2626 !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Style pour les messages de succès */
+  .success-message {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    border-left: 4px solid #22c55e !important;
+    font-size: 0.9rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Loading states améliorés */
+  .loading-spinner {
+    padding: 1rem !important;
+    text-align: center !important;
+    color: var(--primary-color) !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Améliorer l'empty state */
+  .empty-state {
+    padding: 2rem 1rem !important;
+    text-align: center !important;
+    background-color: var(--gray-100) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-muted-color) !important;
+  }
+  
+  .empty-state i {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+    color: var(--gray-400) !important;
+  }
+  
+  .empty-state p {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem !important;
   }
 }
 
@@ -2889,37 +3502,6 @@ body.dark-theme .notification-bell:hover {
   }
 }
 
-/* Styles spécifiques pour les très petits écrans */
-@media screen and (max-width: 360px) {
-  .profile-container,
-  .groups-grid,
-  .group-details-header {
-    margin: 0 !important;
-    padding: 0.5rem !important;
-  }
-  
-  .tab-link {
-    font-size: 0.75rem !important;
-    padding: 0.5rem 0.25rem !important;
-  }
-  
-  .group-item-card,
-  .group-members,
-  .group-birthdays {
-    padding: 0.875rem !important;
-  }
-  
-  .btn {
-    padding: 0.75rem !important;
-    font-size: 0.85rem !important;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    padding: 0.625rem !important;
-  }
-}
-
 /* Mode paysage sur mobile */
 @media screen and (max-width: 768px) and (orientation: landscape) {
   .profile-stats {
@@ -2945,4 +3527,5 @@ body.dark-theme .notification-bell:hover {
     letter-spacing: normal !important;
     font-weight: 400 !important; 
     color: var(--text-muted-color) !important;
+    text-transform: none !important; /* Prevent placeholder from being uppercased */
   }

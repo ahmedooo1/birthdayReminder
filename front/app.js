@@ -170,6 +170,7 @@ function setupNavigation() {
       button.addEventListener('click', () => {
         console.log(`Navigating to ${viewId}`);
         showView(viewId);
+        // Menu closing will be handled by the burger menu's own nav link listeners
       });
     } else {
       console.error(`Button ${buttonId} not found`);
@@ -197,7 +198,6 @@ function setupNavigation() {
   const userDropdown = document.getElementById('user-dropdown');
 
   if (userMenuBtn && userDropdown) {
-    // Remove previous event listeners by replacing the element
     const newUserMenuBtn = userMenuBtn.cloneNode(true);
     userMenuBtn.parentNode.replaceChild(newUserMenuBtn, userMenuBtn);
 
@@ -206,87 +206,95 @@ function setupNavigation() {
       userDropdown.classList.toggle('hidden');
     });
 
-    // Always remove previous document click listeners before adding a new one
     document.addEventListener('click', function closeDropdownOnClick(event) {
       if (!newUserMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
         if (!userDropdown.classList.contains('hidden')) {
           userDropdown.classList.add('hidden');
         }
       }
-    }, { once: true });
+    }); // Removed { once: true } to ensure it always works if dropdown is reopened.
   } else {
     console.error('User menu button or dropdown not found');
   }
 
-  // Burger menu toggle
-  const burgerMenuBtn = document.getElementById('burger-menu-btn');
+  // Burger menu toggle - Consolidated and definitive logic
+  const burgerMenuBtnElement = document.getElementById('burger-menu-btn');
   const mainNav = document.querySelector('.main-nav');
-  // Correction: définir mobileNav pour la compatibilité avec le code plus bas
-  const mobileNav = mainNav;
 
-  if (burgerMenuBtn && mainNav) {
-    // Remove any previous event listeners by replacing the element
-    const newBurgerBtn = burgerMenuBtn.cloneNode(true);
-    burgerMenuBtn.parentNode.replaceChild(newBurgerBtn, burgerMenuBtn);
+  if (burgerMenuBtnElement && mainNav) {
+    const newBurgerBtn = burgerMenuBtnElement.cloneNode(true);
+    burgerMenuBtnElement.parentNode.replaceChild(newBurgerBtn, burgerMenuBtnElement);
+
+    const isMobileMode = () => window.innerWidth <= 768;
+
+    const updateAccessibilityAttributes = () => {
+      const isActive = mainNav.classList.contains('active');
+      mainNav.setAttribute('aria-hidden', String(!isActive));
+      if (isMobileMode()) {
+        mainNav.toggleAttribute('inert', !isActive);
+      } else {
+        mainNav.removeAttribute('inert');
+      }
+    };
+    
+    const closeMenu = () => {
+      mainNav.classList.remove('active');
+      newBurgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+      newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
+      newBurgerBtn.setAttribute('aria-expanded', 'false');
+      updateAccessibilityAttributes();
+    };
+
+    const openMenu = () => {
+      mainNav.classList.add('active');
+      newBurgerBtn.innerHTML = '<i class="fas fa-times"></i>';
+      newBurgerBtn.setAttribute('aria-label', 'Fermer le menu');
+      newBurgerBtn.setAttribute('aria-expanded', 'true');
+      updateAccessibilityAttributes();
+    };
 
     newBurgerBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const isActive = mainNav.classList.contains('active');
       if (isActive) {
-        mainNav.classList.remove('active');
-        newBurgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
-        newBurgerBtn.setAttribute('aria-expanded', 'false');
+        closeMenu();
       } else {
-        mainNav.classList.add('active');
-        newBurgerBtn.innerHTML = '<i class="fas fa-times"></i>';
-        newBurgerBtn.setAttribute('aria-label', 'Fermer le menu');
-        newBurgerBtn.setAttribute('aria-expanded', 'true');
+        openMenu();
       }
     });
 
-    // Configuration initiale de l'accessibilité
     newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
     newBurgerBtn.setAttribute('aria-expanded', 'false');
-    mobileNav.setAttribute('aria-hidden', 'true');
+    updateAccessibilityAttributes(); // Initial state
 
-    // Mettre à jour l'aria-hidden quand le menu change
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          const isActive = mobileNav.classList.contains('active');
-          mobileNav.setAttribute('aria-hidden', !isActive);
-        }
-      });
-    });
-    observer.observe(mobileNav, { attributes: true });
+    const observer = new MutationObserver(updateAccessibilityAttributes);
+    observer.observe(mainNav, { attributes: true, attributeFilter: ['class'] });
 
-    // Optional: Close nav if a nav link is clicked (for SPAs or smooth scroll)
-    const navLinks = mainNav.querySelectorAll('.nav-btn');
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (mainNav.classList.contains('active')) {
-          mainNav.classList.remove('active');
-          newBurgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-          newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
-          newBurgerBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    });
-    // Optional: Close nav if clicking outside of it on mobile
-    document.addEventListener('click', (event) => {
-      if (mainNav.classList.contains('active') && 
-          !mainNav.contains(event.target) && 
-          !newBurgerBtn.contains(event.target)) {
-        mainNav.classList.remove('active');
-        newBurgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
-        newBurgerBtn.setAttribute('aria-expanded', 'false');
+    window.addEventListener('resize', () => {
+      updateAccessibilityAttributes(); // Always update accessibility on resize
+      if (!isMobileMode() && mainNav.classList.contains('active')) {
+        closeMenu(); // Close menu if resizing to desktop and it's open
       }
     });
 
+    const navLinksInMenu = mainNav.querySelectorAll('.nav-btn');
+    navLinksInMenu.forEach(link => {
+      link.addEventListener('click', () => {
+        if (mainNav.classList.contains('active')) {
+          closeMenu();
+        }
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (mainNav.classList.contains('active') &&
+          !mainNav.contains(event.target) &&
+          !newBurgerBtn.contains(event.target)) {
+        closeMenu();
+      }
+    });
   } else {
-    console.error('Burger menu button or main nav not found');
+    console.error('Burger menu button (#burger-menu-btn) or main nav (.main-nav) not found in setupNavigation.');
   }
 }
 
@@ -352,40 +360,6 @@ function setupMobileEnhancements() {
   if (isTouchDevice) {
     document.body.classList.add('touch-device');
   }
-  
-  // Fermer le menu mobile lors du clic sur un lien
-  const navButtons = document.querySelectorAll('.nav-btn');
-  const mobileNav = document.querySelector('.main-nav');
-  const burgerBtn = document.querySelector('#burger-menu-btn');
-  
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
-        mobileNav.classList.remove('active');
-        burgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-      }
-    });
-  });
-  
-  // Fermer le menu mobile lors du clic en dehors
-  document.addEventListener('click', (e) => {
-    if (window.innerWidth <= 768 && 
-        mobileNav.classList.contains('active') && 
-        !mobileNav.contains(e.target) && 
-        !burgerBtn.contains(e.target)) {
-      mobileNav.classList.remove('active');
-      burgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-    }
-  });
-  
-  // Gestion du redimensionnement de la fenêtre
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      mobileNav.classList.remove('active');
-      mobileNav.style.display = '';
-      burgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-    }
-  });
   
   // Amélioration des modales sur mobile
   const modals = document.querySelectorAll('.modal');
@@ -510,77 +484,13 @@ function setupOfflineHandling() {
   });
 }
 
-// Amélioration du burger menu avec animation
-function enhanceBurgerMenu() {
-  const burgerBtn = document.querySelector('#burger-menu-btn');
-  const mobileNav = document.querySelector('.main-nav');
-
-  if (burgerBtn && mobileNav) {
-    // Remove any previous event listeners by replacing the element
-    const newBurgerBtn = burgerBtn.cloneNode(true);
-    burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
-
-    newBurgerBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isActive = mobileNav.classList.contains('active');
-      if (isActive) {
-        mobileNav.classList.remove('active');
-        newBurgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
-        newBurgerBtn.setAttribute('aria-expanded', 'false');
-      } else {
-        mobileNav.classList.add('active');
-        newBurgerBtn.innerHTML = '<i class="fas fa-times"></i>';
-        newBurgerBtn.setAttribute('aria-label', 'Fermer le menu');
-        newBurgerBtn.setAttribute('aria-expanded', 'true');
-      }
-    });    // Configuration initiale de l'accessibilité
-    newBurgerBtn.setAttribute('aria-label', 'Ouvrir le menu');
-    newBurgerBtn.setAttribute('aria-expanded', 'false');
-    
-    // Function to check if we're in mobile mode
-    const isMobileMode = () => window.innerWidth <= 768;
-    
-    // Use inert attribute only in mobile mode for better accessibility
-    const updateInertAttribute = () => {
-      if (isMobileMode()) {
-        if (!mobileNav.classList.contains('active')) {
-          mobileNav.toggleAttribute('inert', true);
-        }
-      } else {
-        // Remove inert attribute in desktop mode to allow navigation
-        mobileNav.removeAttribute('inert');
-      }
-    };
-    
-    // Initial setup
-    updateInertAttribute();
-
-    // Mettre à jour l'inert attribute quand le menu change
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          const isActive = mobileNav.classList.contains('active');
-          if (isMobileMode()) {
-            mobileNav.toggleAttribute('inert', !isActive);
-          }
-        }
-      });
-    });
-    observer.observe(mobileNav, { attributes: true });
-
-    // Update inert attribute on window resize
-    window.addEventListener('resize', updateInertAttribute);
-  }
-}
-
 // Initialize the app with all enhancements
 async function initializeApp() {
   setupThemeSwitcher();
-  setupMobileEnhancements();
+  setupMobileEnhancements(); // Burger logic removed from here
   optimizeForMobile();
   setupOfflineHandling();
-  enhanceBurgerMenu();
+  // enhanceBurgerMenu(); // Call removed
 
   console.log("Initializing authenticated app");
 
