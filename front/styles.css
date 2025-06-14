@@ -1661,17 +1661,40 @@ body.dark-theme .notification-bell:hover {
   margin: 0;
 }
 
-/* =========================
-   COMPLETE MOBILE REDESIGN 
-   ========================= */
+/* ========================================
+   COMPLETE RESPONSIVE REDESIGN - MOBILE FIRST
+   ======================================== */
 
-/* Écrans moyens (max-width: 1024px) */
-@media screen and (max-width: 1024px) {
+/* ===== COMPACT MOBILE STYLES (max-width: 480px) ===== */
+@media screen and (max-width: 480px) {
   .main-content {
-    padding: 1rem;
-    margin: 0 auto;
+    padding: 0.5rem;
   }
   
+  .header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .logo h1 {
+    font-size: 1rem;
+  }
+  
+  .logo i {
+    font-size: 1.1rem;
+  }
+  
+  .user-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .notification-bell {
+    font-size: 1rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
+  
+  /* Dashboard compact */
   .dashboard-header {
     flex-direction: column;
     align-items: center;
@@ -1679,67 +1702,131 @@ body.dark-theme .notification-bell:hover {
     text-align: center;
   }
   
+  .dashboard-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+  
+  .dashboard-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .dashboard-actions .btn {
+    width: 100%;
+    max-width: 260px;
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+  
+  .upcoming-birthdays,
+  .calendar-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar-day {
+    min-height: 30px;
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+  
+  .calendar-controls button {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Profile compact */
   .profile-container {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .groups-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .birthdays-list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
+  }
+  
+  .profile-sidebar,
+  .profile-content {
+    padding: 1rem;
+  }
+  
+  .profile-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  #change-avatar-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
+  }
+  
+  .tab-link {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.75rem;
+    min-width: 70px;
+  }
+  
+  .profile-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  /* Groups compact */
+  .groups-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .group-item-card {
+    padding: 1rem;
+    min-height: 140px;
+  }
+  
+  .group-item-card-name {
+    font-size: 1rem;
+  }
+  
+  .group-details-container {
+    padding: 1rem;
   }
 }
 
-/* Tablettes et smartphones (max-width: 768px) */
+/* ===== MOBILE & TABLETS STYLES (max-width: 768px) ===== */
 @media screen and (max-width: 768px) {
-  /* =========================
-     GLOBAL MOBILE STYLES
-     ========================= */
-  
-  .main-content {
-    padding: 0.75rem;
-    overflow-x: hidden;
-  }
-  
-  /* =========================
-     HEADER MOBILE REDESIGN
-     ========================= */
-  
+  /* Header and Navigation Mobile */
   .header {
     padding: 1rem;
     flex-wrap: wrap;
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: var(--box-shadow);
+    z-index: 1000;
+  }
+  
+  .logo {
+    order: 1;
+    margin-right: auto;
   }
   
   .logo h1 {
     font-size: 1.2rem;
   }
   
-  .logo i {
-    font-size: 1.3rem;
-  }
-  
-  /* Afficher le burger menu */
   .burger-menu-btn {
     display: block !important;
-    order: 2;
+    order: 3;
     background: none;
     border: none;
     color: var(--text-color);
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     transition: all 0.2s ease;
     touch-action: manipulation;
+    min-width: 48px;
+    min-height: 48px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
   
   .burger-menu-btn:active {
@@ -1747,39 +1834,50 @@ body.dark-theme .notification-bell:hover {
     transform: scale(0.95);
   }
   
-  /* Masquer la navigation principale par défaut */
+  /* Hide main navigation by default on mobile */
   .main-nav {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    background-color: var(--header-bg-color);
-    border-top: 1px solid var(--gray-300);
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
     flex-direction: column;
-    padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
   }
   
-  /* Afficher la navigation quand active */
   .main-nav.active {
     display: flex;
+  }
+  
+  .main-nav > div {
+    background-color: var(--header-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
   
   .nav-btn {
     width: 100%;
     text-align: left;
-    padding: 0.875rem 1rem;
+    padding: 1rem;
     margin-bottom: 0.5rem;
     border-radius: var(--border-radius);
     background-color: transparent;
     border: none;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text-color);
     transition: all 0.2s ease;
     touch-action: manipulation;
-    min-height: 44px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -1800,13 +1898,14 @@ body.dark-theme .notification-bell:hover {
     font-weight: 600;
   }
   
-  /* Section utilisateur responsive */
+  /* User section mobile */
   .user-section {
+    order: 2;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    order: 1;
     margin-left: auto;
+    margin-right: 1rem;
   }
   
   .user-btn {
@@ -1850,113 +1949,792 @@ body.dark-theme .notification-bell:hover {
     transform: scale(0.95);
   }
   
-  /* =========================
-     DASHBOARD MOBILE STYLES
-     ========================= */
-  
-  .dashboard-header h2 {
-    font-size: 1.4rem;
-    text-align: center;
-    margin-bottom: 1rem;
+  /* Main content mobile */
+  .main-content {
+    padding: 1rem;
   }
   
-  .upcoming-birthdays {
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
+  /* Dashboard Mobile */
+  .dashboard-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0;
+  }
+  
+  .dashboard-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .dashboard-actions .btn {
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+  
+  /* Cards mobile */
+  .upcoming-birthdays,
+  .calendar-section {
     padding: 1.5rem;
-    box-shadow: var(--box-shadow);
     margin-bottom: 1.5rem;
   }
   
-  .upcoming-birthdays h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: var(--text-color);
-  }
-  
   .birthdays-list {
-    display: block;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .birthday-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Calendar Mobile */
+  .calendar-controls {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .calendar-controls button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .calendar-controls button:active {
+    transform: scale(0.95);
+    background-color: var(--primary-dark);
+  }
+  
+  .calendar-controls h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    background-color: var(--gray-200);
+    border-radius: var(--border-radius);
+    padding: 2px;
+  }
+  
+  .calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted-color);
+    padding: 0.75rem 0.25rem;
+    font-size: 0.8rem;
+    background-color: var(--card-bg-color);
+  }
+  
+  .calendar-day {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background-color: var(--card-bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-color);
+    font-size: 0.85rem;
+    min-height: 40px;
+    touch-action: manipulation;
+  }
+  
+  .calendar-day:active {
+    transform: scale(0.95);
+    background-color: var(--gray-200);
+  }
+  
+  .calendar-day.today {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+  }
+  
+  .calendar-day.has-birthday {
+    position: relative;
+    background-color: rgba(var(--accent-rgb, 247, 37, 133), 0.1);
+    border: 1px solid var(--accent-color);
+  }
+  
+  .calendar-day.has-birthday::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+  }
+  
+  .calendar-day.other-month {
+    color: var(--text-muted-color);
+    background-color: var(--gray-100);
+    opacity: 0.6;
+  }
+  
+  /* Profile Mobile */
+  .profile-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: none;
+  }
+  
+  .profile-sidebar {
+    position: static;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .profile-avatar img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  #change-avatar-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .profile-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-300);
+  }
+  
+  .profile-stat {
+    text-align: center;
+    flex: 1;
+  }
+  
+  .profile-tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .profile-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .tab-link {
+    padding: 1rem;
+    font-size: 0.9rem;
+    min-width: 100px;
+    white-space: nowrap;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  
+  .profile-form {
+    padding: 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .text-input,
+  .select-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.875rem;
+    min-height: 48px;
+  }
+  
+  /* Groups Mobile */
+  .groups-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .groups-header h2 {
+    margin-bottom: 0;
+  }
+  
+  .groups-header .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .groups-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .group-item-card {
+    padding: 1.5rem;
+    min-height: 160px;
+  }
+  
+  .group-item-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .group-item-card-name {
+    font-size: 1.2rem;
+    margin-right: 0;
+  }
+  
+  .join-group-section {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .join-group-section h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+  }
+  
+  .join-group-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .join-group-form input {
+    padding: 0.875rem;
+    font-size: 16px;
+    border: 2px solid var(--input-border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    min-height: 48px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  
+  .join-group-form button {
+    padding: 1rem;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+  
+  /* Group Details Mobile */
+  .group-details-container {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+  }
+  
+  .group-details-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-300);
+  }
+  
+  .group-info h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+  }
+  
+  .group-info p {
+    color: var(--text-muted-color);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .access-code-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--gray-100);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .access-code-display:active {
+    background-color: var(--gray-200);
+    transform: scale(0.98);
+  }
+  
+  .access-code-value {
+    font-weight: 600;
+    color: var(--primary-color);
+    background-color: var(--card-bg-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    font-size: 1rem;
+  }
+  
+  .group-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .group-actions .btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 48px;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .group-actions .btn:active {
+    transform: scale(0.98);
+  }
+  
+  .group-members,
+  .group-birthdays {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+  }
+  
+  .group-members h3,
+  .group-birthdays h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .group-birthdays-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .group-birthdays-header h3 {
+    margin: 0;
+    border: none;
+    padding: 0;
+  }
+  
+  .group-birthdays-header .btn {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 0.9rem;
+    min-height: 48px;
+  }
+  
+  .members-list {
+    display: block;
+  }
+  
+  .member-item {
     background-color: var(--gray-100);
     border-radius: var(--border-radius);
     padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .member-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .member-item:active {
+    transform: translateY(1px);
+    background-color: var(--gray-200);
+  }
+  
+  .member-name {
+    font-weight: 500;
+    color: var(--text-color);
+  }
+  
+  /* Birthday cards in group details */
+  #group-details-view .birthdays-list {
+    display: block;
+  }
+  
+  #group-details-view .birthday-card {
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
     margin-bottom: 1rem;
     border-left: 4px solid var(--primary-color);
     transition: all 0.2s ease;
     touch-action: manipulation;
   }
   
-  .birthday-card:last-child {
+  #group-details-view .birthday-card:last-child {
     margin-bottom: 0;
   }
   
-  .birthday-card:active {
+  #group-details-view .birthday-card:active {
     transform: translateY(2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
-  .birthday-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+  /* Settings Mobile */
+  .settings-section {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
   }
   
-  .birthday-card-name {
+  .settings-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .setting-item {
+    margin-bottom: 2rem;
+  }
+  
+  .setting-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .setting-item label {
+    display: block;
+    margin-bottom: 0.75rem;
     font-weight: 600;
     color: var(--text-color);
     font-size: 1rem;
   }
   
-  .birthday-card-date {
-    color: var(--text-muted-color);
-    font-size: 0.85rem;
-  }
-  
-  .birthday-card-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-  }
-  
-  .birthday-card-actions .btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    border: none;
-    transition: all 0.2s ease;
-    touch-action: manipulation;
-  }
-  
-  .birthday-card-actions .btn:active {
-    transform: scale(0.9);
+  .setting-item select {
+    width: 100%;
+    padding: 1rem;
+    font-size: 16px;
+    border: 2px solid var(--input-border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    min-height: 48px;
   }
   
   /* Empty states */
   .empty-state {
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 3rem 1.5rem;
     background-color: var(--gray-100);
     border-radius: var(--border-radius);
     color: var(--text-muted-color);
   }
   
   .empty-state i {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
     color: var(--gray-400);
   }
   
   .empty-state p {
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* Modals Mobile */
+  .modal {
+    width: 95%;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 1rem;
+    border-radius: var(--border-radius);
+  }
+  
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--gray-300);
+  }
+  
+  .modal-header h3 {
+    font-size: 1.3rem;
     margin: 0;
-    font-size: 0.9rem;
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  .modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--gray-300);
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+    min-height: 48px;
+    order: 1;
+  }
+  
+  .form-actions .secondary-btn {
+    order: 2;
+  }
+  
+  /* Form improvements for mobile */
+  .text-input,
+  .select-input,
+  .color-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 1rem;
+    min-height: 48px;
+    border: 2px solid var(--input-border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    width: 100%;
+  }
+  
+  .text-input:focus,
+  .select-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 67, 97, 238), 0.1);
+  }
+  
+  /* Touch enhancements */
+  .btn:active,
+  button:active {
+    transform: translateY(1px);
+  }
+  
+  .birthday-card:active,
+  .group-item-card:active {
+    transform: translateY(2px);
+  }
+}
+
+/* ===== TABLET STYLES (max-width: 1024px) ===== */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .main-content {
+    padding: 1.5rem;
+  }
+  
+  .birthdays-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .groups-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .profile-container {
+    grid-template-columns: 250px 1fr;
+    gap: 1.5rem;
+  }
+  
+  .calendar-day {
+    min-height: 36px;
+  }
+}
+
+/* ===== MOBILE FIRST RESPONSIVE STYLES ===== */
+
+/* Base styles are already mobile-optimized */
+
+/* Header Mobile Navigation Fix */
+@media screen and (max-width: 768px) {
+  /* Fix for the existing mobile header styles */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--header-bg-color);
+    box-shadow: var(--box-shadow);
+  }
+  
+  /* Mobile navigation overlay */
+  .main-nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .main-nav.active {
+    display: flex;
+  }
+  
+  /* Navigation content container */
+  .main-nav > .nav-container {
+    background-color: var(--header-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: var(--box-shadow);
+  }
+  
+  /* Close button for mobile nav */
+  .nav-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nav-close-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.95);
+  }
+}
+
+/* Additional mobile touch improvements */
+@media screen and (max-width: 768px) {
+  /* Improve touch targets */
+  .calendar-controls button,
+  .user-btn,
+  .notification-bell,
+  .burger-menu-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Better form styling for mobile */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  
+  /* Responsive buttons */
+  .btn {
+    min-height: 48px;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .btn:active {
+    transform: translateY(1px) scale(0.98);
+  }
+  
+  /* Card hover states for mobile */
+  .birthday-card,
+  .group-item-card,
+  .member-item {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Scrollable areas */
+  .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Responsive tables/lists */
+  .members-list,
+  .birthdays-list {
+    -webkit-overflow-scrolling: touch;
   }
 }
