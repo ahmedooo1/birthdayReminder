@@ -678,12 +678,32 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 require_once 'utils.php';
                 $emailSent = sendEmail($email, $subject, $message);
                 
-                // Toujours retourner un succès pour des raisons de sécurité
-                // Ne pas révéler si l'email a réellement été envoyé ou si l'utilisateur existe
-                sendResponse([
-                    'success' => true, 
-                    'message' => 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.'
-                ]);
+                // Mode debug temporaire pour diagnostiquer le problème
+                $debug = isset($_GET['debug']) && $_GET['debug'] === 'true';
+                
+                if ($debug) {
+                    // Mode debug : retourner des informations détaillées
+                    sendResponse([
+                        'success' => true,
+                        'debug' => true,
+                        'message' => 'Mode debug activé',
+                        'email_found' => true,
+                        'email_sent' => $emailSent,
+                        'reset_url' => $resetUrl,
+                        'user_name' => $userName,
+                        'email_config' => [
+                            'host' => env('MAIL_HOST'),
+                            'username' => env('MAIL_USERNAME'),
+                            'from_address' => env('MAIL_FROM_ADDRESS')
+                        ]
+                    ]);
+                } else {
+                    // Mode normal : toujours retourner un succès pour des raisons de sécurité
+                    sendResponse([
+                        'success' => true, 
+                        'message' => 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.'
+                    ]);
+                }
                 
                 // Logger l'échec d'envoi d'email pour le débogage
                 if (!$emailSent) {
