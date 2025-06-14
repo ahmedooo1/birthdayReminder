@@ -348,7 +348,7 @@ class AuthManager {  constructor() {
   // Demande de réinitialisation de mot de passe
   async forgotPassword(email) {
     try {
-      const response = await fetch('https://rappelanniv.aa-world.store/auth.php?action=forgotpassword', {
+      const response = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=forgotpassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
