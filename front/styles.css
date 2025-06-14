@@ -1959,8 +1959,7 @@ body.dark-theme .notification-bell:hover {
     flex-wrap: wrap;
     gap: 0.25rem;
   }
-  
-  /* Groupes responsive */
+    /* Groupes responsive */
   .groups-header {
     flex-direction: column;
     gap: 1rem;
@@ -1986,6 +1985,64 @@ body.dark-theme .notification-bell:hover {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+  
+  .group-card-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .group-card-actions .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  /* Group Details mobile improvements */
+  .group-details-container {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .group-details-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .group-info h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .group-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .group-actions .btn {
+    flex: 1;
+    min-width: 100px;
+  }
+  
+  .access-code-display {
+    padding: 1rem;
+    font-size: 1.1rem;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    margin: 1rem 0;
+  }
+  
+  .access-code-display strong {
+    display: block;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-top: 0.5rem;
   }
   
   /* Détails du groupe responsive */
@@ -2093,8 +2150,78 @@ body.dark-theme .notification-bell:hover {
   .auth-header h2 {
     font-size: 1.3rem;
   }
+    /* Profile responsive */
+  .profile-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
   
-  /* Profile déjà géré dans les styles existants */
+  .profile-sidebar {
+    position: static;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .profile-sidebar h3,
+  .profile-sidebar p {
+    text-align: center;
+  }
+  
+  .profile-stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    text-align: center;
+  }
+  
+  .profile-stat {
+    padding: 0.5rem;
+  }
+  
+  .profile-stat-number {
+    font-size: 1.2rem;
+  }
+  
+  .profile-stat-label {
+    font-size: 0.7rem;
+  }
+  
+  .profile-content {
+    margin: 0;
+  }
+  
+  .profile-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tab-link {
+    flex: none;
+    min-width: 120px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .tab-content {
+    padding: 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .profile-avatar img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  #change-avatar-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
 }
 
 /* Smartphones en mode portrait (max-width: 480px) */
@@ -2167,8 +2294,7 @@ body.dark-theme .notification-bell:hover {
     font-size: 0.75rem;
     padding: 0.15rem 0.4rem;
   }
-  
-  /* Groupes très petit écran */
+    /* Groupes très petit écran */
   .group-card {
     padding: 0.75rem;
   }
@@ -2179,6 +2305,71 @@ body.dark-theme .notification-bell:hover {
   
   .group-card-description {
     font-size: 0.85rem;
+  }
+  
+  .group-card-actions .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .group-actions .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Profile très petit écran */
+  .profile-sidebar {
+    padding: 1rem;
+  }
+  
+  .profile-avatar img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  #change-avatar-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+  
+  #profile-username-display {
+    font-size: 1.2rem;
+  }
+  
+  #profile-email-display {
+    font-size: 0.85rem;
+  }
+  
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .profile-stat-number {
+    font-size: 1rem;
+  }
+  
+  .profile-stat-label {
+    font-size: 0.65rem;
+  }
+  
+  .tab-link {
+    min-width: 100px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .tab-content {
+    padding: 1rem;
+  }
+  
+  .tab-content h3 {
+    font-size: 1.1rem;
+  }
+  
+  .profile-form-section h4 {
+    font-size: 1rem;
   }
   
   /* Calendrier très petit écran */
@@ -2486,18 +2677,24 @@ body.dark-theme .notification-bell:hover {
 
 /* Touch-friendly buttons and interactions */
 @media screen and (max-width: 768px) {
-  /* Améliorer la taille des zones de touch */
+  /* Améliorer les boutons pour le mobile */
   .btn {
-    min-height: 44px !important; /* Apple recommends 44px minimum */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.5rem !important;
-    touch-action: manipulation !important; /* Prevent double-tap zoom */
+    min-height: 44px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--border-radius) !important;
+    touch-action: manipulation !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .btn:active {
+    transform: scale(0.98) !important;
   }
   
   /* Améliorer les inputs pour mobile */
   input, textarea, select {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+    padding: 0.875rem !important;
     min-height: 44px !important;
     border-radius: var(--border-radius) !important;
     border: 2px solid var(--input-border-color) !important;
@@ -2508,6 +2705,73 @@ body.dark-theme .notification-bell:hover {
     border-color: var(--primary-color) !important;
     box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
     outline: none !important;
+  }
+  
+  /* Profile mobile enhancements */
+  .profile-container {
+    padding: 0 !important;
+  }
+  
+  .profile-sidebar {
+    border-radius: var(--border-radius) !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .profile-content {
+    border-radius: var(--border-radius) !important;
+  }
+  
+  .tab-link {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  .tab-link:active {
+    background-color: var(--gray-300) !important;
+  }
+  
+  .profile-avatar {
+    margin-bottom: 1rem !important;
+  }
+  
+  #change-avatar-btn {
+    touch-action: manipulation !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  #change-avatar-btn:active {
+    transform: scale(0.95) !important;
+  }
+  
+  /* Groups mobile enhancements */
+  .group-card {
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    transition: all 0.2s ease !important;
+    touch-action: manipulation !important;
+  }
+  
+  .group-card:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  }
+  
+  .group-card-actions {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid var(--gray-200) !important;
+  }
+  
+  .access-code-display {
+    touch-action: manipulation !important;
+    user-select: all !important;
+    cursor: pointer !important;
+  }
+  
+  .access-code-display:active {
+    background-color: var(--primary-dark) !important;
+    transform: scale(0.98) !important;
   }
   
   /* Cards clickables améliorées */
