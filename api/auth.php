@@ -678,18 +678,25 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 require_once 'utils.php';
                 $emailSent = sendEmail($email, $subject, $message);
                 
-                if ($emailSent) {
-                    sendResponse([
-                        'success' => true, 
-                        'message' => 'Un email de réinitialisation a été envoyé à votre adresse.'
-                    ]);
-                } else {
-                    sendResponse(['error' => 'Erreur lors de l\'envoi de l\'email'], 500);
+                // Toujours retourner un succès pour des raisons de sécurité
+                // Ne pas révéler si l'email a réellement été envoyé ou si l'utilisateur existe
+                sendResponse([
+                    'success' => true, 
+                    'message' => 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.'
+                ]);
+                
+                // Logger l'échec d'envoi d'email pour le débogage
+                if (!$emailSent) {
+                    error_log("Échec d'envoi d'email de réinitialisation pour: $email");
                 }
                 
             } catch (PDOException $e) {
                 error_log("Erreur forgot_password: " . $e->getMessage());
-                sendResponse(['error' => 'Erreur serveur'], 500);
+                // Même en cas d'erreur DB, ne pas révéler d'informations
+                sendResponse([
+                    'success' => true, 
+                    'message' => 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.'
+                ]);
             }
             break;
             
