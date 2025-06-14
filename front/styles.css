@@ -5,7 +5,7 @@
     --primary-dark: #3f37c9;
     --secondary-color: #560bad;
     --accent-color: #f72585;
-    --success-color: #4cc9f0;
+    --success-color: #4cf062;
     --warning-color: #f8961e;
     --danger-color: #e63946;
 
@@ -17,7 +17,7 @@
     --input-border-color: var(--gray-300);
     --header-bg-color: white;
     --modal-bg-color: white;
-    --text-muted-color: var(--gray-600);
+    --text-muted-color: #fff;
 
     --gray-100: #f8f9fa;
     --gray-200: #e9ecef;
