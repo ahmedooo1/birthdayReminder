@@ -353,7 +353,13 @@ body.dark-theme {
     background-color: var(--gray-200);
     transform: scale(0.95);
   }
-  
+   #access-code-input{ 
+    text-transform: uppercase;
+    width: 70%;
+    margin-right: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
   .main-content {
     flex: 1;
     padding: 2rem;
@@ -530,6 +536,7 @@ body.dark-theme {
   /* Groups */
   .groups-header {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
@@ -1738,6 +1745,8 @@ body.dark-theme .notification-bell:hover {
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
   
   .dashboard-actions .btn {
@@ -3407,7 +3416,7 @@ body.dark-theme .notification-bell:hover {
   .logo h1 {
     font-size: 1.2rem;
   }
-  
+ 
   .burger-menu-btn {
     display: block !important;
     order: 3;
