@@ -3,7 +3,7 @@
 * Handles all data operations including saving, loading, and manipulating data
 */
 class DataManager {    constructor() {
-        this.apiUrl = 'https://rappelanniv.aa-world.store/api/'; // Updated to public API URL
+        this.apiUrl = 'https://rappelanniv.aa-world.store/api/';
         this.data = {
             groups: [],
             birthdays: [],
@@ -838,8 +838,7 @@ class DataManager {    constructor() {
       throw error; // Rethrow to allow app.js to catch and revert UI
     }
 }
-    
-    /**
+      /**
     * Get current user profile
     * @returns {Object} User profile data
     */
@@ -850,10 +849,17 @@ class DataManager {    constructor() {
           throw new Error('No session token found');
         }
   
+        // Utiliser la méthode apiRequest pour la cohérence
         const response = await this.apiRequest('auth.php?action=profile', 'GET', null, {
           'Authorization': `Bearer ${token}`
         });
   
+        // Si on reçoit une réponse valide, mettre à jour le localStorage
+        if (response && response.id) {
+          localStorage.setItem('user_data', JSON.stringify(response));
+          return response;
+        }
+        
         return response;
       } catch (error) {
         console.error('Error getting current user:', error);
@@ -924,50 +930,6 @@ class DataManager {    constructor() {
       return { success: false, message: error.message };
     }
   }
-  
-    /**
-     * Upload user avatar
-     * @param {File} file - Avatar file
-     * @returns {Object} Upload response
-     */
-    async uploadAvatar(file) {
-      try {
-        const token = localStorage.getItem('session_token');
-        if (!token) {
-          throw new Error('No session token found');
-        }
-  
-        const formData = new FormData();
-        formData.append('avatar', file);
-        formData.append('session_token', token);
-  
-        const response = await fetch(`${this.apiUrl}auth.php?action=upload_avatar`, {
-          method: 'POST',
-          body: formData
-        });
-  
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-  
-        const result = await response.json();
-        
-        // Update local storage with new avatar URL
-        if (result.success && result.avatar_url) {
-          const userData = localStorage.getItem('user_data');
-          if (userData) {
-            const currentUser = JSON.parse(userData);
-            currentUser.avatar = result.avatar_url;
-            localStorage.setItem('user_data', JSON.stringify(currentUser));
-          }
-        }
-  
-        return result;
-      } catch (error) {
-        console.error('Error uploading avatar:', error);
-        return { success: false, message: error.message };
-      }
-    }
     
     /**
     * Get upcoming birthdays

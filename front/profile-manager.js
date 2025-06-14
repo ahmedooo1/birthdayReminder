@@ -1,8 +1,7 @@
 /**
  * Profile Manager - Gestion du profil utilisateur
  */
-class ProfileManager {
-    constructor(dataManager, toastManager) {
+class ProfileManager {    constructor(dataManager, toastManager) {
         this.dataManager = dataManager;
         this.toast = toastManager;
         this.currentUser = null;
@@ -16,14 +15,16 @@ class ProfileManager {
         };
         
         // Bind event handlers to this instance to ensure 'this' context is correct
-        // and to have stable references for add/removeEventListener.
-        this._boundHandleProfileSubmit = this._handleProfileSubmit.bind(this);
+        // and to have stable references for add/removeEventListener.        this._boundHandleProfileSubmit = this._handleProfileSubmit.bind(this);
         this._boundHandlePasswordSaveClick = this._handlePasswordSaveClick.bind(this);
         this._boundHandleTabLinkClick = this._handleTabLinkClick.bind(this);
-        this._boundHandleChangeAvatarBtnClick = this._handleChangeAvatarBtnClick.bind(this);
-        this._boundHandleAvatarUploadChange = this._handleAvatarUploadChange.bind(this);
 
         this.initializeEventListeners();
+        
+        // Exposer les méthodes de debug en mode développement
+        if (typeof window !== 'undefined') {
+            this.exposeDebugMethods();
+        }
     }
 
     // Event handler methods
@@ -45,17 +46,6 @@ class ProfileManager {
         this.switchTab(tabName);
     }
 
-    _handleChangeAvatarBtnClick() {
-        const avatarUploadInput = document.getElementById('avatar-upload-input');
-        if (avatarUploadInput) {
-            avatarUploadInput.click();
-        }
-    }
-
-    _handleAvatarUploadChange(e) {
-        this.handleAvatarUpload(e); // The original method takes event 'e'
-    }
-
     /**
      * Initialiser les écouteurs d'événements
      */    
@@ -75,17 +65,13 @@ class ProfileManager {
      * Configurer les écouteurs d'événements
      */
     setupEventListeners() {
-        // Ensure elements are fetched each time, as DOM might change or not be ready initially
-        this.profileForm = document.getElementById('profile-form');
+        // Ensure elements are fetched each time, as DOM might change or not be ready initially        this.profileForm = document.getElementById('profile-form');
         
         // Populate this.passwordForm with current elements
         this.passwordForm.currentPassword = document.getElementById('current-password');
         this.passwordForm.newPassword = document.getElementById('new-password');
         this.passwordForm.confirmPassword = document.getElementById('confirm-new-password');
         this.passwordForm.saveBtn = document.getElementById('save-password-btn');
-
-        const avatarUploadInput = document.getElementById('avatar-upload-input');
-        const changeAvatarBtn = document.getElementById('change-avatar-btn');
 
         // Onglets du profil
         const tabLinks = document.querySelectorAll('.tab-link');
@@ -95,9 +81,7 @@ class ProfileManager {
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
             link.addEventListener('click', this._boundHandleTabLinkClick);
-        });
-
-        // Formulaire de profil
+        });        // Formulaire de profil
         if (this.profileForm) {
             this.profileForm.removeEventListener('submit', this._boundHandleProfileSubmit);
             this.profileForm.addEventListener('submit', this._boundHandleProfileSubmit);
@@ -107,20 +91,6 @@ class ProfileManager {
         if (this.passwordForm.saveBtn) {
             this.passwordForm.saveBtn.removeEventListener('click', this._boundHandlePasswordSaveClick);
             this.passwordForm.saveBtn.addEventListener('click', this._boundHandlePasswordSaveClick);
-        }
-
-        // Upload d'avatar
-        // const avatarUpload = document.getElementById('avatar-upload-input'); // Already fetched as avatarUploadInput
-        // const changeAvatarBtn = document.getElementById('change-avatar-btn'); // Already fetched
-        
-        if (changeAvatarBtn) {
-            changeAvatarBtn.removeEventListener('click', this._boundHandleChangeAvatarBtnClick);
-            changeAvatarBtn.addEventListener('click', this._boundHandleChangeAvatarBtnClick);
-        }
-        
-        if (avatarUploadInput) {
-            avatarUploadInput.removeEventListener('change', this._boundHandleAvatarUploadChange);
-            avatarUploadInput.addEventListener('change', this._boundHandleAvatarUploadChange);
         }
     }
 
@@ -160,30 +130,27 @@ class ProfileManager {
             const groupsCount = this.dataManager.data.groups.length;
             groupsCountElement.textContent = groupsCount;
         }
-    }
-
-    /**
+    }    /**
      * Remplir le formulaire avec les données utilisateur
      */
     populateProfileForm(user) {
         // Sidebar
         const usernameDisplay = document.getElementById('profile-username-display');
         const emailDisplay = document.getElementById('profile-email-display');
-        const avatarImg = document.getElementById('profile-avatar-img');
-
-        if (usernameDisplay) usernameDisplay.textContent = user.username || 'Utilisateur';
+        const avatarImg = document.getElementById('profile-avatar-img');        if (usernameDisplay) usernameDisplay.textContent = user.username || 'Utilisateur';
         if (emailDisplay) emailDisplay.textContent = user.email || 'email@example.com';
         
-        // Avatar par défaut avec initiales
-        if (avatarImg && !user.avatar) {
+        // Avatar par défaut avec initiales uniquement
+        if (avatarImg) {
             const initials = this.getInitials(user.first_name, user.last_name, user.username);
             avatarImg.src = this.generateAvatarUrl(initials);
-        } else if (avatarImg && user.avatar) {
-            avatarImg.src = user.avatar;
+            avatarImg.alt = 'Avatar par défaut';
         }
 
         // Mettre à jour les statistiques du profil
-        this.updateProfileStats();        // Formulaire principal
+        this.updateProfileStats();
+        
+        // Formulaire principal
         const usernameInput = document.getElementById('profile-username');
         const firstNameInput = document.getElementById('profile-first-name');
         const lastNameInput = document.getElementById('profile-last-name');
@@ -213,14 +180,12 @@ class ProfileManager {
             return username.substring(0, 2).toUpperCase();
         }
         return 'U';
-    }
-
-    /**
+    }    /**
      * Générer une URL d'avatar avec initiales
      */
     generateAvatarUrl(initials) {
         return `https://ui-avatars.com/api/?name=${initials}&background=4361ee&color=ffffff&size=150&bold=true`;
-    }    /**
+    }/**
      * Changer d'onglet
      */
     switchTab(tabName) {
@@ -367,55 +332,37 @@ class ProfileManager {
     }
 
     /**
-     * Gérer l'upload d'avatar
+     * Actualiser les données utilisateur depuis l'API
      */
-    async handleAvatarUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        // Validation du type de fichier
-        if (!file.type.startsWith('image/')) {
-            this.toast.error('Erreur', 'Veuillez sélectionner un fichier image');
-            return;
-        }
-
-        // Validation de la taille (max 2MB)
-        if (file.size > 2 * 1024 * 1024) {
-            this.toast.error('Erreur', 'L\'image ne doit pas dépasser 2MB');
-            return;
-        }
-
-        const loadingToast = this.toast.loading('Upload', 'Téléchargement de l\'avatar...');
-
+    async refreshUserData() {
         try {
-            const result = await this.dataManager.uploadAvatar(file);
-            
-            if (result.success) {
-                const avatarImg = document.getElementById('profile-avatar-img');
-                if (avatarImg) {
-                    avatarImg.src = result.avatar_url;
-                }
-                loadingToast.remove();
-                this.toast.success('Succès', 'Avatar mis à jour avec succès');
-            } else {
-                loadingToast.remove();
-                this.toast.error('Erreur', result.message || 'Erreur lors de l\'upload');
+            const freshUserData = await this.dataManager.getCurrentUser();
+            if (freshUserData) {
+                this.currentUser = freshUserData;
+                
+                // Mettre à jour le localStorage avec les nouvelles données
+                localStorage.setItem('user_data', JSON.stringify(freshUserData));
+                
+                // Re-remplir le formulaire avec les données fraîches
+                this.populateProfileForm(freshUserData);
             }
         } catch (error) {
-            console.error('Erreur lors de l\'upload d\'avatar:', error);
-            loadingToast.remove();
-            this.toast.error('Erreur', 'Impossible de télécharger l\'avatar');
+            console.error('Erreur lors de l\'actualisation des données utilisateur:', error);
         }
+    }
 
-        // Réinitialiser l'input file
-        event.target.value = '';
-    }    /**
+    /**
      * Afficher la vue profil
      */
     showProfile() {
         // Re-initialiser les event listeners au cas où les éléments DOM auraient changé
         this.setupEventListeners();
         this.loadProfile();
+    }    /**
+     * Exposer les méthodes de debug globalement pour le test
+     */
+    exposeDebugMethods() {
+        window.refreshUserData = this.refreshUserData.bind(this);
     }
 }
 

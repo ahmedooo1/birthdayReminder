@@ -178,7 +178,6 @@ class AuthManager {  constructor() {
     }
     if (this.authError) this.authError.classList.add('hidden');
   }
-
   async login(username, password) {
     if (!username) username = document.getElementById('login-username').value;
     if (!password) password = document.getElementById('login-password').value;
@@ -212,8 +211,7 @@ class AuthManager {  constructor() {
     if (password !== confirm) {
       this.showError('Les mots de passe ne correspondent pas');
       return;
-    }
-    this.setLoading(true);
+    }    this.setLoading(true);
     try {
       const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=register', {
         method: 'POST',
@@ -233,7 +231,6 @@ class AuthManager {  constructor() {
       this.setLoading(false);
     }
   }
-
   async verifySession(token) {
     try {
       const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=verify', {
@@ -255,8 +252,7 @@ class AuthManager {  constructor() {
 
   async logout() {
     const token = localStorage.getItem('session_token');
-    if (!token) return;
-    try {
+    if (!token) return;    try {
       await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

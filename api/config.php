@@ -21,11 +21,11 @@ if (in_array($origin, $allowedOrigins)) {
     // Pour les requêtes sans origine (comme les navigateurs mobiles)
     // ou pour des domaines non listés, utiliser un wildcard sécurisé
     if (empty($origin)) {
-        header('Access-Control-Allow-Origin: https://rappelanniv.aa-world.store');
+        header('Access-Control-Allow-Origin: http://localhost:5500');
     } else {
         // Log l'origine pour debug
         error_log("CORS: Unknown origin: " . $origin);
-        header('Access-Control-Allow-Origin: https://rappelanniv.aa-world.store');
+        header('Access-Control-Allow-Origin: http://localhost:5500');
     }
 }
 

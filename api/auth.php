@@ -1,6 +1,18 @@
 <?php
 require_once 'config.php';
 
+// En-têtes CORS pour l'environnement de production
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Credentials: true');
+
+// Gérer les requêtes preflight OPTIONS
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 /**
  * Fonctions d'authentification et de gestion des sessions
  */
@@ -18,12 +30,16 @@ function verifySession($sessionToken) {
     global $pdo;
     
     if (!$sessionToken) {
+        error_log("DEBUG: Session token is empty");
         return false;
     }
     
     try {
         global $dbType;
         $currentTime = $dbType === 'sqlite' ? "datetime('now')" : "NOW()";
+        error_log("DEBUG: Verifying session token: " . substr($sessionToken, 0, 10) . "...");
+        error_log("DEBUG: Current time query: " . $currentTime);
+        
         // Vérifier si la session existe et n'est pas expirée
         $stmt = $pdo->prepare("
             SELECT us.*, u.id as user_id, u.username, u.email, u.first_name, u.last_name, 
@@ -35,7 +51,18 @@ function verifySession($sessionToken) {
         $stmt->execute([$sessionToken]);
         $session = $stmt->fetch();
         
+        error_log("DEBUG: Session query result: " . ($session ? "Found" : "Not found"));
+        
         if (!$session) {
+            // Vérifier si le token existe même expiré
+            $stmt2 = $pdo->prepare("SELECT expires_at FROM user_sessions WHERE session_token = ?");
+            $stmt2->execute([$sessionToken]);
+            $expiredSession = $stmt2->fetch();
+            if ($expiredSession) {
+                error_log("DEBUG: Session exists but expired. Expires at: " . $expiredSession['expires_at']);
+            } else {
+                error_log("DEBUG: Session token not found in database");
+            }
             return false;
         }
         
@@ -470,6 +497,20 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 $params[] = $data['last_name'];
             }
             
+            if (isset($data['username'])) {
+                // Vérifier que le nom d'utilisateur n'est pas déjà utilisé par un autre utilisateur
+                $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM users WHERE username = ? AND id != ?");
+                $stmt->execute([$data['username'], $user['user_id']]);
+                $result = $stmt->fetch();
+                
+                if ($result['count'] > 0) {
+                    sendResponse(['error' => 'Ce nom d\'utilisateur est déjà utilisé par un autre utilisateur'], 409);
+                }
+                
+                $fields[] = "username = ?";
+                $params[] = $data['username'];
+            }
+            
             if (isset($data['email'])) {
                 // Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
                 $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM users WHERE email = ? AND id != ?");
@@ -559,80 +600,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             sendResponse(['success' => true, 'message' => 'Mot de passe mis à jour avec succès']);
             break;
             
-        case 'upload_avatar':
-            // Upload d'avatar
-            $sessionToken = $_POST['session_token'] ?? $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-            
-            if (!$sessionToken) {
-                sendResponse(['error' => 'Session requise'], 401);
-            }
-            
-            // Enlever "Bearer " si présent
-            if (strpos($sessionToken, 'Bearer ') === 0) {
-                $sessionToken = substr($sessionToken, 7);
-            }
-            
-            $user = verifySession($sessionToken);
-            
-            if (!$user) {
-                sendResponse(['error' => 'Session invalide'], 401);
-            }
-            
-            if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
-                sendResponse(['error' => 'Erreur lors de l\'upload du fichier'], 400);
-            }
-            
-            $file = $_FILES['avatar'];
-            
-            // Vérifier le type de fichier
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            if (!in_array($file['type'], $allowedTypes)) {
-                sendResponse(['error' => 'Type de fichier non autorisé. Utilisez JPG, PNG, GIF ou WebP.'], 400);
-            }
-            
-            // Vérifier la taille (max 2MB)
-            if ($file['size'] > 2 * 1024 * 1024) {
-                sendResponse(['error' => 'Le fichier est trop volumineux. Taille maximale: 2MB'], 400);
-            }
-            
-            // Créer le dossier uploads s'il n'existe pas
-            $uploadDir = '../uploads/avatars/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-            
-            // Générer un nom de fichier unique
-            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $filename = 'avatar_' . $user['user_id'] . '_' . time() . '.' . $extension;
-            $filepath = $uploadDir . $filename;
-            
-            // Déplacer le fichier uploadé
-            if (!move_uploaded_file($file['tmp_name'], $filepath)) {
-                sendResponse(['error' => 'Erreur lors de la sauvegarde du fichier'], 500);
-            }
-            
-            // Générer l'URL d'accès
-            $avatarUrl = 'uploads/avatars/' . $filename;
-            
-            // Supprimer l'ancien avatar s'il existe
-            $stmt = $pdo->prepare("SELECT avatar FROM users WHERE id = ?");
-            $stmt->execute([$user['user_id']]);
-            $oldAvatar = $stmt->fetchColumn();
-            
-            if ($oldAvatar && file_exists('../' . $oldAvatar)) {
-                unlink('../' . $oldAvatar);
-            }
-            
-            // Mettre à jour la base de données
-            $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id = ?");
-            $stmt->execute([$avatarUrl, $user['user_id']]);
-            
-            sendResponse([
-                'success' => true, 
-                'message' => 'Avatar mis à jour avec succès',
-                'avatar_url' => $avatarUrl
-            ]);
-            break;
+
             
         case 'forgot_password':
             // Demande de réinitialisation de mot de passe
