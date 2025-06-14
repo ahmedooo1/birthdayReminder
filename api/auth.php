@@ -637,7 +637,17 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
                 $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?");
                 $stmt->execute([$resetToken, $expiresAt, $user['id']]);
-                $resetUrl = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/front/index.html?reset_token=' . $resetToken;
+                
+                // Utiliser APP_BASE_URL de .env pour construire l'URL de réinitialisation, avec fallback
+                $appBaseUrl = env('APP_BASE_URL');
+                if (empty($appBaseUrl)) {
+                    // Fallback si APP_BASE_URL n'est pas défini
+                    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
+                    $host = $_SERVER['HTTP_HOST'] ?? 'localhost'; // Utiliser 'localhost' ou un domaine par défaut si HTTP_HOST n'est pas défini
+                    $appBaseUrl = $scheme . '://' . $host;
+                }
+                $resetUrl = rtrim($appBaseUrl, '/') . '/front/index.html?reset_token=' . $resetToken;
+                
                 $userName = trim($user['first_name'] . ' ' . $user['last_name']);
                 if (empty($userName)) $userName = 'Utilisateur';
                 $subject = 'Réinitialisation de votre mot de passe - Birthday Reminder';
