@@ -219,19 +219,21 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 first_name: document.getElementById('profile-first-name').value.trim(),
                 last_name: document.getElementById('profile-last-name').value.trim(),
                 email: document.getElementById('profile-email').value.trim()
-            };
-
-            // Ajouter les champs de notification seulement s'ils existent dans le DOM
+            };            // Ajouter les champs de notification seulement s'ils existent dans le DOM
             const emailNotificationsCheckbox = document.getElementById('profile-email-notifications');
             const notificationDaysInput = document.getElementById('profile-notification-days');
             
             if (emailNotificationsCheckbox) {
                 formData.email_notifications = emailNotificationsCheckbox.checked;
+                console.log('Email notifications checkbox:', emailNotificationsCheckbox.checked);
             }
             
             if (notificationDaysInput) {
                 formData.notification_days = parseInt(notificationDaysInput.value, 10);
+                console.log('Notification days input:', notificationDaysInput.value);
             }
+
+            console.log('Form data to save:', formData);
 
             // Validation
             if (!formData.email) {
@@ -252,12 +254,10 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 loadingToast.remove();
                 this.toast.error('Erreur', 'Le nom d\'utilisateur ne peut contenir que des lettres, chiffres, tirets et underscores');
                 return;
-            }
-
-            const result = await this.dataManager.updateProfile(formData);
+            }            const result = await this.dataManager.updateProfile(formData);
               if (result.success) {
-                this.currentUser = { ...this.currentUser, ...formData, email_notifications: formData.email_notifications ? 1 : 0 }; // Update local state
-                this.populateProfileForm(this.currentUser); // Re-populate to reflect changes
+                // Recharger les données depuis l'API pour s'assurer qu'elles sont à jour
+                await this.refreshUserData();
                 
                 // Mettre à jour l'affichage du nom d'utilisateur dans l'en-tête
                 const headerUsernameDisplay = document.querySelector('.user-btn span');
@@ -329,14 +329,13 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             loadingToast.remove();
             this.toast.error('Erreur', 'Impossible de changer le mot de passe');
         }
-    }
-
-    /**
+    }    /**
      * Actualiser les données utilisateur depuis l'API
      */
     async refreshUserData() {
         try {
-            const freshUserData = await this.dataManager.getCurrentUser();
+            // Forcer le rechargement depuis l'API au lieu du cache
+            const freshUserData = await this.dataManager.apiRequest('auth.php?action=profile', 'GET', null, true);
             if (freshUserData) {
                 this.currentUser = freshUserData;
                 
@@ -345,6 +344,8 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 
                 // Re-remplir le formulaire avec les données fraîches
                 this.populateProfileForm(freshUserData);
+                
+                console.log('Données utilisateur actualisées:', freshUserData);
             }
         } catch (error) {
             console.error('Erreur lors de l\'actualisation des données utilisateur:', error);
