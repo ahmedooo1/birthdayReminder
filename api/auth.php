@@ -599,7 +599,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             
 
             
-        case 'forgot_password':
+        case 'forgotpassword':
             // Demande de réinitialisation de mot de passe
             $debug = isset($_GET['debug']) && $_GET['debug'] == '1';
             $email = $_POST['email'] ?? '';
