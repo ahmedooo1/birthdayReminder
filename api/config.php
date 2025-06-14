@@ -15,18 +15,17 @@ $allowedOrigins = [
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (in_array($origin, $allowedOrigins)) {
+
+// Handle the case where origin is null (file:// protocol) or empty
+if (empty($origin) || $origin === 'null') {
+    header('Access-Control-Allow-Origin: *');
+} else if (in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . $origin);
 } else {
-    // Pour les requêtes sans origine (comme les navigateurs mobiles)
-    // ou pour des domaines non listés, utiliser un wildcard sécurisé
-    if (empty($origin)) {
-        header('Access-Control-Allow-Origin: http://localhost:5500');
-    } else {
-        // Log l'origine pour debug
-        error_log("CORS: Unknown origin: " . $origin);
-        header('Access-Control-Allow-Origin: http://localhost:5500');
-    }
+    // Log unknown origins for debugging
+    error_log("CORS: Unknown origin: " . $origin);
+    // For unknown origins, still allow * for testing purposes
+    header('Access-Control-Allow-Origin: *');
 }
 
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');

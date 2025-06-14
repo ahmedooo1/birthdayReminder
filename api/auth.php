@@ -1,11 +1,8 @@
 <?php
 require_once 'config.php';
 
-// En-têtes CORS pour l'environnement de production
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Access-Control-Allow-Credentials: true');
+// Les en-têtes CORS sont déjà définis dans config.php, ne pas les redéfinir ici
+// pour éviter les doublons qui causent des problèmes CORS
 
 // Gérer les requêtes preflight OPTIONS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
