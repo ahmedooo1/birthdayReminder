@@ -362,11 +362,10 @@ class ProfileManager {    constructor(dataManager, toastManager) {
     }    /**
      * Actualiser les données utilisateur depuis l'API
      */
-    async refreshUserData() {
-        try {
+    async refreshUserData() {        try {
             // Forcer le rechargement depuis l'API au lieu du cache
             console.log('[ProfileManager] Attempting to refresh user data from API...');
-            const freshUserData = await this.dataManager.apiRequest('auth.php?action=profile', 'GET', null, true);
+            const freshUserData = await this.dataManager.apiRequest('auth.php?action=profile', 'GET', null);
             console.log('[ProfileManager] Fresh user data received from API:', JSON.stringify(freshUserData, null, 2));
             
             if (freshUserData && freshUserData.success !== false) { // Check if freshUserData is not an error response
