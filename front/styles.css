@@ -117,6 +117,7 @@ body.dark-theme {
     position: sticky;
     top: 0;
     z-index: 100;
+    flex-wrap: wrap;
   }
   
   .logo {
@@ -132,7 +133,7 @@ body.dark-theme {
   }
   
   .logo h1 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
   }
 
@@ -199,6 +200,158 @@ body.dark-theme {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  /* =========================
+     HEADER MOBILE REDESIGN
+     ========================= */
+  
+  .header {
+    padding: 1rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo i {
+    font-size: 1.3rem;
+  }
+  
+  /* Afficher le burger menu */
+  .burger-menu-btn {
+    display: block !important;
+    order: 2;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .burger-menu-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.95);
+  }
+  
+  /* Masquer la navigation principale par défaut */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg-color);
+    border-top: 1px solid var(--gray-300);
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  /* Afficher la navigation quand active */
+  .main-nav.active {
+    display: flex;
+  }
+  
+  .nav-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.875rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .nav-btn:last-child {
+    margin-bottom: 0;
+  }
+  
+  .nav-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.98);
+  }
+  
+  .nav-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+  }
+  
+  /* Section utilisateur responsive */
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    order: 1;
+    margin-left: auto;
+  }
+  
+  .user-btn {
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    min-height: 40px;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .user-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.98);
+  }
+  
+  .user-dropdown {
+    min-width: 160px;
+    top: 110%;
+    right: 0;
+  }
+  
+  .notification-bell {
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    color: var(--text-muted-color);
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .notification-bell:active {
+    background-color: var(--gray-200);
+    transform: scale(0.95);
   }
   
   .main-content {
@@ -1509,363 +1662,61 @@ body.dark-theme .notification-bell:hover {
 }
 
 /* =========================
-   RESPONSIVE MOBILE STYLES
+   COMPLETE MOBILE REDESIGN 
    ========================= */
 
-/* Small Mobile Profile Styles */
-@media screen and (max-width: 480px) {
-  /* Override existing mobile styles with better ones */
-  .profile-container {
-    padding: 0.75rem !important;
-    gap: 1rem !important;
-  }
-  
-  .profile-sidebar {
-    padding: 1rem !important;
-    position: static !important;
-  }
-  
-  .profile-avatar img {
-    width: 80px !important;
-    height: 80px !important;
-  }
-  
-  #change-avatar-btn {
-    width: 28px !important;
-    height: 28px !important;
-    font-size: 0.75rem !important;
-  }
-  
-  #profile-username-display {
-    font-size: 1.1rem !important;
-  }
-  
-  .profile-stats {
-    flex-direction: column !important;
-    gap: 0.75rem !important;
-  }
-  
-  .profile-stat {
-    padding: 0.625rem !important;
-    text-align: center !important;
-    background-color: var(--gray-100) !important;
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .tab-link {
-    padding: 0.625rem 0.25rem !important;
-    font-size: 0.8rem !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-  
-  .tab-content {
-    padding: 1rem !important;
-  }
-  
-  .profile-form-section h4 {
-    font-size: 1rem !important;
-    margin-bottom: 0.75rem !important;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem !important;
-  }
-  
-  .form-group label {
-    font-size: 0.9rem !important;
-    margin-bottom: 0.5rem !important;
-    font-weight: 600 !important;
-  }
-  
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    padding: 0.75rem !important;
-    font-size: 16px !important;
-    border: 2px solid var(--input-border-color) !important;
-    border-radius: var(--border-radius) !important;
-    transition: border-color 0.3s ease !important;
-  }
-  
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: var(--primary-color) !important;
-    outline: none !important;
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
-  }
-  
-  .profile-actions {
-    margin-top: 1.5rem !important;
-    gap: 0.75rem !important;
-  }
-  
-  .profile-actions .btn {
-    padding: 0.875rem !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-  }
-
-  /* Enhanced Groups Mobile Styles */
-  .groups-header h2 {
-    font-size: 1.3rem !important;
-    /* margin-bottom: 1rem !important; */ /* Removed as .groups-header now has margin-bottom */
-    text-align: center; /* Center title on very small screens */
-  }
-  
-  .join-group-section {
-    padding: 1rem !important; /* Slightly less padding for very small screens */
-    margin-bottom: 1.5rem !important;
-  }
-  
-  .join-group-section h3 {
-    font-size: 1.1rem !important;
-    margin-bottom: 0.5rem !important;
-  }
-  
-  .join-group-section p {
-    font-size: 0.85rem !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .join-form {
-    /* display: flex !important; */ /* Already there */
-    /* flex-direction: column !important; */ /* Already there */
-    gap: 0.75rem !important; /* Adjust gap for very small screens */
-  }
-  
-  #access-code-input {
-    /* padding: 0.875rem !important; */ /* Handled by general mobile styles */
-    /* font-size: 16px !important; */ /* Handled by general mobile styles */
-    /* text-align: center !important; */ /* Inherited or set */
-    /* border: 2px solid var(--input-border-color) !important; */ /* Handled by general mobile styles */
-    /* border-radius: var(--border-radius) !important; */ /* Handled by general mobile styles */
-    font-weight: 600 !important; /* Specific to this input */
-    letter-spacing: 2px !important; /* Specific to this input */
-    /* width: 100%; */ /* Inherited from 768px styles */
-    /* text-transform: uppercase; */ /* Inherited from 768px styles */
-  }
-  
-  /* #join-group-submit width is inherited */
-  
-  /* Profile mobile enhancements */
-  .profile-container {
-    padding: 0 !important;
-  }
-  
-  .profile-sidebar {
-    border-radius: var(--border-radius) !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .profile-content {
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .tab-link {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .tab-link:active {
-    background-color: var(--gray-300) !important;
-  }
-  
-  .profile-avatar {
-    margin-bottom: 1rem !important;
-  }
-  
-  #change-avatar-btn {
-    touch-action: manipulation !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  #change-avatar-btn:active {
-    transform: scale(0.95) !important;
-  }
-  
-  /* Groups mobile enhancements */
-  .group-card {
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
-    transition: all 0.2s ease !important;
-    touch-action: manipulation !important;
-  }
-  
-  .group-card:active {
-    transform: translateY(2px) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-  }
-  
-  .group-card-actions {
-    margin-top: 1rem !important;
-    padding-top: 1rem !important;
-    border-top: 1px solid var(--gray-200) !important;
-  }
-  
-  .access-code-display {
-    touch-action: manipulation !important;
-    user-select: all !important;
-    cursor: pointer !important;
-  }
-  
-  .access-code-display:active {
-    background-color: var(--primary-dark) !important;
-    transform: scale(0.98) !important;
-  }
-  
-  /* Cards clickables améliorées */
-  .group-item-card,
-  .birthday-card,
-  .member-item {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .group-item-card:active,
-  .birthday-card:active {
-    transform: scale(0.98) !important;
-    transition: transform 0.1s ease !important;
-  }
-  
-  /* Améliorer les modales pour mobile */
-  .modal {
-    padding: 1rem !important;
-  }
-  
-  .modal .modal-header,
-  .modal .modal-body,
-  .modal .modal-footer {
-    padding: 1rem !important;
-  }
-  
-  /* Navigation améliorée */
-  .main-nav {
-    gap: 0.5rem !important;
-  }
-  
-  .nav-btn {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    touch-action: manipulation !important;
-  }
-  
-  /* Améliorer les dropdowns */
-  .user-dropdown {
-    min-width: 200px !important;
-    padding: 0.5rem !important;
-  }
-  
-  .dropdown-item {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    border-radius: calc(var(--border-radius) - 2px) !important;
-    touch-action: manipulation !important;
-  }
-  
-  /* Améliorer les formulaires */
-  .form-group {
-    margin-bottom: 1.25rem !important;
-  }
-  
-  .form-group label {
-    font-weight: 600 !important;
-    color: var(--text-color) !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-  }
-  
-  /* Style pour les messages d'erreur */
-  .error-message {
-    background-color: #fef2f2 !important;
-    color: #dc2626 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #dc2626 !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Style pour les messages de succès */
-  .success-message {
-    background-color: #f0fdf4 !important;
-    color: #166534 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #22c55e !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Loading states améliorés */
-  .loading-spinner {
-    padding: 1rem !important;
-    text-align: center !important;
-    color: var(--primary-color) !important;
-    font-size: 0.9rem !important;
-  }
-  
-  /* Améliorer l'empty state */
-  .empty-state {
-    padding: 2rem 1rem !important;
-    text-align: center !important;
-    background-color: var(--gray-100) !important;
-    border-radius: var(--border-radius) !important;
-    color: var(--text-muted-color) !important;
-  }
-  
-  .empty-state i {
-    font-size: 2rem !important;
-    margin-bottom: 1rem !important;
-    color: var(--gray-400) !important;
-  }
-  
-  .empty-state p {
-    margin-bottom: 0.5rem !important;
-    font-size: 0.9rem !important;
-  }
-}
-
-/* =========================== */
-/* RESPONSIVE DESIGN COMPLET   */
-/* =========================== */
-
-/* Tablettes et écrans moyens (768px - 1024px) */
+/* Écrans moyens (max-width: 1024px) */
 @media screen and (max-width: 1024px) {
   .main-content {
-    padding: 1.5rem;
-    max-width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
   }
   
   .dashboard-header {
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
-    align-items: stretch;
+    text-align: center;
   }
   
-  .groups-list {
+  .profile-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .groups-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
   
   .birthdays-list {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
   }
 }
 
 /* Tablettes et smartphones (max-width: 768px) */
 @media screen and (max-width: 768px) {
-  /* Header responsive */
+  /* =========================
+     GLOBAL MOBILE STYLES
+     ========================= */
+  
+  .main-content {
+    padding: 0.75rem;
+    overflow-x: hidden;
+  }
+  
+  /* =========================
+     HEADER MOBILE REDESIGN
+     ========================= */
+  
   .header {
     padding: 1rem;
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--box-shadow);
   }
   
   .logo h1 {
@@ -1880,6 +1731,20 @@ body.dark-theme .notification-bell:hover {
   .burger-menu-btn {
     display: block !important;
     order: 2;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .burger-menu-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.95);
   }
   
   /* Masquer la navigation principale par défaut */
@@ -1890,1854 +1755,208 @@ body.dark-theme .notification-bell:hover {
     left: 0;
     right: 0;
     background-color: var(--header-bg-color);
-    flex-direction: column;
-    box-shadow: var(--box-shadow);
     border-top: 1px solid var(--gray-300);
-    z-index: 999;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
   }
   
   /* Afficher la navigation quand active */
   .main-nav.active {
-    display: flex !important;
+    display: flex;
   }
   
   .nav-btn {
-    padding: 1rem;
-    border-bottom: 1px solid var(--gray-300);
-    border-radius: 0;
+    width: 100%;
     text-align: left;
+    padding: 0.875rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
   
   .nav-btn:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
+  }
+  
+  .nav-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.98);
+  }
+  
+  .nav-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
   }
   
   /* Section utilisateur responsive */
   .user-section {
-    order: 3;
-    margin-left: 0;
-    margin-top: 0.5rem;
-    width: 100%;
-    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    order: 1;
+    margin-left: auto;
   }
   
   .user-btn {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    min-height: 40px;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+  
+  .user-btn:active {
+    background-color: var(--gray-200);
+    transform: scale(0.98);
   }
   
   .user-dropdown {
+    min-width: 160px;
+    top: 110%;
     right: 0;
-    min-width: 180px;
   }
   
   .notification-bell {
     font-size: 1.1rem;
-  }
-  
-  /* Contenu principal */
-  .main-content {
-    padding: 1rem;
-  }
-  
-  /* Dashboard responsive */
-  .dashboard-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .upcoming-birthdays {
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .birthdays-list {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  
-  .birthday-card {
-    padding: 0.875rem;
-  }
-  
-  .birthday-card-actions {
-    flex-wrap: wrap;
-    gap: 0.25rem;
-  }
-    /* Groupes responsive */
-  .groups-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-    margin-bottom: 2rem; /* Added space below the header block */
-  }
-
-  /* Style for the action buttons container in groups header */
-  .groups-header .dashboard-actions {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 0.75rem; /* Space between stacked buttons */
-  }
-
-  .groups-header .dashboard-actions .btn {
-    width: 100%; /* Make buttons full width */
-    justify-content: center; /* Center text/icon within buttons */
-  }
-  
-  .groups-list {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .group-card {
-    padding: 1rem;
-  }
-  
-  .group-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .group-card-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .group-card-actions {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .group-card-actions .btn {
-    flex: 1;
-    min-width: 120px;
-  }
-
-  /* Styling for the "Join Group" section */
-  .join-group-section {
-    padding: 1.5rem 1rem !important;
-    margin-bottom: 2rem !important;
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-  }
-
-  .join-group-section h3 {
-    text-align: center;
-    font-size: 1.2rem !important; /* Slightly larger */
-    margin-bottom: 0.75rem !important;
-  }
-
-  .join-group-section p {
-    text-align: center;
-    font-size: 0.9rem !important;
-    margin-bottom: 1.5rem !important;
-    color: var(--text-muted-color) !important;
-  }
-
-  .join-form {
-    display: flex !important; /* Should already be set by more specific rules */
-    flex-direction: column !important; /* Should already be set */
-    gap: 1rem !important; /* Increased gap between input and button */
-  }
-
-  #access-code-input {
-    width: 100%; /* Ensure full width */
-    text-align: center !important; /* Existing */
-    font-weight: 600 !important; /* Existing from 480px, ensure consistency */
-    letter-spacing: 2px !important; /* Existing from 480px */
-    text-transform: uppercase; /* Moved from inline style */
-    /* Other properties like padding, font-size, border are handled by general mobile input styles */
-  }
-
-  #join-group-submit {
-    width: 100%; /* Ensure full width */
-    /* Other properties like padding, font-weight are handled by general mobile button styles */
-  }
-
-  /* Profile mobile enhancements */
-  .profile-container {
-    padding: 0 !important;
-  }
-  
-  .profile-sidebar {
-    border-radius: var(--border-radius) !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .profile-content {
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .tab-link {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .tab-link:active {
-    background-color: var(--gray-300) !important;
-  }
-  
-  .profile-avatar {
-    margin-bottom: 1rem !important;
-  }
-  
-  #change-avatar-btn {
-    touch-action: manipulation !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  #change-avatar-btn:active {
-    transform: scale(0.95) !important;
-  }
-  
-  /* Groups mobile enhancements */
-  .group-card {
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
-    transition: all 0.2s ease !important;
-    touch-action: manipulation !important;
-  }
-  
-  .group-card:active {
-    transform: translateY(2px) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-  }
-  
-  .group-card-actions {
-    margin-top: 1rem !important;
-    padding-top: 1rem !important;
-    border-top: 1px solid var(--gray-200) !important;
-  }
-  
-  .access-code-display {
-    touch-action: manipulation !important;
-    user-select: all !important;
-    cursor: pointer !important;
-  }
-  
-  .access-code-display:active {
-    background-color: var(--primary-dark) !important;
-    transform: scale(0.98) !important;
-  }
-  
-  /* Cards clickables améliorées */
-  .group-item-card,
-  .birthday-card,
-  .member-item {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .group-item-card:active,
-  .birthday-card:active {
-    transform: scale(0.98) !important;
-    transition: transform 0.1s ease !important;
-  }
-  
-  /* Améliorer les modales pour mobile */
-  .modal {
-    padding: 1rem !important;
-  }
-  
-  .modal .modal-header,
-  .modal .modal-body,
-  .modal .modal-footer {
-    padding: 1rem !important;
-  }
-  
-  /* Navigation améliorée */
-  .main-nav {
-    gap: 0.5rem !important;
-  }
-  
-  .nav-btn {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    touch-action: manipulation !important;
-  }
-  
-  /* Améliorer les dropdowns */
-  .user-dropdown {
-    min-width: 200px !important;
-    padding: 0.5rem !important;
-  }
-  
-  .dropdown-item {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    border-radius: calc(var(--border-radius) - 2px) !important;
-    touch-action: manipulation !important;
-  }
-  
-  /* Améliorer les formulaires */
-  .form-group {
-    margin-bottom: 1.25rem !important;
-  }
-  
-  .form-group label {
-    font-weight: 600 !important;
-    color: var(--text-color) !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-  }
-  
-  /* Style pour les messages d'erreur */
-  .error-message {
-    background-color: #fef2f2 !important;
-    color: #dc2626 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #dc2626 !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Style pour les messages de succès */
-  .success-message {
-    background-color: #f0fdf4 !important;
-    color: #166534 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #22c55e !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Loading states améliorés */
-  .loading-spinner {
-    padding: 1rem !important;
-    text-align: center !important;
-    color: var(--primary-color) !important;
-    font-size: 0.9rem !important;
-  }
-  
-  /* Améliorer l'empty state */
-  .empty-state {
-    padding: 2rem 1rem !important;
-    text-align: center !important;
-    background-color: var(--gray-100) !important;
-    border-radius: var(--border-radius) !important;
-    color: var(--text-muted-color) !important;
-  }
-  
-  .empty-state i {
-    font-size: 2rem !important;
-    margin-bottom: 1rem !important;
-    color: var(--gray-400) !important;
-  }
-  
-  .empty-state p {
-    margin-bottom: 0.5rem !important;
-    font-size: 0.9rem !important;
-  }
-}
-
-/* ========================= PROFILE PAGE SPECIFIC STYLES ========================= */
-.profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding: 1rem 2rem;
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-  }
-  
-  .profile-header h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-  }
-  
-  .profile-header p {
+    padding: 0.5rem;
+    border-radius: 50%;
     color: var(--text-muted-color);
-    font-size: 0.9rem;
-  }
-  
-  .profile-avatar-container {
-    margin-right: 1rem;
-  }
-  
-  .profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-  }
-  
-  .profile-info h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .profile-info p {
-    color: var(--text-muted-color);
-    font-size: 0.9rem;
-  }
-  
-  .profile-stats {
-    display: flex;
-    justify-content: space-around;
-    margin: 1.5rem 0;
-  }
-  
-  .profile-stat {
-    text-align: center;
-  }
-  
-  .profile-stat-number {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    display: block;
-  }
-  
-  .profile-stat-label {
-    font-size: 0.8rem;
-    color: var(--text-muted-color);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .profile-content {
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
-    padding: 2rem;
-  }
-  
-  .profile-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--gray-300);
-    background-color: var(--gray-100);
-    margin-bottom: 1.5rem;
-  }
-  
-  .tabs-nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .tab-link {
-    flex: 1;
-    padding: 1rem 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: 500;
-    color: var(--text-muted-color);
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    min-width: 40px;
+    min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    border-bottom: 3px solid transparent;
   }
   
-  .tab-link:hover {
+  .notification-bell:active {
     background-color: var(--gray-200);
-    color: var(--text-color);
-  }
-  
-  .tab-link.active {
-    background-color: var(--card-bg-color);
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-  }
-  
-  .profile-form-section {
-    margin-bottom: 2rem;
-  }
-  
-  .profile-form-section:last-child {
-    margin-bottom: 0;
-  }
-  
-  .profile-form-section h4 {
-    color: var(--text-color);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .profile-form-section h4 i {
-    color: var(--primary-color);
-    font-size: 1rem;
-  }
-  
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-group-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background-color: var(--gray-100);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--input-border-color);
-    transition: var(--transition);
-  }
-  
-  .form-group-checkbox:hover {
-    background-color: var(--gray-200);
-  }
-  
-  .form-group-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--primary-color);
-    cursor: pointer;
-  }
-  
-  .form-group-checkbox label {
-    margin: 0;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--text-color);
-  }
-  
-  .password-strength {
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    border-radius: var(--border-radius);
-    font-size: 0.85rem;
-    text-align: center;
-    font-weight: 500;
-  }
-  
-  .password-strength.weak {
-    background-color: rgba(244, 67, 54, 0.1);
-    color: #f44336;
-    border: 1px solid rgba(244, 67, 54, 0.3);
-  }
-  
-  .password-strength.medium {
-    background-color: rgba(255, 152, 0, 0.1);
-    color: #ff9800;
-    border: 1px solid rgba(255, 152, 0, 0.3);
-  }
-  
-  .password-strength.strong {
-    background-color: rgba(76, 175, 80, 0.1);
-    color: #4caf50;
-    border: 1px solid rgba(76, 175, 80, 0.3);
-  }
-  
-  .profile-actions {
-    display: flex;
-    gap: 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--gray-300);
-    margin-top: 2rem;
-  }
-
-  /* ========================= GROUP DETAILS PAGE STYLES ========================= */
-  .group-details-container {
-    padding: 2rem;
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin-bottom: 2rem;
-  }
-  
-  .group-details-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--gray-300);
-  }
-  
-  .group-info {
-    flex: 1;
-    text-align: left;
-  }
-  
-  .group-info h2 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-  }
-  
-  .group-info p {
-    color: var(--text-muted-color);
-    font-size: 0.9rem;
-  }
-  
-  .group-actions {
-    display: flex;
-    gap: 0.75rem;
-  }
-  
-  /* Access Code Display in Group Details */
-  .access-code-display {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: var(--gray-100);
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
-    margin-right: auto; /* Pushes it to the left if space allows */
-  }
-  
-  .access-code-label {
-    font-weight: 500;
-    color: var(--text-muted-color);
-  }
-  
-  .access-code-value {
-    font-weight: 600;
-    color: var(--primary-color);
-    background-color: var(--card-bg-color);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    letter-spacing: 1px;
-  }
-  
-  .copy-access-code i {
-    color: var(--primary-color);
-  }
-  
-  .group-members,
-  .group-birthdays {
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    padding: 2rem; /* Increased padding */
-    box-shadow: var(--box-shadow);
-    margin-bottom: 2.5rem; /* Increased bottom margin */
-  }
-  
-  .group-members h3,
-  .group-birthdays h3 {
-    font-size: 1.4rem; /* Slightly larger section titles */
-    margin-bottom: 1.5rem; /* Increased margin */
-    color: var(--text-color);
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--gray-200);
-  }
-  
-  .members-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem; /* Consistent gap */
-  }
-  
-  .member-item {
-    background-color: var(--gray-100);
-    border-radius: var(--border-radius);
-    padding: 0.75rem 1.25rem; /* Adjusted padding */
-    display: flex;
-    align-items: center;
-    gap: 0.75rem; /* Adjusted gap */
-    color: var(--text-color);
-    font-size: 0.95rem; /* Slightly larger font */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: var(--transition);
-  }
-  
-  .member-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .member-item i { /* If you add icons to member items */
-    color: var(--primary-color);
-  }
-  
-  .member-name {
-    font-weight: 500;
-  }
-  
-  .group-birthdays-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem; /* Increased margin */
-    /* Removed border-bottom from here, h3 has it now */
-  }
-  
-  /* Birthday cards within group details - can be slightly more compact */
-  #group-details-view .birthdays-list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjust minmax if needed */
-    gap: 1.5rem; /* Consistent gap */
-  }
-  
-  #group-details-view .birthday-card {
-    padding: 1.25rem; /* Slightly adjusted padding */
-    /* Add any other specific overrides for birthday cards in this view */
-  }
-  
-  #group-details-view .empty-state {
-    padding: 2rem;
-    background-color: var(--gray-100);
-    border-radius: var(--border-radius);
+    transform: scale(0.95);
   }
   
   /* =========================
-     MOBILE TOUCH & UX ENHANCEMENTS
+     DASHBOARD MOBILE STYLES
      ========================= */
   
-  /* Touch-friendly buttons and interactions */
-  @media screen and (max-width: 768px) {
-    /* Améliorer les boutons pour le mobile */
-    .btn {
-      min-height: 44px !important;
-      padding: 0.75rem 1.5rem !important;
-      font-size: 0.9rem !important;
-      border-radius: var(--border-radius) !important;
-      touch-action: manipulation !important;
-      transition: all 0.2s ease !important;
-    }
-    
-    .btn:active {
-      transform: scale(0.98) !important;
-    }
-    
-    /* Améliorer les inputs pour mobile */
-    input, textarea, select {
-      font-size: 16px !important; /* Prevent zoom on iOS */
-      padding: 0.875rem !important;
-      min-height: 44px !important;
-      border-radius: var(--border-radius) !important;
-      border: 2px solid var(--input-border-color) !important;
-      transition: all 0.3s ease !important;
-    }
-    
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--primary-color) !important;
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
-      outline: none !important;
-    }
-    
-    /* Profile mobile enhancements */
-    .profile-container {
-      padding: 0 !important;
-    }
-    
-    .profile-sidebar {
-      border-radius: var(--border-radius) !important;
-      margin-bottom: 1rem !important;
-    }
-    
-    .profile-content {
-      border-radius: var(--border-radius) !important;
-    }
-    
-    .tab-link {
-      touch-action: manipulation !important;
-      user-select: none !important;
-      -webkit-tap-highlight-color: transparent !important;
-    }
-    
-    .tab-link:active {
-      background-color: var(--gray-300) !important;
-    }
-    
-    .profile-avatar {
-      margin-bottom: 1rem !important;
-    }
-    
-    #change-avatar-btn {
-      touch-action: manipulation !important;
-      transition: all 0.2s ease !important;
-    }
-    
-    #change-avatar-btn:active {
-      transform: scale(0.95) !important;
-    }
-    
-    /* Groups mobile enhancements */
-    .group-card {
-      border-radius: var(--border-radius) !important;
-      box-shadow: var(--box-shadow) !important;
-      transition: all 0.2s ease !important;
-      touch-action: manipulation !important;
-    }
-    
-    .group-card:active {
-      transform: translateY(2px) !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-    }
-    
-    .group-card-actions {
-      margin-top: 1rem !important;
-      padding-top: 1rem !important;
-      border-top: 1px solid var(--gray-200) !important;
-    }
-    
-    .access-code-display {
-      touch-action: manipulation !important;
-      user-select: all !important;
-      cursor: pointer !important;
-    }
-    
-    .access-code-display:active {
-      background-color: var(--primary-dark) !important;
-      transform: scale(0.98) !important;
-    }
-    
-    /* Cards clickables améliorées */
-    .group-item-card,
-    .birthday-card,
-    .member-item {
-      touch-action: manipulation !important;
-      user-select: none !important;
-      -webkit-tap-highlight-color: transparent !important;
-    }
-    
-    .group-item-card:active,
-    .birthday-card:active {
-      transform: scale(0.98) !important;
-      transition: transform 0.1s ease !important;
-    }
-    
-    /* Améliorer les modales pour mobile */
-    .modal {
-      padding: 1rem !important;
-    }
-    
-    .modal .modal-header,
-    .modal .modal-body,
-    .modal .modal-footer {
-      padding: 1rem !important;
-    }
-    
-    /* Navigation améliorée */
-    .main-nav {
-      gap: 0.5rem !important;
-    }
-    
-    .nav-btn {
-      padding: 0.75rem 1rem !important;
-      min-height: 44px !important;
-      font-size: 0.9rem !important;
-      border-radius: var(--border-radius) !important;
-      touch-action: manipulation !important;
-    }
-    
-    /* Améliorer les dropdowns */
-    .user-dropdown {
-      min-width: 200px !important;
-      padding: 0.5rem !important;
-    }
-    
-    .dropdown-item {
-      padding: 0.75rem 1rem !important;
-      min-height: 44px !important;
-      border-radius: calc(var(--border-radius) - 2px) !important;
-      touch-action: manipulation !important;
-    }
-    
-    /* Améliorer les formulaires */
-    .form-group {
-      margin-bottom: 1.25rem !important;
-    }
-    
-    .form-group label {
-      font-weight: 600 !important;
-      color: var(--text-color) !important;
-      margin-bottom: 0.5rem !important;
-      display: block !important;
-    }
-    
-    /* Style pour les messages d'erreur */
-    .error-message {
-      background-color: #fef2f2 !important;
-      color: #dc2626 !important;
-      padding: 0.75rem !important;
-      border-radius: var(--border-radius) !important;
-      border-left: 4px solid #dc2626 !important;
-      font-size: 0.9rem !important;
-      margin-top: 0.5rem !important;
-    }
-    
-    /* Style pour les messages de succès */
-    .success-message {
-      background-color: #f0fdf4 !important;
-      color: #166534 !important;
-      padding: 0.75rem !important;
-      border-radius: var(--border-radius) !important;
-      border-left: 4px solid #22c55e !important;
-      font-size: 0.9rem !important;
-      margin-top: 0.5rem !important;
-    }
-    
-    /* Loading states améliorés */
-    .loading-spinner {
-      padding: 1rem !important;
-      text-align: center !important;
-      color: var(--primary-color) !important;
-      font-size: 0.9rem !important;
-    }
-    
-    /* Améliorer l'empty state */
-    .empty-state {
-      padding: 2rem 1rem !important;
-      text-align: center !important;
-      background-color: var(--gray-100) !important;
-      border-radius: var(--border-radius) !important;
-      color: var(--text-muted-color) !important;
-    }
-    
-    .empty-state i {
-      font-size: 2rem !important;
-      margin-bottom: 1rem !important;
-      color: var(--gray-400) !important;
-    }
-    
-    .empty-state p {
-      margin-bottom: 0.5rem !important;
-      font-size: 0.9rem !important;
-    }
-  }
-
-  /* Mode paysage pour mobiles */
-@media screen and (max-height: 480px) and (orientation: landscape) {
-  .header {
-    padding: 0.5rem 1rem;
+  .dashboard-header h2 {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 1rem;
   }
   
-  .main-content {
-    padding: 0.75rem;
+  .upcoming-birthdays {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
   }
   
-  .modal {
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  
-  .auth-container {
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-  
-  /* Réduire les paddings en mode paysage */
-  .upcoming-birthdays,
-  .calendar-section,
-  .settings-section,
-  .group-card {
-    padding: 0.75rem;
-  }
-}
-
-/* Écrans très larges (min-width: 1200px) */
-@media screen and (min-width: 1200px) {
-  .main-content {
-    max-width: 1400px;
+  .upcoming-birthdays h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: var(--text-color);
   }
   
   .birthdays-list {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    display: block;
   }
   
-  .groups-list {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  .birthday-card {
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.2s ease;
+    touch-action: manipulation;
   }
   
-  .calendar {
-    gap: 0.75rem;
+  .birthday-card:last-child {
+    margin-bottom: 0;
   }
   
-  .calendar-day {
-    padding: 0.75rem;
-  }
-}
-
-/* Amélioration de l'accessibilité touch */
-@media (hover: none) and (pointer: coarse) {
-  .btn,
-  .nav-btn,
-  .icon-btn,
-  .dropdown-item,
-  .calendar-day,
-  .birthday-card,
-  .group-card {
-    min-height: 44px;
-  }
-  
-  .user-btn {
-    min-height: 40px;
-  }
-  
-  /* Augmenter les zones de touch */
-  .notification-bell {
-    padding: 0.5rem;
-  }
-  
-  .burger-menu-btn {
-    padding: 0.5rem;
-  }
-}
-
-/* Réduction de mouvement pour utilisateurs sensibles */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Contraste élevé */
-@media (prefers-contrast: high) {
-  :root {
-    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  body.dark-theme {
-    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-  }
-  
-  .btn {
-    border: 2px solid currentColor;
-  }
-  
-  .nav-btn.active {
-    border: 2px solid var(--primary-color);
-  }
-}
-
-/* Group Details */
-.group-details-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem; /* Increased bottom margin */
-  padding-bottom: 1rem; /* Added padding bottom */
-  border-bottom: 1px solid var(--gray-300); /* Separator */
-}
-
-.group-details-header h2 {
-  flex: 1;
-  font-size: 1.8rem; /* Slightly larger title */
-  color: var(--text-color);
-}
-
-.group-actions {
-  display: flex;
-  gap: 0.75rem; /* Adjusted gap */
-}
-
-/* Access Code Display in Group Details */
-.access-code-display {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--gray-100);
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  font-size: 0.9rem;
-  margin-right: auto; /* Pushes it to the left if space allows */
-}
-
-.access-code-label {
-  font-weight: 500;
-  color: var(--text-muted-color);
-}
-
-.access-code-value {
-  font-weight: 600;
-  color: var(--primary-color);
-  background-color: var(--card-bg-color);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  letter-spacing: 1px;
-}
-
-.copy-access-code i {
-  color: var(--primary-color);
-}
-
-.group-members,
-.group-birthdays {
-  background-color: var(--card-bg-color);
-  border-radius: var(--border-radius);
-  padding: 2rem; /* Increased padding */
-  box-shadow: var(--box-shadow);
-  margin-bottom: 2.5rem; /* Increased bottom margin */
-}
-
-.group-members h3,
-.group-birthdays h3 {
-  font-size: 1.4rem; /* Slightly larger section titles */
-  margin-bottom: 1.5rem; /* Increased margin */
-  color: var(--text-color);
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--gray-200);
-}
-
-.members-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem; /* Consistent gap */
-}
-
-.member-item {
-  background-color: var(--gray-100);
-  border-radius: var(--border-radius);
-  padding: 0.75rem 1.25rem; /* Adjusted padding */
-  display: flex;
-  align-items: center;
-  gap: 0.75rem; /* Adjusted gap */
-  color: var(--text-color);
-  font-size: 0.95rem; /* Slightly larger font */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: var(--transition);
-}
-
-.member-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.member-item i { /* If you add icons to member items */
-  color: var(--primary-color);
-}
-
-.member-name {
-  font-weight: 500;
-}
-
-.group-birthdays-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem; /* Increased margin */
-  /* Removed border-bottom from here, h3 has it now */
-}
-
-/* Birthday cards within group details - can be slightly more compact */
-#group-details-view .birthdays-list {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjust minmax if needed */
-  gap: 1.5rem; /* Consistent gap */
-}
-
-#group-details-view .birthday-card {
-  padding: 1.25rem; /* Slightly adjusted padding */
-  /* Add any other specific overrides for birthday cards in this view */
-}
-
-#group-details-view .empty-state {
-  padding: 2rem;
-  background-color: var(--gray-100);
-  border-radius: var(--border-radius);
-}
-
-/* =========================
-   MOBILE TOUCH & UX ENHANCEMENTS
-   ========================= */
-
-/* Touch-friendly buttons and interactions */
-@media screen and (max-width: 768px) {
-  /* Améliorer les boutons pour le mobile */
-  .btn {
-    min-height: 44px !important;
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    touch-action: manipulation !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  .btn:active {
-    transform: scale(0.98) !important;
-  }
-  
-  /* Améliorer les inputs pour mobile */
-  input, textarea, select {
-    font-size: 16px !important; /* Prevent zoom on iOS */
-    padding: 0.875rem !important;
-    min-height: 44px !important;
-    border-radius: var(--border-radius) !important;
-    border: 2px solid var(--input-border-color) !important;
-    transition: all 0.3s ease !important;
-  }
-  
-  input:focus, textarea:focus, select:focus {
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
-    outline: none !important;
-  }
-  
-  /* Profile mobile enhancements */
-  .profile-container {
-    padding: 0 !important;
-  }
-  
-  .profile-sidebar {
-    border-radius: var(--border-radius) !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .profile-content {
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .tab-link {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .tab-link:active {
-    background-color: var(--gray-300) !important;
-  }
-  
-  .profile-avatar {
-    margin-bottom: 1rem !important;
-  }
-  
-  #change-avatar-btn {
-    touch-action: manipulation !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  #change-avatar-btn:active {
-    transform: scale(0.95) !important;
-  }
-  
-  /* Groups mobile enhancements */
-  .group-card {
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
-    transition: all 0.2s ease !important;
-    touch-action: manipulation !important;
-  }
-  
-  .group-card:active {
-    transform: translateY(2px) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-  }
-  
-  .group-card-actions {
-    margin-top: 1rem !important;
-    padding-top: 1rem !important;
-    border-top: 1px solid var(--gray-200) !important;
-  }
-  
-  .access-code-display {
-    touch-action: manipulation !important;
-    user-select: all !important;
-    cursor: pointer !important;
-  }
-  
-  .access-code-display:active {
-    background-color: var(--primary-dark) !important;
-    transform: scale(0.98) !important;
-  }
-  
-  /* Cards clickables améliorées */
-  .group-item-card,
-  .birthday-card,
-  .member-item {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .group-item-card:active,
   .birthday-card:active {
-    transform: scale(0.98) !important;
-    transition: transform 0.1s ease !important;
+    transform: translateY(2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
-  /* Améliorer les modales pour mobile */
-  .modal {
-    padding: 1rem !important;
+  .birthday-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
   }
   
-  .modal .modal-header,
-  .modal .modal-body,
-  .modal .modal-footer {
-    padding: 1rem !important;
+  .birthday-card-name {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1rem;
   }
   
-  /* Navigation améliorée */
-  .main-nav {
-    gap: 0.5rem !important;
+  .birthday-card-date {
+    color: var(--text-muted-color);
+    font-size: 0.85rem;
   }
   
-  .nav-btn {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    touch-action: manipulation !important;
+  .birthday-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
   }
   
-  /* Améliorer les dropdowns */
-  .user-dropdown {
-    min-width: 200px !important;
-    padding: 0.5rem !important;
+  .birthday-card-actions .btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    border: none;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
   }
   
-  .dropdown-item {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    border-radius: calc(var(--border-radius) - 2px) !important;
-    touch-action: manipulation !important;
+  .birthday-card-actions .btn:active {
+    transform: scale(0.9);
   }
   
-  /* Améliorer les formulaires */
-  .form-group {
-    margin-bottom: 1.25rem !important;
-  }
-  
-  .form-group label {
-    font-weight: 600 !important;
-    color: var(--text-color) !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-  }
-  
-  /* Style pour les messages d'erreur */
-  .error-message {
-    background-color: #fef2f2 !important;
-    color: #dc2626 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #dc2626 !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Style pour les messages de succès */
-  .success-message {
-    background-color: #f0fdf4 !important;
-    color: #166534 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #22c55e !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Loading states améliorés */
-  .loading-spinner {
-    padding: 1rem !important;
-    text-align: center !important;
-    color: var(--primary-color) !important;
-    font-size: 0.9rem !important;
-  }
-  
-  /* Améliorer l'empty state */
+  /* Empty states */
   .empty-state {
-    padding: 2rem 1rem !important;
-    text-align: center !important;
-    background-color: var(--gray-100) !important;
-    border-radius: var(--border-radius) !important;
-    color: var(--text-muted-color) !important;
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    color: var(--text-muted-color);
   }
   
   .empty-state i {
-    font-size: 2rem !important;
-    margin-bottom: 1rem !important;
-    color: var(--gray-400) !important;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--gray-400);
   }
   
   .empty-state p {
-    margin-bottom: 0.5rem !important;
-    font-size: 0.9rem !important;
+    margin: 0;
+    font-size: 0.9rem;
   }
 }
-
-/* Mode paysage pour mobiles */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-  .header {
-    padding: 0.5rem 1rem;
-  }
-  
-  .main-content {
-    padding: 0.75rem;
-  }
-  
-  .modal {
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  
-  .auth-container {
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-  
-  /* Réduire les paddings en mode paysage */
-  .upcoming-birthdays,
-  .calendar-section,
-  .settings-section,
-  .group-card {
-    padding: 0.75rem;
-  }
-}
-
-/* Écrans très larges (min-width: 1200px) */
-@media screen and (min-width: 1200px) {
-  .main-content {
-    max-width: 1400px;
-  }
-  
-  .birthdays-list {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  }
-  
-  .groups-list {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  }
-  
-  .calendar {
-    gap: 0.75rem;
-  }
-  
-  .calendar-day {
-    padding: 0.75rem;
-  }
-}
-
-/* Amélioration de l'accessibilité touch */
-@media (hover: none) and (pointer: coarse) {
-  .btn,
-  .nav-btn,
-  .icon-btn,
-  .dropdown-item,
-  .calendar-day,
-  .birthday-card,
-  .group-card {
-    min-height: 44px;
-  }
-  
-  .user-btn {
-    min-height: 40px;
-  }
-  
-  /* Augmenter les zones de touch */
-  .notification-bell {
-    padding: 0.5rem;
-  }
-  
-  .burger-menu-btn {
-    padding: 0.5rem;
-  }
-}
-
-/* Réduction de mouvement pour utilisateurs sensibles */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Contraste élevé */
-@media (prefers-contrast: high) {
-  :root {
-    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  body.dark-theme {
-    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-  }
-  
-  .btn {
-    border: 2px solid currentColor;
-  }
-  
-  .nav-btn.active {
-    border: 2px solid var(--primary-color);
-  }
-}
-
-/* Group Details */
-.group-details-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem; /* Increased bottom margin */
-  padding-bottom: 1rem; /* Added padding bottom */
-  border-bottom: 1px solid var(--gray-300); /* Separator */
-}
-
-.group-details-header h2 {
-  flex: 1;
-  font-size: 1.8rem; /* Slightly larger title */
-  color: var(--text-color);
-}
-
-.group-actions {
-  display: flex;
-  gap: 0.75rem; /* Adjusted gap */
-}
-
-/* Access Code Display in Group Details */
-.access-code-display {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--gray-100);
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  font-size: 0.9rem;
-  margin-right: auto; /* Pushes it to the left if space allows */
-}
-
-.access-code-label {
-  font-weight: 500;
-  color: var(--text-muted-color);
-}
-
-.access-code-value {
-  font-weight: 600;
-  color: var(--primary-color);
-  background-color: var(--card-bg-color);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  letter-spacing: 1px;
-}
-
-.copy-access-code i {
-  color: var(--primary-color);
-}
-
-.group-members,
-.group-birthdays {
-  background-color: var(--card-bg-color);
-  border-radius: var(--border-radius);
-  padding: 2rem; /* Increased padding */
-  box-shadow: var(--box-shadow);
-  margin-bottom: 2.5rem; /* Increased bottom margin */
-}
-
-.group-members h3,
-.group-birthdays h3 {
-  font-size: 1.4rem; /* Slightly larger section titles */
-  margin-bottom: 1.5rem; /* Increased margin */
-  color: var(--text-color);
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--gray-200);
-}
-
-.members-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem; /* Consistent gap */
-}
-
-.member-item {
-  background-color: var(--gray-100);
-  border-radius: var(--border-radius);
-  padding: 0.75rem 1.25rem; /* Adjusted padding */
-  display: flex;
-  align-items: center;
-  gap: 0.75rem; /* Adjusted gap */
-  color: var(--text-color);
-  font-size: 0.95rem; /* Slightly larger font */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: var(--transition);
-}
-
-.member-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.member-item i { /* If you add icons to member items */
-  color: var(--primary-color);
-}
-
-.member-name {
-  font-weight: 500;
-}
-
-.group-birthdays-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem; /* Increased margin */
-  /* Removed border-bottom from here, h3 has it now */
-}
-
-/* Birthday cards within group details - can be slightly more compact */
-#group-details-view .birthdays-list {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjust minmax if needed */
-  gap: 1.5rem; /* Consistent gap */
-}
-
-#group-details-view .birthday-card {
-  padding: 1.25rem; /* Slightly adjusted padding */
-  /* Add any other specific overrides for birthday cards in this view */
-}
-
-#group-details-view .empty-state {
-  padding: 2rem;
-  background-color: var(--gray-100);
-  border-radius: var(--border-radius);
-}
-
-/* =========================
-   MOBILE TOUCH & UX ENHANCEMENTS
-   ========================= */
-
-/* Touch-friendly buttons and interactions */
-@media screen and (max-width: 768px) {
-  /* Améliorer les boutons pour le mobile */
-  .btn {
-    min-height: 44px !important;
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    touch-action: manipulation !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  .btn:active {
-    transform: scale(0.98) !important;
-  }
-  
-  /* Améliorer les inputs pour mobile */
-  input, textarea, select {
-    font-size: 16px !important; /* Prevent zoom on iOS */
-    padding: 0.875rem !important;
-    min-height: 44px !important;
-    border-radius: var(--border-radius) !important;
-    border: 2px solid var(--input-border-color) !important;
-    transition: all 0.3s ease !important;
-  }
-  
-  input:focus, textarea:focus, select:focus {
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
-    outline: none !important;
-  }
-  
-  /* Profile mobile enhancements */
-  .profile-container {
-    padding: 0 !important;
-  }
-  
-  .profile-sidebar {
-    border-radius: var(--border-radius) !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .profile-content {
-    border-radius: var(--border-radius) !important;
-  }
-  
-  .tab-link {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .tab-link:active {
-    background-color: var(--gray-300) !important;
-  }
-  
-  .profile-avatar {
-    margin-bottom: 1rem !important;
-  }
-  
-  #change-avatar-btn {
-    touch-action: manipulation !important;
-    transition: all 0.2s ease !important;
-  }
-  
-  #change-avatar-btn:active {
-    transform: scale(0.95) !important;
-  }
-  
-  /* Groups mobile enhancements */
-  .group-card {
-    border-radius: var(--border-radius) !important;
-    box-shadow: var(--box-shadow) !important;
-    transition: all 0.2s ease !important;
-    touch-action: manipulation !important;
-  }
-  
-  .group-card:active {
-    transform: translateY(2px) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-  }
-  
-  .group-card-actions {
-    margin-top: 1rem !important;
-    padding-top: 1rem !important;
-    border-top: 1px solid var(--gray-200) !important;
-  }
-  
-  .access-code-display {
-    touch-action: manipulation !important;
-    user-select: all !important;
-    cursor: pointer !important;
-  }
-  
-  .access-code-display:active {
-    background-color: var(--primary-dark) !important;
-    transform: scale(0.98) !important;
-  }
-  
-  /* Cards clickables améliorées */
-  .group-item-card,
-  .birthday-card,
-  .member-item {
-    touch-action: manipulation !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  
-  .group-item-card:active,
-  .birthday-card:active {
-    transform: scale(0.98) !important;
-    transition: transform 0.1s ease !important;
-  }
-  
-  /* Améliorer les modales pour mobile */
-  .modal {
-    padding: 1rem !important;
-  }
-  
-  .modal .modal-header,
-  .modal .modal-body,
-  .modal .modal-footer {
-    padding: 1rem !important;
-  }
-  
-  /* Navigation améliorée */
-  .main-nav {
-    gap: 0.5rem !important;
-  }
-  
-  .nav-btn {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    font-size: 0.9rem !important;
-    border-radius: var(--border-radius) !important;
-    touch-action: manipulation !important;
-  }
-  
-  /* Améliorer les dropdowns */
-  .user-dropdown {
-    min-width: 200px !important;
-    padding: 0.5rem !important;
-  }
-  
-  .dropdown-item {
-    padding: 0.75rem 1rem !important;
-    min-height: 44px !important;
-    border-radius: calc(var(--border-radius) - 2px) !important;
-    touch-action: manipulation !important;
-  }
-  
-  /* Améliorer les formulaires */
-  .form-group {
-    margin-bottom: 1.25rem !important;
-  }
-  
-  .form-group label {
-    font-weight: 600 !important;
-    color: var(--text-color) !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-  }
-  
-  /* Style pour les messages d'erreur */
-  .error-message {
-    background-color: #fef2f2 !important;
-    color: #dc2626 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #dc2626 !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Style pour les messages de succès */
-  .success-message {
-    background-color: #f0fdf4 !important;
-    color: #166534 !important;
-    padding: 0.75rem !important;
-    border-radius: var(--border-radius) !important;
-    border-left: 4px solid #22c55e !important;
-    font-size: 0.9rem !important;
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Loading states améliorés */
-  .loading-spinner {
-    padding: 1rem !important;
-    text-align: center !important;
-    color: var(--primary-color) !important;
-    font-size: 0.9rem !important;
-  }
-  
-  /* Améliorer l'empty state */
-  .empty-state {
-    padding: 2rem 1rem !important;
-    text-align: center !important;
-    background-color: var(--gray-100) !important;
-    border-radius: var(--border-radius) !important;
-    color: var(--text-muted-color) !important;
-  }
-  
-  .empty-state i {
-    font-size: 2rem !important;
-    margin-bottom: 1rem !important;
-    color: var(--gray-400) !important;
-  }
-  
-  .empty-state p {
-    margin-bottom: 0.5rem !important;
-    font-size: 0.9rem !important;
-  }
-}
-
-/* Mode paysage pour mobiles */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-  .profile-stats {
-    flex-direction: row !important;
-    justify-content: space-around !important;
-  }
-  
-  .groups-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  
-  .group-actions {
-    flex-direction: row !important;
-  }
-  
-  .profile-actions {
-    flex-direction: row !important;
-  }
-}
-
-/* Access Code Input Placeholder Fix for Mobile */
-#access-code-input::placeholder { /* Style for the placeholder */
-    letter-spacing: normal !important;
-    font-weight: 400 !important; 
-    color: var(--text-muted-color) !important;
-    text-transform: none !important; /* Prevent placeholder from being uppercased */
-  }
