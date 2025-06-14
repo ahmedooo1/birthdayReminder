@@ -272,14 +272,27 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 this.toast.error('Erreur', 'Le nom d\'utilisateur ne peut contenir que des lettres, chiffres, tirets et underscores');
                 return;
             }            const result = await this.dataManager.updateProfile(formData);
-              if (result.success) {
-                // Recharger les données depuis l'API pour s'assurer qu'elles sont à jour
-                await this.refreshUserData();
-                
+            console.log('[ProfileManager] SaveProfile result from API:', JSON.stringify(result, null, 2));
+
+            if (result.success) {
                 // Mettre à jour l'affichage du nom d'utilisateur dans l'en-tête
                 const headerUsernameDisplay = document.querySelector('.user-btn span');
                 if (headerUsernameDisplay && formData.username) {
                     headerUsernameDisplay.textContent = formData.username;
+                }
+
+                if (result.updated_user_data) {
+                    console.log('[ProfileManager] Using updated_user_data from saveProfile response to refresh UI.');
+                    this.currentUser = result.updated_user_data;
+                    // Mettre à jour le localStorage avec les nouvelles données
+                    localStorage.setItem('user_data', JSON.stringify(result.updated_user_data));
+                    // Re-remplir le formulaire avec les données fraîches
+                    this.populateProfileForm(result.updated_user_data);
+                    console.log('[ProfileManager] Profile form repopulated with data from update_profile response.');
+                } else {
+                    // Fallback to existing refreshUserData if backend wasn't changed or didn't return updated_user_data
+                    console.log('[ProfileManager] updated_user_data not in saveProfile response, calling refreshUserData().');
+                    await this.refreshUserData();
                 }
                 
                 loadingToast.remove();

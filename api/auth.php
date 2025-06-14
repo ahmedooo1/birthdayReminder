@@ -546,10 +546,28 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             $params[] = $user['user_id'];
             $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE id = ?";
             
+            // Log SQL and params
+            error_log("[AuthUpdateProfile] Attempting to update profile for user_id: " . $user['user_id']);
+            error_log("[AuthUpdateProfile] SQL: " . $sql);
+            error_log("[AuthUpdateProfile] Params: " . json_encode($params));
+
             $stmt = $pdo->prepare($sql);
-            $stmt->execute($params);
+            $success = $stmt->execute($params);
+            $rowCount = $stmt->rowCount();
+            error_log("[AuthUpdateProfile] Execution success: " . ($success ? 'true' : 'false') . ", Rows affected: " . $rowCount);
             
-            sendResponse(['success' => true, 'message' => 'Profil mis à jour avec succès']);
+            if ($success) {
+                // Fetch the updated user data directly to return
+                $stmt_check = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+                $stmt_check->execute([$user['user_id']]);
+                $updatedUserProfile = $stmt_check->fetch(PDO::FETCH_ASSOC);
+                unset($updatedUserProfile['password_hash']); // Remove sensitive data
+                error_log("[AuthUpdateProfile] Data fetched after update: " . json_encode($updatedUserProfile));
+                sendResponse(['success' => true, 'message' => 'Profil mis à jour avec succès', 'updated_user_data' => $updatedUserProfile]);
+            } else {
+                error_log("[AuthUpdateProfile] Update failed.");
+                sendResponse(['error' => 'Erreur lors de la mise à jour du profil en base de données.'], 500);
+            }
             break;
             
         case 'change_password':
