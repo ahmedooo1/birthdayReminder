@@ -626,7 +626,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 sendResponse(['error' => 'Email invalide'], 400);
             }
             try {
-                $stmt = $pdo->prepare("SELECT id, first_name, last_name FROM users WHERE email = ?");
+                $stmt = $pdo->prepare("SELECT id, first_name, last_name, username FROM users WHERE email = ?");
                 $stmt->execute([$email]);
                 $user = $stmt->fetch();
                 $debugInfo['user_found'] = $user ? true : false;
@@ -650,8 +650,22 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 }
                 $resetUrl = rtrim($appBaseUrl, '/') . '/index.html?reset_token=' . $resetToken;
                 
-                $userName = trim($user['first_name'] . ' ' . $user['last_name']);
-                if (empty($userName)) $userName = 'Utilisateur';
+                // Debug : vérifier les valeurs des noms
+                $debugInfo['user_data'] = [
+                    'id' => $user['id'],
+                    'first_name' => $user['first_name'] ?? 'NULL',
+                    'last_name' => $user['last_name'] ?? 'NULL',
+                    'username' => $user['username'] ?? 'NULL'
+                ];
+                
+                // Construire le nom utilisateur avec priorité aux vrais noms, puis username en fallback
+                $firstName = trim($user['first_name'] ?? '');
+                $lastName = trim($user['last_name'] ?? '');
+                $userName = trim($firstName . ' ' . $lastName);
+                
+                if (empty($userName)) {
+                    $userName = $user['username'] ?? 'Utilisateur';
+                }
                 $subject = 'Réinitialisation de votre mot de passe - Birthday Reminder';
                 $message = '
                 <html>
@@ -729,7 +743,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             try {
                 // Vérifier le token - utiliser PHP timestamp pour éviter les problèmes de timezone
                 $stmt = $pdo->prepare("
-                    SELECT id, email, first_name, last_name, reset_token_expires 
+                    SELECT id, email, first_name, last_name, username, reset_token_expires 
                     FROM users 
                     WHERE reset_token = ?
                 ");
@@ -759,10 +773,13 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 ");
                 $stmt->execute([$passwordHash, $user['id']]);
                 
-                // Envoyer un email de confirmation
-                $userName = trim($user['first_name'] . ' ' . $user['last_name']);
+                // Construire le nom utilisateur avec priorité aux vrais noms, puis username en fallback
+                $firstName = trim($user['first_name'] ?? '');
+                $lastName = trim($user['last_name'] ?? '');
+                $userName = trim($firstName . ' ' . $lastName);
+                
                 if (empty($userName)) {
-                    $userName = 'Utilisateur';
+                    $userName = $user['username'] ?? 'Utilisateur';
                 }
                 
                 $subject = 'Mot de passe modifié avec succès - Birthday Reminder';
