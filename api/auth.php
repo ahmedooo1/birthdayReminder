@@ -603,15 +603,17 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             // Demande de réinitialisation de mot de passe
             $debug = isset($_GET['debug']) && $_GET['debug'] == '1';
             $email = $_POST['email'] ?? '';
+            $rawInput = '';
             if (empty($email)) {
-                $data = json_decode(file_get_contents('php://input'), true);
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true);
                 if (isset($data['email'])) {
                     $email = $data['email'];
                 }
             }
             $debugInfo = [
                 'raw_post' => $_POST,
-                'raw_input' => file_get_contents('php://input'),
+                'raw_input' => $rawInput,
                 'method' => $_SERVER['REQUEST_METHOD'],
                 'email' => $email
             ];
@@ -646,7 +648,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                     $host = $_SERVER['HTTP_HOST'] ?? 'localhost'; // Utiliser 'localhost' ou un domaine par défaut si HTTP_HOST n'est pas défini
                     $appBaseUrl = $scheme . '://' . $host;
                 }
-                $resetUrl = rtrim($appBaseUrl, '/') . '/front/index.html?reset_token=' . $resetToken;
+                $resetUrl = rtrim($appBaseUrl, '/') . '/index.html?reset_token=' . $resetToken;
                 
                 $userName = trim($user['first_name'] . ' ' . $user['last_name']);
                 if (empty($userName)) $userName = 'Utilisateur';
