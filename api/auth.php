@@ -604,7 +604,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             
         case 'forgot_password':
             // Demande de réinitialisation de mot de passe
-            // Correction : lire l'email depuis JSON ou POST
+            $debug = isset($_GET['debug']) && $_GET['debug'] == '1';
             $email = $_POST['email'] ?? '';
             if (empty($email)) {
                 $data = json_decode(file_get_contents('php://input'), true);
@@ -612,46 +612,37 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                     $email = $data['email'];
                 }
             }
+            $debugInfo = [
+                'raw_post' => $_POST,
+                'raw_input' => file_get_contents('php://input'),
+                'method' => $_SERVER['REQUEST_METHOD'],
+                'email' => $email
+            ];
             if (empty($email)) {
+                if ($debug) sendResponse(['error' => 'Email requis', 'debug' => $debugInfo], 400);
                 sendResponse(['error' => 'Email requis'], 400);
             }
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                if ($debug) sendResponse(['error' => 'Email invalide', 'debug' => $debugInfo], 400);
                 sendResponse(['error' => 'Email invalide'], 400);
             }
-
             try {
-                // Vérifier si l'utilisateur existe
                 $stmt = $pdo->prepare("SELECT id, first_name, last_name FROM users WHERE email = ?");
                 $stmt->execute([$email]);
                 $user = $stmt->fetch();
                 $debugInfo['user_found'] = $user ? true : false;
-
                 if (!$user) {
-                    sendResponse([
-                        'success' => true, 
-                        'message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.'
-                    ]);
+                    if ($debug) sendResponse(['success' => true, 'message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.', 'debug' => $debugInfo]);
+                    sendResponse(['success' => true, 'message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.']);
                     break;
                 }
-
-                // Générer un token sécurisé
                 $resetToken = bin2hex(random_bytes(32));
                 $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
-
-                // Enregistrer le token en base
                 $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?");
                 $stmt->execute([$resetToken, $expiresAt, $user['id']]);
-
-                // Envoyer l'email de réinitialisation
-                $resetUrl = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . 
-                           '://' . $_SERVER['HTTP_HOST'] . 
-                           '/front/index.html?reset_token=' . $resetToken;
-
+                $resetUrl = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/front/index.html?reset_token=' . $resetToken;
                 $userName = trim($user['first_name'] . ' ' . $user['last_name']);
-                if (empty($userName)) {
-                    $userName = 'Utilisateur';
-                }
-
+                if (empty($userName)) $userName = 'Utilisateur';
                 $subject = 'Réinitialisation de votre mot de passe - Birthday Reminder';
                 $message = '
                 <html>
@@ -680,20 +671,29 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 </html>';
 
                 require_once 'utils.php';
+                // Debug: récupérer la config email
+                if ($debug) {
+                    $debugInfo['mail_config'] = [
+                        'MAIL_HOST' => env('MAIL_HOST', ''),
+                        'MAIL_PORT' => env('MAIL_PORT', ''),
+                        'MAIL_USERNAME' => env('MAIL_USERNAME', ''),
+                        'MAIL_FROM_ADDRESS' => env('MAIL_FROM_ADDRESS', ''),
+                        'MAIL_FROM_NAME' => env('MAIL_FROM_NAME', ''),
+                        'MAIL_ENCRYPTION' => env('MAIL_ENCRYPTION', '')
+                    ];
+                }
                 $emailSent = sendEmail($email, $subject, $message);
                 $debugInfo['reset_url'] = $resetUrl;
                 $debugInfo['email_sent'] = $emailSent;
-
                 if ($emailSent) {
-                    sendResponse([
-                        'success' => true, 
-                        'message' => 'Un email de réinitialisation a été envoyé à votre adresse.'
-                    ]);
+                    if ($debug) sendResponse(['success' => true, 'message' => 'Un email de réinitialisation a été envoyé à votre adresse.', 'debug' => $debugInfo]);
+                    sendResponse(['success' => true, 'message' => 'Un email de réinitialisation a été envoyé à votre adresse.']);
                 } else {
+                    if ($debug) sendResponse(['error' => 'Erreur lors de l\'envoi de l\'email', 'debug' => $debugInfo], 500);
                     sendResponse(['error' => 'Erreur lors de l\'envoi de l\'email'], 500);
                 }
-
             } catch (PDOException $e) {
+                if ($debug) sendResponse(['error' => 'Erreur serveur', 'debug' => $debugInfo, 'exception' => $e->getMessage()], 500);
                 error_log("Erreur forgot_password: " . $e->getMessage());
                 sendResponse(['error' => 'Erreur serveur'], 500);
             }
