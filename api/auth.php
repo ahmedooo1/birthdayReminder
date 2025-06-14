@@ -527,9 +527,16 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 $params[] = $data['email_notifications'] ? 1 : 0;
             }
             
-            if (isset($data['notification_days'])) {
+            // if (isset($data['notification_days'])) { // Old check
+            //     $fields[] = "notification_days = ?";
+            //     $params[] = intval($data['notification_days']);
+            // }
+
+            // New handling for notification_days to allow NULL
+            if (array_key_exists('notification_days', $data)) {
                 $fields[] = "notification_days = ?";
-                $params[] = intval($data['notification_days']);
+                // Assumes $data['notification_days'] is either null or a validated integer from frontend
+                $params[] = $data['notification_days']; 
             }
             
             if (empty($fields)) {
