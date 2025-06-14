@@ -165,7 +165,10 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         
         // Remplir les champs de notification seulement s'ils existent
         if (emailNotificationsCheckbox) emailNotificationsCheckbox.checked = user.email_notifications == 1;
-        if (notificationDaysInput) notificationDaysInput.value = user.notification_days || 7;
+        if (notificationDaysInput) {
+            // Correctly display 0 if it's the value, otherwise default to 7 if null/undefined
+            notificationDaysInput.value = (user.notification_days !== null && typeof user.notification_days !== 'undefined') ? user.notification_days : 7;
+        }
     }
 
     /**
@@ -229,8 +232,22 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             }
             
             if (notificationDaysInput) {
-                formData.notification_days = parseInt(notificationDaysInput.value, 10);
-                console.log('Notification days input:', notificationDaysInput.value);
+                const daysValue = notificationDaysInput.value.trim();
+                if (daysValue === "") {
+                    // If the user clears the field, send null.
+                    // Backend can then handle it, e.g., by applying a default value or storing NULL.
+                    formData.notification_days = null; 
+                } else {
+                    // Use parseFloat for initial check to catch decimals, then ensure it's an integer.
+                    const parsedValue = parseFloat(daysValue);
+                    if (isNaN(parsedValue) || parsedValue < 0 || !Number.isInteger(parsedValue)) {
+                        loadingToast.remove();
+                        this.toast.error('Erreur', 'Le délai de notification doit être un nombre entier positif ou zéro.');
+                        return;
+                    }
+                    formData.notification_days = parseInt(daysValue, 10); // Final value is an integer
+                }
+                console.log('Notification days input:', notificationDaysInput.value, 'Processed as:', formData.notification_days);
             }
 
             console.log('Form data to save:', formData);
