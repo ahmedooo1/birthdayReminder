@@ -2939,3 +2939,10 @@ body.dark-theme .notification-bell:hover {
     flex-direction: row !important;
   }
 }
+
+/* Access Code Input Placeholder Fix for Mobile */
+#access-code-input::placeholder { /* Style for the placeholder */
+    letter-spacing: normal !important;
+    font-weight: 400 !important; 
+    color: var(--text-muted-color) !important;
+  }
