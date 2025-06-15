@@ -847,12 +847,8 @@ class DataManager {    constructor() {
         const token = localStorage.getItem('session_token');
         if (!token) {
           throw new Error('No session token found');
-        }
-  
-        // Utiliser la méthode apiRequest pour la cohérence
-        const response = await this.apiRequest('auth.php?action=profile', 'GET', null, {
-          'Authorization': `Bearer ${token}`
-        });
+        }        // Utiliser la méthode apiRequest pour la cohérence
+        const response = await this.apiRequest('auth.php?action=profile', 'GET', null);
   
         // Si on reçoit une réponse valide, mettre à jour le localStorage
         if (response && response.id) {
@@ -873,19 +869,17 @@ class DataManager {    constructor() {
    * Update user profile
    * @param {Object} profileData - Profile data to update
    * @returns {Object} Updated profile response
-   */
-  async updateProfile(profileData) {
+   */  async updateProfile(profileData) {
     try {
       const token = localStorage.getItem('session_token');
       if (!token) {
         throw new Error('No session token found');
       }
 
-      const response = await this.apiRequest('auth.php?action=update_profile', 'POST', {
-        ...profileData,
-        session_token: token,
-        csrf_token: 'dummy_token' // Temporary until CSRF is implemented
-      });      // Update local storage with new data from API response (not form data)
+      console.log('[DataManager] updateProfile called with data:', profileData);
+      console.log('[DataManager] Using session token:', token.substring(0, 10) + '...');
+
+      const response = await this.apiRequest('auth.php?action=update_profile', 'POST', profileData);// Update local storage with new data from API response (not form data)
       if (response.success && response.updated_user_data) {
         localStorage.setItem('user_data', JSON.stringify(response.updated_user_data));
         console.log('[DataManager] Updated localStorage with fresh user data from API response');

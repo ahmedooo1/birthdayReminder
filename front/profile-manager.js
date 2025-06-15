@@ -275,24 +275,27 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('[ProfileManager] SaveProfile result from API:', JSON.stringify(result, null, 2));
 
             if (result.success) {
-                // Mettre à jour l'affichage du nom d'utilisateur dans l'en-tête
-                const headerUsernameDisplay = document.querySelector('.user-btn span');
-                if (headerUsernameDisplay && formData.username) {
-                    headerUsernameDisplay.textContent = formData.username;
-                }
+                const headerUsernameDisplay = document.querySelector('.user-btn span'); // Moved up
 
                 if (result.updated_user_data) {
                     console.log('[ProfileManager] Using updated_user_data from saveProfile response to refresh UI.');
                     this.currentUser = result.updated_user_data;
-                    // Mettre à jour le localStorage avec les nouvelles données
                     localStorage.setItem('user_data', JSON.stringify(result.updated_user_data));
-                    // Re-remplir le formulaire avec les données fraîches
                     this.populateProfileForm(result.updated_user_data);
                     console.log('[ProfileManager] Profile form repopulated with data from update_profile response.');
+
+                    // Update header username using data from API response
+                    if (headerUsernameDisplay && result.updated_user_data.username) {
+                        headerUsernameDisplay.textContent = result.updated_user_data.username;
+                    }
                 } else {
-                    // Fallback to existing refreshUserData if backend wasn't changed or didn't return updated_user_data
                     console.log('[ProfileManager] updated_user_data not in saveProfile response, calling refreshUserData().');
-                    await this.refreshUserData();
+                    await this.refreshUserData(); // This updates this.currentUser and populates form
+                    
+                    // Update header username using data from refreshed currentUser
+                    if (headerUsernameDisplay && this.currentUser && this.currentUser.username) {
+                        headerUsernameDisplay.textContent = this.currentUser.username;
+                    }
                 }
                 
                 loadingToast.remove();
