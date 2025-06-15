@@ -27,10 +27,17 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         }
     }    // Event handler methods
     _handleProfileSubmit(e) {
+        console.log('🔴 [URGENT] Form submit intercepted!');
+        console.log('🔴 Event object:', e);
+        console.log('🔴 Event type:', e.type);
+        console.log('🔴 Calling preventDefault...');
         e.preventDefault();
         e.stopPropagation();
+        console.log('🔴 preventDefault called - should not reload page');
+        console.log('🔴 Now calling saveProfile...');
         this.saveProfile();
-        return false;
+        console.log('🔴 saveProfile called');
+        return false; // Extra protection
     }
 
     _handlePasswordSaveClick(e) {
@@ -59,14 +66,13 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         } else {
             this.setupEventListeners();
         }
-    }    /**
+    }
+
+    /**
      * Configurer les écouteurs d'événements
      */
     setupEventListeners() {
-        console.log('🟢 setupEventListeners() called');
-        
-        // Ensure elements are fetched each time, as DOM might change or not be ready initially        
-        this.profileForm = document.getElementById('profile-form');
+        // Ensure elements are fetched each time, as DOM might change or not be ready initially        this.profileForm = document.getElementById('profile-form');
         
         // Populate this.passwordForm with current elements
         this.passwordForm.currentPassword = document.getElementById('current-password');
@@ -76,13 +82,13 @@ class ProfileManager {    constructor(dataManager, toastManager) {
 
         // Onglets du profil
         const tabLinks = document.querySelectorAll('.tab-link');
-        console.log('🟢 Found tab links:', tabLinks.length);
+        console.log('Found tab links:', tabLinks.length); // Debug log from original
         tabLinks.forEach(link => {
-            console.log('🟢 Setting up tab link:', link.dataset.tab);
+            console.log('Setting up tab link:', link.dataset.tab); // Debug log from original
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
             link.addEventListener('click', this._boundHandleTabLinkClick);
-        });            // Formulaire de profil
+        });        // Formulaire de profil
         if (this.profileForm) {
             console.log('🟢 Profile form found:', this.profileForm);
             console.log('🟢 Removing old listener...');
@@ -92,7 +98,6 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Submit listener attached successfully');
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
-            console.error('❌ Available forms:', document.querySelectorAll('form'));
         }
 
         // Changement de mot de passe
@@ -221,9 +226,11 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         if (tabContent) tabContent.classList.add('active');
     }    /**
      * Sauvegarder le profil
-     */    
-    async saveProfile() {
+     */    async saveProfile() {
+        console.log('🟡 [URGENT] saveProfile() started - should see this before page reloads');
+        console.log('🟡 Creating loading toast...');
         const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');
+        console.log('🟡 Loading toast created');        
         
         try {
             const formData = {
@@ -401,62 +408,22 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.error('[ProfileManager] Erreur lors de l\'actualisation des données utilisateur:', error);
             // this.toast.error('Erreur', 'Une erreur technique est survenue lors du rafraîchissement des données.');
         }
-    }    /**
+    }
+
+    /**
      * Afficher la vue profil
      */
     showProfile() {
-        console.log('🟢 showProfile() called');
-        // Attendre que le DOM soit prêt avant d'initialiser les event listeners
-        this.waitForProfileForm().then(() => {
-            console.log('🟢 Profile form is ready, setting up listeners');
-            this.setupEventListeners();
-            this.loadProfile();
-        });
-    }
-    
-    /**
-     * Attendre que le formulaire de profil soit disponible dans le DOM
-     */
-    async waitForProfileForm(maxAttempts = 10) {
-        console.log('🟢 waitForProfileForm() called');
-        let attempts = 0;
-        
-        while (attempts < maxAttempts) {
-            const profileForm = document.getElementById('profile-form');
-            console.log(`🟢 Attempt ${attempts + 1}: Profile form found:`, !!profileForm);
-            
-            if (profileForm) {
-                console.log('🟢 Profile form found successfully!');
-                return profileForm;
-            }
-            
-            // Attendre 100ms avant le prochain essai
-            await new Promise(resolve => setTimeout(resolve, 100));
-            attempts++;
-        }
-        
-        console.error('❌ Profile form not found after', maxAttempts, 'attempts');
-        throw new Error('Profile form not found in DOM');
-    }/**
+        // Re-initialiser les event listeners au cas où les éléments DOM auraient changé
+        this.setupEventListeners();
+        this.loadProfile();
+    }    /**
      * Exposer les méthodes de debug globalement pour le test
      */
     exposeDebugMethods() {
         window.refreshUserData = this.refreshUserData.bind(this);
         window.debugProfile = this.debugProfile.bind(this);
         window.testToken = this.testToken.bind(this);
-        window.testSaveProfile = this.testSaveProfile.bind(this);
-    }
-    
-    /**
-     * Test de sauvegarde du profil (sans submit de formulaire)
-     */
-    async testSaveProfile() {
-        console.log('🔵 [TEST] Starting manual profile save test');
-        
-        // Tester directement la fonction saveProfile sans passer par le formulaire
-        await this.saveProfile();
-        
-        console.log('🔵 [TEST] Manual profile save test completed');
     }
     
     /**
