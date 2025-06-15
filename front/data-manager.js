@@ -56,6 +56,10 @@ class DataManager {    constructor() {
     * @returns {Promise<Object>} Réponse de l'API
     */    async apiRequest(endpoint, method = 'GET', body = null) {
         const token = localStorage.getItem('session_token');
+        console.log(`[DataManager] API Request: ${method} ${endpoint}`);
+        console.log(`[DataManager] Token exists: ${!!token}`);
+        console.log(`[DataManager] Request body:`, body);
+        
         const headers = {
           'Content-Type': 'application/json',
         };
@@ -71,23 +75,29 @@ class DataManager {    constructor() {
         if (body) {
           options.body = JSON.stringify(body);
         }
+        
+        console.log(`[DataManager] Full request options:`, options);
     
         let responseData = null; // Declare responseData here to access in catch
     
         try {
+          console.log(`[DataManager] Making fetch request to: ${this.apiUrl + endpoint}`);
           const response = await fetch(this.apiUrl + endpoint, options);
+          console.log(`[DataManager] Response status: ${response.status} ${response.statusText}`);
+          
           responseData = await response.json(); // Assign here
+          console.log(`[DataManager] Response data:`, responseData);
     
           if (!response.ok) {
-            console.log('RAW responseData from server on error:', responseData); // Log raw data
+            console.error('RAW responseData from server on error:', responseData); // Log raw data
             const errorMessage = responseData.message || JSON.stringify(responseData);
             throw new Error(errorMessage);
           }
           return responseData;
         } catch (error) {
           // If responseData is null here, it means fetch itself or response.json() failed before assignment
-          console.error(`Erreur API (${endpoint}): RAW ERROR DATA FROM SERVER:`, responseData); 
-          console.error(`Erreur API (${endpoint}): CONSTRUCTED ERROR OBJECT:`, error);
+          console.error(`[DataManager] Erreur API (${endpoint}): RAW ERROR DATA FROM SERVER:`, responseData); 
+          console.error(`[DataManager] Erreur API (${endpoint}): CONSTRUCTED ERROR OBJECT:`, error);
           throw error;
         }
       }

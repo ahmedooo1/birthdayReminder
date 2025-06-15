@@ -25,12 +25,19 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         if (typeof window !== 'undefined') {
             this.exposeDebugMethods();
         }
-    }
-
-    // Event handler methods
+    }    // Event handler methods
     _handleProfileSubmit(e) {
+        console.log('🔴 [URGENT] Form submit intercepted!');
+        console.log('🔴 Event object:', e);
+        console.log('🔴 Event type:', e.type);
+        console.log('🔴 Calling preventDefault...');
         e.preventDefault();
+        e.stopPropagation();
+        console.log('🔴 preventDefault called - should not reload page');
+        console.log('🔴 Now calling saveProfile...');
         this.saveProfile();
+        console.log('🔴 saveProfile called');
+        return false; // Extra protection
     }
 
     _handlePasswordSaveClick(e) {
@@ -83,8 +90,14 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             link.addEventListener('click', this._boundHandleTabLinkClick);
         });        // Formulaire de profil
         if (this.profileForm) {
+            console.log('🟢 Profile form found:', this.profileForm);
+            console.log('🟢 Removing old listener...');
             this.profileForm.removeEventListener('submit', this._boundHandleProfileSubmit);
+            console.log('🟢 Adding new listener...');
             this.profileForm.addEventListener('submit', this._boundHandleProfileSubmit);
+            console.log('🟢 Submit listener attached successfully');
+        } else {
+            console.error('❌ Profile form NOT found! ID: profile-form');
         }
 
         // Changement de mot de passe
@@ -211,12 +224,15 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         
         if (tabLink) tabLink.classList.add('active');
         if (tabContent) tabContent.classList.add('active');
-    }
-
-    /**
+    }    /**
      * Sauvegarder le profil
      */    async saveProfile() {
-        const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');        try {
+        console.log('🟡 [URGENT] saveProfile() started - should see this before page reloads');
+        console.log('🟡 Creating loading toast...');
+        const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');
+        console.log('🟡 Loading toast created');        
+        
+        try {
             const formData = {
                 username: document.getElementById('profile-username').value.trim(),
                 first_name: document.getElementById('profile-first-name').value.trim(),
@@ -406,6 +422,78 @@ class ProfileManager {    constructor(dataManager, toastManager) {
      */
     exposeDebugMethods() {
         window.refreshUserData = this.refreshUserData.bind(this);
+        window.debugProfile = this.debugProfile.bind(this);
+        window.testToken = this.testToken.bind(this);
+        window.testSaveProfile = this.testSaveProfile.bind(this);
+    }
+    
+    /**
+     * Test de sauvegarde du profil (sans submit de formulaire)
+     */
+    async testSaveProfile() {
+        console.log('🔵 [TEST] Starting manual profile save test');
+        
+        // Tester directement la fonction saveProfile sans passer par le formulaire
+        await this.saveProfile();
+        
+        console.log('🔵 [TEST] Manual profile save test completed');
+    }
+    
+    /**
+     * Tester si le token est valide
+     */
+    async testToken() {
+        const token = localStorage.getItem('session_token');
+        console.log('Session token:', token ? token.substring(0, 20) + '...' : 'NONE');
+        
+        if (!token) {
+            console.error('❌ Aucun token trouvé dans localStorage');
+            return false;
+        }
+        
+        try {
+            const response = await this.dataManager.apiRequest('auth.php?action=profile', 'GET', null);
+            console.log('✅ Token valide, réponse:', response);
+            return true;
+        } catch (error) {
+            console.error('❌ Token invalide:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * Debug complet du profil
+     */
+    async debugProfile() {
+        console.log('=== DEBUG PROFIL ===');
+        console.log('1. Vérification du token...');
+        const tokenValid = await this.testToken();
+        
+        if (!tokenValid) {
+            console.log('❌ Arrêt - Token invalide');
+            return;
+        }
+        
+        console.log('2. Récupération des données du formulaire...');
+        const formData = {
+            username: document.getElementById('profile-username')?.value || 'N/A',
+            first_name: document.getElementById('profile-first-name')?.value || 'N/A',
+            last_name: document.getElementById('profile-last-name')?.value || 'N/A',
+            email: document.getElementById('profile-email')?.value || 'N/A',
+            email_notifications: document.getElementById('profile-email-notifications')?.checked || false,
+            notification_days: document.getElementById('profile-notification-days')?.value || 'N/A'
+        };
+        console.log('Données du formulaire:', formData);
+        
+        console.log('3. Test de sauvegarde...');
+        try {
+            const result = await this.dataManager.updateProfile(formData);
+            console.log('✅ Résultat de la sauvegarde:', result);
+        } catch (error) {
+            console.error('❌ Erreur lors de la sauvegarde:', error);
+        }
+        
+        console.log('=== FIN DEBUG ===');
     }
 }
 
