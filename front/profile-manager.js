@@ -473,7 +473,17 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         window.testSaveProfile = this.testSaveProfile.bind(this);
     }
     
-  
+    /**
+     * Test de sauvegarde du profil (sans submit de formulaire)
+     */
+    async testSaveProfile() {
+        console.log('🔵 [TEST] Starting manual profile save test');
+        
+        // Tester directement la fonction saveProfile sans passer par le formulaire
+        await this.saveProfile();
+        
+        console.log('🔵 [TEST] Manual profile save test completed');
+    }
     
     /**
      * Tester si le token est valide
