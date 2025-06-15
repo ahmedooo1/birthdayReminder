@@ -569,35 +569,50 @@ class DataManager {    constructor() {
       throw error;
     }
     }
-    
-    /**
+      /**
     * Update an existing birthday
     * @param {string} id - Birthday ID
     * @param {Object} updates - Object with properties to update
     * @returns {Object|null} Updated birthday or null if not found
     */
     async updateBirthday(id, updates) {
+    console.log('🔄 [UPDATE BIRTHDAY] Starting update for ID:', id);
+    console.log('🔄 [UPDATE BIRTHDAY] Original updates data:', updates);
+    
     try {
       // Map groupId to group_id for the API if it exists
       const apiBirthdayData = { ...updates };
       if (apiBirthdayData.groupId !== undefined) {
         apiBirthdayData.group_id = apiBirthdayData.groupId;
         delete apiBirthdayData.groupId;
+        console.log('🔄 [UPDATE BIRTHDAY] Mapped groupId to group_id');
       }
 
+      console.log('🔄 [UPDATE BIRTHDAY] Final API data to send:', apiBirthdayData);
+      console.log('🔄 [UPDATE BIRTHDAY] Making API request to: birthdays.php?id=' + id);
+
       const updatedBirthday = await this.apiRequest(`birthdays.php?id=${id}`, 'PUT', apiBirthdayData);
+      console.log('🔄 [UPDATE BIRTHDAY] API response received:', updatedBirthday);
       
       // S\'assurer que les données sont au format attendu
       const formattedBirthday = (updatedBirthday && updatedBirthday.data) ? updatedBirthday.data : updatedBirthday;
+      console.log('🔄 [UPDATE BIRTHDAY] Formatted birthday data:', formattedBirthday);
       
       const index = this.data.birthdays.findIndex(b => b.id === id);
+      console.log('🔄 [UPDATE BIRTHDAY] Found birthday at index:', index);
+      
       if (index !== -1) {
         this.data.birthdays[index] = formattedBirthday;
+        console.log('🔄 [UPDATE BIRTHDAY] Updated birthday in local data');
+      } else {
+        console.warn('🔄 [UPDATE BIRTHDAY] Birthday not found in local data!');
       }
+      
       this.saveLocalData();
+      console.log('🔄 [UPDATE BIRTHDAY] Update completed successfully');
       return formattedBirthday;
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de l'anniversaire:", error);
+      console.error('🔄 [UPDATE BIRTHDAY] Error during update:', error);
     
     // Fallback: mettre à jour localement
     const index = this.data.birthdays.findIndex(birthday => birthday.id === id);

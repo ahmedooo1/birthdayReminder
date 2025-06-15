@@ -1494,13 +1494,18 @@ function openBirthdayModal(birthday = null, defaultGroupId = null) {
  * Save a birthday
  */
 async function saveBirthday() {
-  console.log("Saving birthday");
+  console.log("💾 [SAVE BIRTHDAY] Starting saveBirthday function");
   
   const birthdayId = document.getElementById('birthday-id').value;
   const birthdayName = document.getElementById('birthday-name').value;
   const birthdayDate = document.getElementById('birthday-date').value;
   const birthdayGroup = document.getElementById('birthday-group').value;
-  console.log("Birthday ID:", birthdayId);
+  
+  console.log("💾 [SAVE BIRTHDAY] Form data extracted:");
+  console.log("💾 [SAVE BIRTHDAY] - ID:", birthdayId);
+  console.log("💾 [SAVE BIRTHDAY] - Name:", birthdayName);
+  console.log("💾 [SAVE BIRTHDAY] - Date:", birthdayDate);
+  console.log("💾 [SAVE BIRTHDAY] - Group:", birthdayGroup);
   
   const birthdayData = {
     name: birthdayName,
@@ -1509,14 +1514,26 @@ async function saveBirthday() {
     notes: document.getElementById('birthday-notes').value
   };
   
-  if (birthdayId) {
-    // Update existing birthday
-    console.log("Updating existing birthday with ID:", birthdayId);
-    await dataManager.updateBirthday(birthdayId, birthdayData);
-  } else {
-    // Add new birthday
-    console.log("Adding new birthday");
-    await dataManager.addBirthday(birthdayData);
+  console.log("💾 [SAVE BIRTHDAY] Final birthday data object:", birthdayData);
+  
+  try {
+    if (birthdayId) {
+      // Update existing birthday
+      console.log("💾 [SAVE BIRTHDAY] Updating existing birthday with ID:", birthdayId);
+      const result = await dataManager.updateBirthday(birthdayId, birthdayData);
+      console.log("💾 [SAVE BIRTHDAY] Update result:", result);
+    } else {
+      // Add new birthday
+      console.log("💾 [SAVE BIRTHDAY] Adding new birthday");
+      const result = await dataManager.addBirthday(birthdayData);
+      console.log("💾 [SAVE BIRTHDAY] Add result:", result);
+    }
+    
+    console.log("💾 [SAVE BIRTHDAY] Birthday operation completed successfully");
+  } catch (error) {
+    console.error("💾 [SAVE BIRTHDAY] Error during birthday operation:", error);
+    // Don't hide modal on error so user can try again
+    return;
   }
   
   // Hide the modal
