@@ -40,7 +40,31 @@ class DataManager {    constructor() {
             };
         }
     }
-    
+      /**
+     * Normaliser les données d'anniversaire pour le frontend
+     * @param {Object|Array} birthdayData - Données d'anniversaire de l'API
+     * @returns {Object|Array} Données normalisées
+     */
+    normalizeBirthdayData(birthdayData) {
+        if (Array.isArray(birthdayData)) {
+            return birthdayData.map(birthday => this.normalizeBirthdayData(birthday));
+        }
+        
+        if (birthdayData && typeof birthdayData === 'object') {
+            // Créer une copie pour éviter de modifier l'original
+            const normalized = { ...birthdayData };
+            
+            // Mapper group_id vers groupId pour le frontend
+            if (normalized.group_id !== undefined) {
+                normalized.groupId = normalized.group_id;
+            }
+            
+            return normalized;
+        }
+        
+        return birthdayData;
+    }
+
     /**
     * Generate a unique ID
     * @returns {string} Unique ID
@@ -476,9 +500,8 @@ class DataManager {    constructor() {
     if (response && typeof response === 'object' && response.data && Array.isArray(response.data)) {
         birthdays = response.data;
     }
-    
-    if (birthdays && Array.isArray(birthdays)) {
-        this.data.birthdays = birthdays;
+      if (birthdays && Array.isArray(birthdays)) {
+        this.data.birthdays = this.normalizeBirthdayData(birthdays);
         // Supprimer les doublons après la récupération des données
         this.removeDuplicateBirthdays();
     }
@@ -507,12 +530,14 @@ class DataManager {    constructor() {
       if (response && typeof response === 'object' && response.data && Array.isArray(response.data)) {
         birthdays = response.data;
       }
-      
-      if (birthdays && Array.isArray(birthdays)) {
+        if (birthdays && Array.isArray(birthdays)) {
+        // Normaliser les données avant de les utiliser
+        const normalizedBirthdays = this.normalizeBirthdayData(birthdays);
+        
         // Mettre à jour le cache local pour ce groupe de manière sûre
         // Créer une copie du tableau pour éviter les mutations indésirables
         const updatedBirthdays = [...this.data.birthdays.filter(b => b.groupId !== groupId)];
-        updatedBirthdays.push(...birthdays);
+        updatedBirthdays.push(...normalizedBirthdays);
         this.data.birthdays = updatedBirthdays;
         
         // Supprimer les doublons après la mise à jour
@@ -553,16 +578,15 @@ class DataManager {    constructor() {
       };
       delete apiBirthdayData.groupId; // Remove the original groupId
 
-      const newBirthday = await this.apiRequest('birthdays.php', 'POST', apiBirthdayData);
-      
-      // S\'assurer que les données sont au format attendu
+      const newBirthday = await this.apiRequest('birthdays.php', 'POST', apiBirthdayData);      // S\'assurer que les données sont au format attendu et les normaliser
       const formattedBirthday = (newBirthday && newBirthday.data) ? newBirthday.data : newBirthday;
+      const normalizedBirthday = this.normalizeBirthdayData(formattedBirthday);
       
-      this.data.birthdays.push(formattedBirthday);
+      this.data.birthdays.push(normalizedBirthday);
       // Supprimer les doublons après l'ajout
       this.removeDuplicateBirthdays();
       this.saveLocalData();
-      return formattedBirthday;
+      return normalizedBirthday;
     } catch (error) {
       console.error("Erreur lors de l'ajout de l'anniversaire:", error);
       this.saveLocalData(); // Sauvegarder l'état actuel même en cas d'erreur
@@ -592,17 +616,18 @@ class DataManager {    constructor() {
       console.log('🔄 [UPDATE BIRTHDAY] Making API request to: birthdays.php?id=' + id);
 
       const updatedBirthday = await this.apiRequest(`birthdays.php?id=${id}`, 'PUT', apiBirthdayData);
-      console.log('🔄 [UPDATE BIRTHDAY] API response received:', updatedBirthday);
-      
-      // S\'assurer que les données sont au format attendu
+      console.log('🔄 [UPDATE BIRTHDAY] API response received:', updatedBirthday);      // S\'assurer que les données sont au format attendu et les normaliser
       const formattedBirthday = (updatedBirthday && updatedBirthday.data) ? updatedBirthday.data : updatedBirthday;
       console.log('🔄 [UPDATE BIRTHDAY] Formatted birthday data:', formattedBirthday);
+      
+      const normalizedBirthday = this.normalizeBirthdayData(formattedBirthday);
+      console.log('🔄 [UPDATE BIRTHDAY] Normalized birthday data:', normalizedBirthday);
       
       const index = this.data.birthdays.findIndex(b => b.id === id);
       console.log('🔄 [UPDATE BIRTHDAY] Found birthday at index:', index);
       
       if (index !== -1) {
-        this.data.birthdays[index] = formattedBirthday;
+        this.data.birthdays[index] = normalizedBirthday;
         console.log('🔄 [UPDATE BIRTHDAY] Updated birthday in local data');
       } else {
         console.warn('🔄 [UPDATE BIRTHDAY] Birthday not found in local data!');
@@ -610,7 +635,7 @@ class DataManager {    constructor() {
       
       this.saveLocalData();
       console.log('🔄 [UPDATE BIRTHDAY] Update completed successfully');
-      return formattedBirthday;
+      return normalizedBirthday;
     } catch (error) {
       console.error('🔄 [UPDATE BIRTHDAY] Error during update:', error);
     

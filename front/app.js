@@ -1448,19 +1448,17 @@ function openBirthdayModal(birthday = null, defaultGroupId = null) {
   
   // Clear the form
   birthdayForm.reset();
-  
-  // Populate the form if editing
+    // Populate the form if editing
   if (birthday) {
     birthdayId.value = birthday.id;
     birthdayName.value = birthday.name;
     birthdayDate.value = birthday.date.split('T')[0]; // Remove time part
-    birthdayGroup.value = birthday.groupId || '';
+    // Handle both groupId (frontend) and group_id (API) formats
+    const groupIdValue = birthday.groupId || birthday.group_id || '';
+    console.log("💾 [BIRTHDAY MODAL] Birthday group from data:", groupIdValue);
     birthdayNotes.value = birthday.notes || '';
   } else {
     birthdayId.value = '';
-    if (defaultGroupId) {
-      birthdayGroup.value = defaultGroupId;
-    }
   }
   
   // Populate the groups dropdown
@@ -1474,10 +1472,14 @@ function openBirthdayModal(birthday = null, defaultGroupId = null) {
     ${groupOptions}
   `;
   
+  // Set the selected group value AFTER populating the dropdown
   if (defaultGroupId) {
     birthdayGroup.value = defaultGroupId;
-  } else if (birthday && birthday.groupId) {
-    birthdayGroup.value = birthday.groupId;
+    console.log("💾 [BIRTHDAY MODAL] Set group to defaultGroupId:", defaultGroupId);
+  } else if (birthday) {
+    const groupIdValue = birthday.groupId || birthday.group_id || '';
+    birthdayGroup.value = groupIdValue;
+    console.log("💾 [BIRTHDAY MODAL] Set group to birthday's group:", groupIdValue);
   }
   
   // Show the modal
