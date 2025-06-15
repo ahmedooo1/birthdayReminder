@@ -27,10 +27,17 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         }
     }    // Event handler methods
     _handleProfileSubmit(e) {
+        console.log('🔴 [URGENT] Form submit intercepted!');
+        console.log('🔴 Event object:', e);
+        console.log('🔴 Event type:', e.type);
+        console.log('🔴 Calling preventDefault...');
         e.preventDefault();
         e.stopPropagation();
+        console.log('🔴 preventDefault called - should not reload page');
+        console.log('🔴 Now calling saveProfile...');
         this.saveProfile();
-        return false;
+        console.log('🔴 saveProfile called');
+        return false; // Extra protection
     }
 
     _handlePasswordSaveClick(e) {
@@ -82,7 +89,9 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
             link.addEventListener('click', this._boundHandleTabLinkClick);
-        });            // Formulaire de profil
+        });        
+
+        // Formulaire de profil
         if (this.profileForm) {
             console.log('🟢 Profile form found:', this.profileForm);
             console.log('🟢 Removing old listener...');
@@ -90,6 +99,19 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Adding new listener...');
             this.profileForm.addEventListener('submit', this._boundHandleProfileSubmit);
             console.log('🟢 Submit listener attached successfully');
+            
+            // Ajouter aussi un écouteur sur le bouton submit directement
+            const submitBtn = this.profileForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                console.log('🟢 Adding click listener to submit button');
+                submitBtn.addEventListener('click', (e) => {
+                    console.log('🔴 Submit button clicked directly!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.saveProfile();
+                    return false;
+                });
+            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));
@@ -219,11 +241,15 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         
         if (tabLink) tabLink.classList.add('active');
         if (tabContent) tabContent.classList.add('active');
-    }     /**
+    } 
+     /**
      * Sauvegarder le profil
      */ 
-    async saveProfile() {
+       async saveProfile() {
+        console.log('🟡 [URGENT] saveProfile() started - should see this before page reloads');
+        console.log('🟡 Creating loading toast...');
         const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');
+        console.log('🟡 Loading toast created');        
         
         try {
             const formData = {
