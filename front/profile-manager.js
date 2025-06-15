@@ -101,17 +101,17 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Submit listener attached successfully');
             
             // Ajouter aussi un écouteur sur le bouton submit directement
-            const submitBtn = this.profileForm.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                console.log('🟢 Adding click listener to submit button');
-                submitBtn.addEventListener('click', (e) => {
-                    console.log('🔴 Submit button clicked directly!');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.saveProfile();
-                    return false;
-                });
-            }
+            // const submitBtn = this.profileForm.querySelector('button[type="submit"]');
+            // if (submitBtn) {
+            //     console.log('🟢 Adding click listener to submit button');
+            //     submitBtn.addEventListener('click', (e) => {
+            //         console.log('🔴 Submit button clicked directly!');
+            //         e.preventDefault();
+            //         e.stopPropagation();
+            //         this.saveProfile();
+            //         return false;
+            //     });
+            // }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));
