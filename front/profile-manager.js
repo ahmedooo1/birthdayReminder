@@ -88,7 +88,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Setting up tab link:', link.dataset.tab);
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
-            //link.addEventListener('click', this._boundHandleTabLinkClick);
+            link.addEventListener('click', this._boundHandleTabLinkClick);
         });        
 
         // Formulaire de profil
@@ -241,9 +241,11 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         
         if (tabLink) tabLink.classList.add('active');
         if (tabContent) tabContent.classList.add('active');
-    }    /**
+    } 
+     /**
      * Sauvegarder le profil
-     */    async saveProfile() {
+     */ 
+       async saveProfile() {
         console.log('🟡 [URGENT] saveProfile() started - should see this before page reloads');
         console.log('🟡 Creating loading toast...');
         const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');
@@ -332,7 +334,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 }
                 
                 loadingToast.remove();
-                this.toast.success('Profil mis à jour', 'Vos informations ont été enregistrées.');
+                //this.toast.success('Profil mis à jour', 'Vos informations ont été enregistrées.');
             } else {
                 loadingToast.remove();
                 this.toast.error('Erreur', result.message || 'Erreur lors de la mise à jour');
