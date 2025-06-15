@@ -995,7 +995,7 @@ async function loadDashboard() {
     upcomingBirthdaysList.innerHTML = `
       <div class="empty-state">
         <i class="fas fa-calendar-day"></i>
-        <p>Consulter vos anniversaires</p>
+        <p>Aucun anniversaire à venir</p>
       </div>
     `;
     return;
@@ -1250,7 +1250,8 @@ async function openGroupDetails(groupId) {
           <p>Aucun membre dans ce groupe pour le moment.</p>
         </div>
       `;
-    } else {      // 'group' is already fetched at the beginning of openGroupDetails function
+    } else {
+      // 'group' is already fetched at the beginning of openGroupDetails function
       members.forEach(member => {
         const memberItem = document.createElement('div');
         memberItem.className = 'member-item';
@@ -1260,7 +1261,6 @@ async function openGroupDetails(groupId) {
         // Check if this member is the owner of the group
         if (group && member.id === group.owner_id) {
           displayName += ' (Propriétaire)';
-          memberItem.classList.add('owner'); // Add owner class for styling
         }
         
         memberItem.innerHTML = `
