@@ -2799,7 +2799,7 @@ body.dark-theme .notification-bell:hover {
 /* Toast types */
 .toast-success {
   border-left-color: var(--success-color);
-  background:  rgba(76, 201, 240, 1);
+  background:  rgb(39, 172, 61);
 }
 
 .toast-error {
