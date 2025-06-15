@@ -333,7 +333,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                     }
                 }
                 
-                loadingToast.remove();
+                //loadingToast.remove();
                 this.toast.success('Profil mis à jour', 'Vos informations ont été enregistrées.');
             } else {
                 loadingToast.remove();
