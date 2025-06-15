@@ -318,9 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
         if (!$group) {
             sendResponse(['error' => 'Groupe non trouvé ou accès non autorisé'], 403);
-        }
-
-        // Commencer une transaction
+        }        // Commencer une transaction
         $pdo->beginTransaction();
 
         try {
@@ -328,9 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             $stmt = $pdo->prepare("DELETE FROM group_members WHERE group_id = ?");
             $stmt->execute([$id]);
 
-            // Mettre à jour les anniversaires associés à ce groupe (les rendre sans groupe)
-            $stmt = $pdo->prepare("UPDATE birthdays SET group_id = NULL WHERE group_id = ?");
-            $stmt->execute([$id]);            // Supprimer le groupe
+            // Supprimer le groupe (les anniversaires seront supprimés automatiquement via CASCADE)
             $stmt = $pdo->prepare("DELETE FROM groupes WHERE id = ?");
             $stmt->execute([$id]);
 

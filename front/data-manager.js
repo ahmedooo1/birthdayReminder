@@ -411,8 +411,7 @@ class DataManager {    constructor() {
     * Delete a group
     * @param {string} id - Group ID
     * @returns {boolean} Whether the deletion was successful
-    */
-  async deleteGroup(id) {
+    */  async deleteGroup(id) {
     try {
       await this.apiRequest(`groupes.php?id=${id}`, 'DELETE');
     
@@ -420,13 +419,8 @@ class DataManager {    constructor() {
     const initialLength = this.data.groups.length;
     this.data.groups = this.data.groups.filter(group => group.id !== id);
     
-    // Mettre à jour les anniversaires associés
-    this.data.birthdays = this.data.birthdays.map(birthday => {
-    if (birthday.groupId === id) {
-    return { ...birthday, groupId: null };
-    }
-    return birthday;
-    });
+    // Supprimer les anniversaires associés (ils sont supprimés par CASCADE dans la DB)
+    this.data.birthdays = this.data.birthdays.filter(birthday => birthday.groupId !== id);
     
     this.saveLocalData();
     
