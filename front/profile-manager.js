@@ -27,17 +27,10 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         }
     }    // Event handler methods
     _handleProfileSubmit(e) {
-        console.log('🔴 [URGENT] Form submit intercepted!');
-        console.log('🔴 Event object:', e);
-        console.log('🔴 Event type:', e.type);
-        console.log('🔴 Calling preventDefault...');
         e.preventDefault();
         e.stopPropagation();
-        console.log('🔴 preventDefault called - should not reload page');
-        console.log('🔴 Now calling saveProfile...');
         this.saveProfile();
-        console.log('🔴 saveProfile called');
-        return false; // Extra protection
+        return false;
     }
 
     _handlePasswordSaveClick(e) {
@@ -89,9 +82,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
             link.addEventListener('click', this._boundHandleTabLinkClick);
-        });        
-
-        // Formulaire de profil
+        });            // Formulaire de profil
         if (this.profileForm) {
             console.log('🟢 Profile form found:', this.profileForm);
             console.log('🟢 Removing old listener...');
@@ -99,19 +90,6 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Adding new listener...');
             this.profileForm.addEventListener('submit', this._boundHandleProfileSubmit);
             console.log('🟢 Submit listener attached successfully');
-            
-            // Ajouter aussi un écouteur sur le bouton submit directement
-            const submitBtn = this.profileForm.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                console.log('🟢 Adding click listener to submit button');
-                submitBtn.addEventListener('click', (e) => {
-                    console.log('🔴 Submit button clicked directly!');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.saveProfile();
-                    return false;
-                });
-            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));
@@ -243,11 +221,9 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         if (tabContent) tabContent.classList.add('active');
     }    /**
      * Sauvegarder le profil
-     */    async saveProfile() {
-        console.log('🟡 [URGENT] saveProfile() started - should see this before page reloads');
-        console.log('🟡 Creating loading toast...');
+     */    
+    async saveProfile() {
         const loadingToast = this.toast.loading('Enregistrement', 'Mise à jour du profil...');
-        console.log('🟡 Loading toast created');        
         
         try {
             const formData = {
@@ -429,10 +405,8 @@ class ProfileManager {    constructor(dataManager, toastManager) {
      * Afficher la vue profil
      */
     showProfile() {
-        console.log('🟢 showProfile() called');
         // Attendre que le DOM soit prêt avant d'initialiser les event listeners
         this.waitForProfileForm().then(() => {
-            console.log('🟢 Profile form is ready, setting up listeners');
             this.setupEventListeners();
             this.loadProfile();
         });
@@ -442,15 +416,12 @@ class ProfileManager {    constructor(dataManager, toastManager) {
      * Attendre que le formulaire de profil soit disponible dans le DOM
      */
     async waitForProfileForm(maxAttempts = 10) {
-        console.log('🟢 waitForProfileForm() called');
         let attempts = 0;
         
         while (attempts < maxAttempts) {
             const profileForm = document.getElementById('profile-form');
-            console.log(`🟢 Attempt ${attempts + 1}: Profile form found:`, !!profileForm);
             
             if (profileForm) {
-                console.log('🟢 Profile form found successfully!');
                 return profileForm;
             }
             
