@@ -88,7 +88,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Setting up tab link:', link.dataset.tab);
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
-            link.addEventListener('click', this._boundHandleTabLinkClick);
+            //link.addEventListener('click', this._boundHandleTabLinkClick);
         });        
 
         // Formulaire de profil
