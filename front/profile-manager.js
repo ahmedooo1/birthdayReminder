@@ -101,17 +101,17 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Submit listener attached successfully');
             
             // Ajouter aussi un écouteur sur le bouton submit directement
-            // const submitBtn = this.profileForm.querySelector('button[type="submit"]');
-            // if (submitBtn) {
-            //     console.log('🟢 Adding click listener to submit button');
-            //     submitBtn.addEventListener('click', (e) => {
-            //         console.log('🔴 Submit button clicked directly!');
-            //         e.preventDefault();
-            //         e.stopPropagation();
-            //         this.saveProfile();
-            //         return false;
-            //     });
-            // }
+            const submitBtn = this.profileForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                console.log('🟢 Adding click listener to submit button');
+                submitBtn.addEventListener('click', (e) => {
+                    console.log('🔴 Submit button clicked directly!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.saveProfile();
+                    return false;
+                });
+            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));
@@ -473,17 +473,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         window.testSaveProfile = this.testSaveProfile.bind(this);
     }
     
-    /**
-     * Test de sauvegarde du profil (sans submit de formulaire)
-     */
-    async testSaveProfile() {
-        console.log('🔵 [TEST] Starting manual profile save test');
-        
-        // Tester directement la fonction saveProfile sans passer par le formulaire
-        await this.saveProfile();
-        
-        console.log('🔵 [TEST] Manual profile save test completed');
-    }
+  
     
     /**
      * Tester si le token est valide
