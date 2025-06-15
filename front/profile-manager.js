@@ -405,8 +405,10 @@ class ProfileManager {    constructor(dataManager, toastManager) {
      * Afficher la vue profil
      */
     showProfile() {
+        console.log('🟢 showProfile() called');
         // Attendre que le DOM soit prêt avant d'initialiser les event listeners
         this.waitForProfileForm().then(() => {
+            console.log('🟢 Profile form is ready, setting up listeners');
             this.setupEventListeners();
             this.loadProfile();
         });
@@ -416,12 +418,15 @@ class ProfileManager {    constructor(dataManager, toastManager) {
      * Attendre que le formulaire de profil soit disponible dans le DOM
      */
     async waitForProfileForm(maxAttempts = 10) {
+        console.log('🟢 waitForProfileForm() called');
         let attempts = 0;
         
         while (attempts < maxAttempts) {
             const profileForm = document.getElementById('profile-form');
+            console.log(`🟢 Attempt ${attempts + 1}: Profile form found:`, !!profileForm);
             
             if (profileForm) {
+                console.log('🟢 Profile form found successfully!');
                 return profileForm;
             }
             
