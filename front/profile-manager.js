@@ -66,13 +66,14 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         } else {
             this.setupEventListeners();
         }
-    }
-
-    /**
+    }    /**
      * Configurer les écouteurs d'événements
      */
     setupEventListeners() {
-        // Ensure elements are fetched each time, as DOM might change or not be ready initially        this.profileForm = document.getElementById('profile-form');
+        console.log('🟢 setupEventListeners() called');
+        
+        // Ensure elements are fetched each time, as DOM might change or not be ready initially        
+        this.profileForm = document.getElementById('profile-form');
         
         // Populate this.passwordForm with current elements
         this.passwordForm.currentPassword = document.getElementById('current-password');
@@ -82,13 +83,15 @@ class ProfileManager {    constructor(dataManager, toastManager) {
 
         // Onglets du profil
         const tabLinks = document.querySelectorAll('.tab-link');
-        console.log('Found tab links:', tabLinks.length); // Debug log from original
+        console.log('🟢 Found tab links:', tabLinks.length);
         tabLinks.forEach(link => {
-            console.log('Setting up tab link:', link.dataset.tab); // Debug log from original
+            console.log('🟢 Setting up tab link:', link.dataset.tab);
             // Remove then add to prevent duplicates if setupEventListeners is called multiple times
             link.removeEventListener('click', this._boundHandleTabLinkClick);
             link.addEventListener('click', this._boundHandleTabLinkClick);
-        });        // Formulaire de profil
+        });        
+
+        // Formulaire de profil
         if (this.profileForm) {
             console.log('🟢 Profile form found:', this.profileForm);
             console.log('🟢 Removing old listener...');
@@ -96,8 +99,22 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.log('🟢 Adding new listener...');
             this.profileForm.addEventListener('submit', this._boundHandleProfileSubmit);
             console.log('🟢 Submit listener attached successfully');
+            
+            // Ajouter aussi un écouteur sur le bouton submit directement
+            const submitBtn = this.profileForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                console.log('🟢 Adding click listener to submit button');
+                submitBtn.addEventListener('click', (e) => {
+                    console.log('🔴 Submit button clicked directly!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.saveProfile();
+                    return false;
+                });
+            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
+            console.error('❌ Available forms:', document.querySelectorAll('form'));
         }
 
         // Changement de mot de passe
@@ -408,16 +425,43 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             console.error('[ProfileManager] Erreur lors de l\'actualisation des données utilisateur:', error);
             // this.toast.error('Erreur', 'Une erreur technique est survenue lors du rafraîchissement des données.');
         }
-    }
-
-    /**
+    }    /**
      * Afficher la vue profil
      */
     showProfile() {
-        // Re-initialiser les event listeners au cas où les éléments DOM auraient changé
-        this.setupEventListeners();
-        this.loadProfile();
-    }    /**
+        console.log('🟢 showProfile() called');
+        // Attendre que le DOM soit prêt avant d'initialiser les event listeners
+        this.waitForProfileForm().then(() => {
+            console.log('🟢 Profile form is ready, setting up listeners');
+            this.setupEventListeners();
+            this.loadProfile();
+        });
+    }
+    
+    /**
+     * Attendre que le formulaire de profil soit disponible dans le DOM
+     */
+    async waitForProfileForm(maxAttempts = 10) {
+        console.log('🟢 waitForProfileForm() called');
+        let attempts = 0;
+        
+        while (attempts < maxAttempts) {
+            const profileForm = document.getElementById('profile-form');
+            console.log(`🟢 Attempt ${attempts + 1}: Profile form found:`, !!profileForm);
+            
+            if (profileForm) {
+                console.log('🟢 Profile form found successfully!');
+                return profileForm;
+            }
+            
+            // Attendre 100ms avant le prochain essai
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        
+        console.error('❌ Profile form not found after', maxAttempts, 'attempts');
+        throw new Error('Profile form not found in DOM');
+    }/**
      * Exposer les méthodes de debug globalement pour le test
      */
     exposeDebugMethods() {
