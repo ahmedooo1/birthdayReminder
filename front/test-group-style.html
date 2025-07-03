@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Groupe Style</title>
+    <title>Test Groupe Style - Version Desktop</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Test specific styles to simulate desktop environment */
+        body {
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .main-content {
+            max-width: none;
+            padding: 2rem;
+        }
+        .view {
+            display: block !important;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -45,6 +59,20 @@
                                 <div class="member-role">Propriétaire</div>
                             </div>
                         </div>
+                        <div class="member-item">
+                            <div class="member-avatar">M</div>
+                            <div class="member-info">
+                                <div class="member-name">Marie</div>
+                                <div class="member-role">Membre</div>
+                            </div>
+                        </div>
+                        <div class="member-item">
+                            <div class="member-avatar">J</div>
+                            <div class="member-info">
+                                <div class="member-name">Jean</div>
+                                <div class="member-role">Membre</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -56,11 +84,33 @@
                         </button>
                     </div>
                     <div class="birthdays-list">
-                        <!-- Birthdays will be inserted here -->
+                        <div class="empty-state">
+                            <i class="fas fa-birthday-cake"></i>
+                            <p>Aucun anniversaire ajouté pour ce groupe</p>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
     </div>
+
+    <script>
+        // Add some interactive behavior for testing
+        document.querySelector('.copy-access-code').addEventListener('click', function() {
+            const button = this;
+            const originalIcon = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                button.innerHTML = originalIcon;
+            }, 2000);
+        });
+
+        // Add click handlers for hover effects
+        document.querySelectorAll('.member-item').forEach(item => {
+            item.addEventListener('click', function() {
+                console.log('Member clicked:', this.querySelector('.member-name').textContent);
+            });
+        });
+    </script>
 </body>
 </html>
