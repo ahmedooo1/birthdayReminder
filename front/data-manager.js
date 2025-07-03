@@ -1115,60 +1115,6 @@ class DataManager {    constructor() {
         window.toastManager.success('LocalStorage nettoyé', 'Les données locales ont été supprimées.');
       }
     }
-    /**
-     * Vide le cache de l'application et force le rechargement des données
-     * Cette fonction est appelée après détection d'une nouvelle version
-     */
-    async clearApplicationCache() {
-        console.log('Clearing application cache...');
-        
-        try {
-            // Vider le cache localStorage
-            this.clearLocalDataAndReload();
-            
-            // Vider le cache des requêtes API
-            this.clearApiCache();
-            
-            // Forcer le rechargement des données depuis l'API
-            await this.loadData();
-            
-            console.log('Application cache cleared and data reloaded');
-            
-        } catch (error) {
-            console.error('Error clearing application cache:', error);
-        }
-    }
-    
-    /**
-     * Vide le cache des requêtes API
-     */
-    clearApiCache() {
-        // Supprimer les éléments de cache spécifiques à l'API
-        const apiCacheKeys = [
-            'api_cache_groups',
-            'api_cache_birthdays',
-            'api_cache_notifications',
-            'api_cache_settings',
-            'last_sync_timestamp'
-        ];
-        
-        apiCacheKeys.forEach(key => {
-            localStorage.removeItem(key);
-        });
-        
-        console.log('API cache cleared');
-    }
-    
-    /**
-     * Vérifie si les données doivent être rechargées
-     */
-    shouldReloadData() {
-        const lastSync = localStorage.getItem('last_sync_timestamp');
-        const now = Date.now();
-        const syncInterval = 5 * 60 * 1000; // 5 minutes
-        
-        return !lastSync || (now - parseInt(lastSync)) > syncInterval;
-    }
     }
     
 // Create a global instance of the DataManager
