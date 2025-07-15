@@ -735,7 +735,6 @@ body.dark-theme {
     padding: 2rem;
     border-radius: var(--border-radius);
     width: 90%;
-    max-width: 500px;
     z-index: 1001;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   }
@@ -962,7 +961,7 @@ body.dark-theme {
   position: fixed !important;
   width: 100vw !important;
   height: 100vh !important;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+  background: rgba(0, 0, 0, 0.5);
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
