@@ -4,11 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RappelAnniv | Fine</title>
-  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- SweetAlert2 pour les toasts avancés -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="icon" href="images/logo.ico" type="image/x-icon">
+  
+  <!-- CSS avec cache busting -->
+  <script>
+    const timestamp = Date.now();
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `styles.css?v=${timestamp}`;
+    document.head.appendChild(link);
+  </script>
 </head>
 <body>
   <div class="app-container">
@@ -525,13 +533,25 @@
     </div>
   </div>
   <!-- Important: Load scripts in the correct order -->
-  <script src="toast-manager.js"></script>
-  <script src="profile-manager.js"></script>
-  <script src="auth-manager.js"></script>
-  <script src="data-manager.js"></script>
-  <script src="notification-manager.js"></script>
-  <script src="calendar.js"></script>
-  <script src="auto-birthday-reminder-service.js"></script>
-  <script src="app.js"></script>
+  <script>
+    // Cache busting automatique pour JS
+    const jsTimestamp = Date.now();
+    const scripts = [
+      'toast-manager.js',
+      'profile-manager.js', 
+      'auth-manager.js',
+      'data-manager.js',
+      'notification-manager.js',
+      'calendar.js',
+      'auto-birthday-reminder-service.js',
+      'app.js'
+    ];
+    
+    scripts.forEach(script => {
+      const scriptElement = document.createElement('script');
+      scriptElement.src = `${script}?v=${jsTimestamp}`;
+      document.head.appendChild(scriptElement);
+    });
+  </script>
 </body>
 </html>
