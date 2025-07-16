@@ -81,7 +81,8 @@ class AuthManager {  constructor() {
         e.preventDefault();
         this.register();
       });
-    }    if (this.authSwitchBtn) {
+    }
+    if (this.authSwitchBtn) {
       this.authSwitchBtn.addEventListener('click', () => {
         this.toggleAuthForm();
       });
