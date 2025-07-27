@@ -3598,6 +3598,7 @@ body.dark-theme .member-item:hover {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  flex-direction: column;
 }
 
 .group-birthdays h3 {

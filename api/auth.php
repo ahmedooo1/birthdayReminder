@@ -691,7 +691,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 if (empty($userName)) {
                     $userName = $user['username'] ?? 'Utilisateur';
                 }
-                $subject = 'Réinitialisation de votre mot de passe - Birthday Reminder';
+                $subject = 'Réinitialisation de votre mot de passe - RappelAnniv';
                 $message = '
                 <html>
                 <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -711,7 +711,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                         <p>Si vous n\'avez pas demandé cette réinitialisation, vous pouvez ignorer cet email.</p>
                         <hr style="margin: 20px 0; border: none; border-top: 1px solid #e9ecef;">
                         <p style="font-size: 12px; color: #6c757d;">
-                            Birthday Reminder - Système de gestion d\'anniversaires<br>
+                            RappelAnniv - Système de gestion d\'anniversaires<br>
                             Cet email a été envoyé automatiquement, merci de ne pas y répondre.
                         </p>
                     </div>
@@ -807,7 +807,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                     $userName = $user['username'] ?? 'Utilisateur';
                 }
                 
-                $subject = 'Mot de passe modifié avec succès - Birthday Reminder';
+                $subject = 'Mot de passe modifié avec succès - RappelAnniv';
                 $message = '
                 <html>
                 <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -819,7 +819,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                         <p>Si vous n\'êtes pas à l\'origine de cette modification, contactez-nous immédiatement.</p>
                         <hr style="margin: 20px 0; border: none; border-top: 1px solid #e9ecef;">
                         <p style="font-size: 12px; color: #6c757d;">
-                            Birthday Reminder - Système de gestion d\'anniversaires<br>
+                            RappelAnniv - Système de gestion d\'anniversaires<br>
                             Cet email a été envoyé automatiquement, merci de ne pas y répondre.
                         </p>
                     </div>

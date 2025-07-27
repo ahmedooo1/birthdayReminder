@@ -66,7 +66,7 @@ try {
                 $emailMessageBody = "Bonjour " . $member['username'] . ",<br><br>" .
                                     "C'est l'anniversaire de <strong>" . $birthdayName . "</strong> aujourd'hui (" . $nextBirthdayDateFormatted . ") !<br><br>" .
                                     "N'oubliez pas de lui souhaiter !<br><br>" .
-                                    "Cordialement,<br>Votre Application de Rappel d'Anniversaires";
+                                    "Cordialement,<br>RappelAnniv";
             } elseif ($daysUntil > 0 && $daysUntil == $userPrefDays) { // Rappel basé sur la préférence utilisateur
                 $shouldSendEmail = true;
                 $plural = ($daysUntil > 1) ? 's' : '';
@@ -74,7 +74,7 @@ try {
                 $emailMessageBody = "Bonjour " . $member['username'] . ",<br><br>" .
                                     "Ceci est un rappel que l'anniversaire de <strong>" . $birthdayName . "</strong> est dans <strong>" . $daysUntil . " jour" . $plural . "</strong> (le " . $nextBirthdayDateFormatted . ").<br><br>" .
                                     "Préparez-vous à célébrer !<br><br>" .
-                                    "Cordialement,<br>Votre Application de Rappel d'Anniversaires";
+                                    "Cordialement,<br>RappelAnniv";
             }
 
             if ($shouldSendEmail) {
