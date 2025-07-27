@@ -289,6 +289,14 @@ class AuthManager {  constructor() {
     }
   }
 
+  showSuccess(msg) {
+    if (this.authError) {
+      this.authError.textContent = msg;
+      this.authError.classList.remove('hidden');
+      this.authError.style.color = '#28a745'; // green color for success
+    }
+  }
+
   // Gérer la soumission du formulaire de mot de passe oublié
   async handleForgotPassword() {
     const emailInput = document.getElementById('forgot-email');
