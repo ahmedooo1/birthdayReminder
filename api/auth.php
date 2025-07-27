@@ -472,7 +472,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             require_once 'utils.php';
             sendEmail($user['email'], $subject, $message);
             
-            sendResponse(['success' => true, 'message' => 'Inscription réussie. Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.']);
+            sendResponse(['success' => true, 'message' => 'Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.']);
             break;
             
         case 'logout':
