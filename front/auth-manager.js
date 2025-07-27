@@ -230,7 +230,7 @@ class AuthManager {  constructor() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erreur d'inscription");
       // Do not log in immediately, show verification message
-      this.showSuccess('Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.');
+      this.showSuccess('Un email de vérification a été envoyé à ' + email + '. Veuillez vérifier votre boîte de réception.');
       // Optionally clear the register form
       if (this.registerForm) {
         this.registerForm.reset();
