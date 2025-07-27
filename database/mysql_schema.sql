@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS users (
     email_notifications TINYINT(1) DEFAULT 1,
     notification_days INT DEFAULT 3,
     system_notifications_enabled TINYINT(1) DEFAULT 1, -- Added this line
+    email_verified TINYINT(1) DEFAULT 0,
+    email_verification_token VARCHAR(255) NULL,
+    reset_token VARCHAR(255) NULL,
+    reset_token_expires DATETIME NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_login DATETIME
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
