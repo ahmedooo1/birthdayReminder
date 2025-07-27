@@ -1177,9 +1177,7 @@ body.dark-theme .access-code-display {
 body.dark-theme .access-code-display .access-code-label {
     color: var(--text-muted-color);
 }
-body.dark-theme .access-code-display .access-code-value {
-    color: var(--primary-color);
-}
+
 
 /* Adjust profile view text colors */
 body.dark-theme #profile-view .profile-sidebar h3,
