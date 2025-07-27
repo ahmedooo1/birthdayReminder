@@ -199,7 +199,7 @@ class AuthManager {  constructor() {
       } else {
         localStorage.setItem('session_token', data.session_token);
         localStorage.setItem('user_data', JSON.stringify(data.user));
-        this.updateUsernameDisplay(data.user.username);
+        this.updateUsernameDisplay(data.user ? data.user.username : 'Invité');
         this.hideAuthModal();
         window.location.reload();
         document.dispatchEvent(new Event('authSuccess'));
@@ -250,7 +250,7 @@ class AuthManager {  constructor() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error();
-      this.updateUsernameDisplay(data.user.username);
+      this.updateUsernameDisplay(data.user ? data.user.username : 'Invité');
       return true;
     } catch {
       localStorage.removeItem('session_token');
