@@ -447,13 +447,20 @@ class AuthManager {  constructor() {
     
     if (forgotForm) forgotForm.classList.add('hidden');
     if (resetForm) resetForm.classList.add('hidden');
-    if (this.registerForm) this.registerForm.classList.add('hidden');
-    if (this.loginForm) this.loginForm.classList.remove('hidden');
     
-    // Restaurer le bouton de basculement
+    // Appeler toggleAuthForm pour réinitialiser correctement l'état
+    this.toggleAuthForm('login');
+    
+    // Restaurer le gestionnaire d'événements d'origine pour le bouton de basculement
     if (this.authSwitchBtn) {
-      this.authSwitchBtn.textContent = 'Créer un compte';
-      this.authSwitchBtn.onclick = () => this.toggleAuthForm();
+      // Supprimer l'ancien gestionnaire d'événements pour éviter les doublons
+      const newBtn = this.authSwitchBtn.cloneNode(true);
+      this.authSwitchBtn.parentNode.replaceChild(newBtn, this.authSwitchBtn);
+      this.authSwitchBtn = newBtn;
+      
+      this.authSwitchBtn.addEventListener('click', () => {
+        this.toggleAuthForm();
+      });
     }
   }
   // Afficher le formulaire de réinitialisation
