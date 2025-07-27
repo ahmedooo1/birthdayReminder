@@ -234,7 +234,7 @@ function verifyCredentials($username, $password) {
  * @param string $password Mot de passe
  * @return array|false Données de l'utilisateur si créé avec succès, false sinon
  */
-function createUser($username, $email, $password) {
+function createUser($username, $email, $password, $emailVerificationToken = null) {
     global $pdo;
     
     try {
@@ -255,14 +255,14 @@ function createUser($username, $email, $password) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $userId = uniqid();
         
-        // Insérer le nouvel utilisateur
+        // Insérer le nouvel utilisateur avec email_verified = 0 et email_verification_token
         global $dbType;
         $currentTime = $dbType === 'sqlite' ? "datetime('now')" : "NOW()";
         $stmt = $pdo->prepare("
-            INSERT INTO users (id, username, email, password_hash, created_at)
-            VALUES (?, ?, ?, ?, $currentTime)
+            INSERT INTO users (id, username, email, password_hash, email_verified, email_verification_token, created_at)
+            VALUES (?, ?, ?, ?, 0, ?, $currentTime)
         ");
-        $stmt->execute([$userId, $username, $email, $passwordHash]);
+        $stmt->execute([$userId, $username, $email, $passwordHash, $emailVerificationToken]);
         
         // Récupérer les informations de l'utilisateur
         $stmt = $pdo->prepare("
@@ -343,6 +343,11 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 sendResponse(['error' => 'Identifiants invalides'], 401);
             }
             
+            // Vérifier si l'email est vérifié
+            if (isset($user['email_verified']) && !$user['email_verified']) {
+                sendResponse(['error' => 'Email non vérifié. Veuillez vérifier votre adresse email.'], 403);
+            }
+            
             $session = createSession($user['id']);
             
             if (!$session) {
@@ -373,19 +378,53 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 sendResponse(['error' => 'Le mot de passe doit contenir au moins 6 caractères'], 400);
             }
             
-            $user = createUser($data['username'], $data['email'], $data['password']);
+            // Générer un token de vérification email
+            $emailVerificationToken = bin2hex(random_bytes(32));
+            
+            $user = createUser($data['username'], $data['email'], $data['password'], $emailVerificationToken);
             
             if (!$user) {
                 sendResponse(['error' => 'Nom d\'utilisateur ou email déjà utilisé'], 409);
             }
             
-            $session = createSession($user['id']);
-            
-            if (!$session) {
-                sendResponse(['error' => 'Erreur lors de la création de la session'], 500);
+            // Envoyer l'email de vérification
+            $appBaseUrl = env('APP_BASE_URL');
+            if (empty($appBaseUrl)) {
+                $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                $appBaseUrl = $scheme . '://' . $host;
             }
+            $verificationUrl = rtrim($appBaseUrl, '/') . '/index.html?verify_email_token=' . $emailVerificationToken;
             
-            sendResponse($session);
+            $subject = 'Vérification de votre adresse email - RappelAnniv';
+            $message = '
+            <html>
+            <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <h2 style="color: #4361ee; margin-bottom: 20px;">Vérification de l\'email</h2>
+                    <p>Bonjour ' . htmlspecialchars($user['username']) . ',</p>
+                    <p>Merci de vous être inscrit sur RappelAnniv. Veuillez vérifier votre adresse email en cliquant sur le lien ci-dessous :</p>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="' . $verificationUrl . '" 
+                           style="background-color: #4361ee; color: white; padding: 12px 30px; 
+                                  text-decoration: none; border-radius: 5px; display: inline-block;">
+                            Vérifier mon email
+                        </a>
+                    </div>
+                    <p>Si vous n\'êtes pas à l\'origine de cette inscription, vous pouvez ignorer cet email.</p>
+                    <hr style="margin: 20px 0; border: none; border-top: 1px solid #e9ecef;">
+                    <p style="font-size: 12px; color: #6c757d;">
+                        RappelAnniv - Système de gestion d\'anniversaires<br>
+                        Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+                    </p>
+                </div>
+            </body>
+            </html>';
+            
+            require_once 'utils.php';
+            sendEmail($user['email'], $subject, $message);
+            
+            sendResponse(['success' => true, 'message' => 'Inscription réussie. Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.']);
             break;
             
         case 'logout':
@@ -840,6 +879,34 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             }
             break;
             
+        case 'verify_email':
+            // Vérification de l'email via token
+            $data = json_decode(file_get_contents('php://input'), true);
+            $token = $data['token'] ?? null;
+            
+            if (!$token) {
+                sendResponse(['error' => 'Token de vérification requis'], 400);
+            }
+            
+            try {
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email_verification_token = ?");
+                $stmt->execute([$token]);
+                $user = $stmt->fetch();
+                
+                if (!$user) {
+                    sendResponse(['error' => 'Token invalide ou expiré'], 400);
+                }
+                
+                // Mettre à jour l'utilisateur pour marquer l'email comme vérifié et supprimer le token
+                $stmt = $pdo->prepare("UPDATE users SET email_verified = 1, email_verification_token = NULL WHERE id = ?");
+                $stmt->execute([$user['id']]);
+                
+                sendResponse(['success' => true, 'message' => 'Email vérifié avec succès']);
+            } catch (PDOException $e) {
+                error_log("Erreur verify_email: " . $e->getMessage());
+                sendResponse(['error' => 'Erreur serveur'], 500);
+            }
+            break;
         default:
             sendResponse(['error' => 'Action non reconnue'], 400);
     }

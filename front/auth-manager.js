@@ -190,13 +190,20 @@ class AuthManager {  constructor() {
         body: JSON.stringify({ username, password })
       });
       const data = await res.json();
-     if (!res.ok) throw new Error(data.error || 'Erreur de connexion');
-      localStorage.setItem('session_token', data.session_token);
-      localStorage.setItem('user_data', JSON.stringify(data.user));
-      this.updateUsernameDisplay(data.user.username);
-      this.hideAuthModal();
-      window.location.reload();
-      document.dispatchEvent(new Event('authSuccess'));
+      if (!res.ok) {
+        if (data.error && data.error.includes('Email non vérifié')) {
+          this.showError('Votre email n\'est pas vérifié. Veuillez vérifier votre boîte de réception.');
+        } else {
+          throw new Error(data.error || 'Erreur de connexion');
+        }
+      } else {
+        localStorage.setItem('session_token', data.session_token);
+        localStorage.setItem('user_data', JSON.stringify(data.user));
+        this.updateUsernameDisplay(data.user.username);
+        this.hideAuthModal();
+        window.location.reload();
+        document.dispatchEvent(new Event('authSuccess'));
+      }
     } catch (e) {
       this.showError(e.message);
     } finally {
@@ -212,7 +219,8 @@ class AuthManager {  constructor() {
     if (password !== confirm) {
       this.showError('Les mots de passe ne correspondent pas');
       return;
-    }    this.setLoading(true);
+    }
+    this.setLoading(true);
     try {
       const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=register', {
         method: 'POST',
@@ -221,11 +229,12 @@ class AuthManager {  constructor() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erreur d'inscription");
-      localStorage.setItem('session_token', data.session_token);
-      localStorage.setItem('user_data', JSON.stringify(data.user));
-      this.updateUsernameDisplay(data.user.username);
-      this.hideAuthModal();
-      document.dispatchEvent(new Event('authSuccess'));
+      // Do not log in immediately, show verification message
+      this.showError('Inscription réussie. Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.');
+      // Optionally clear the register form
+      if (this.registerForm) {
+        this.registerForm.reset();
+      }
     } catch (e) {
       this.showError(e.message);
     } finally {

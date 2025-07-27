@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RappelAnniv | Fine</title>
-  <link rel="stylesheet" href="styles.css?v=1.0.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css?v=1.0.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
   <!-- SweetAlert2 pour les toasts avancés -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="icon" href="images/logo.ico" type="image/x-icon">
+  <link rel="icon" href="images/logo.ico" type="image/x-icon" />
 </head>
 <body>
   <div class="app-container">
@@ -17,7 +20,10 @@
         <i class="fas fa-bars"></i>
       </button>
       <div class="logo">
-        <a href="/" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+        <a
+          href="/"
+          style="text-decoration: none; color: inherit; display: flex; align-items: center"
+        >
           <i class="fas fa-birthday-cake"></i>
           <h1>RappelAnniv</h1>
         </a>
@@ -69,7 +75,7 @@
             <!-- Upcoming birthdays will be inserted here -->
             <div class="empty-state">
               <i class="fas fa-calendar-day"></i>
-                <p>Consultez les anniversaires</p>
+              <p>Consultez les anniversaires</p>
             </div>
           </div>
         </div>
@@ -77,15 +83,21 @@
         <div class="calendar-section">
           <h3>Calendrier</h3>
           <div class="calendar-controls">
-            <button id="prev-month" class="btn icon-btn"><i class="fas fa-chevron-left"></i></button>
+            <button id="prev-month" class="btn icon-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
             <h4 id="current-month">Juin 2023</h4>
-            <button id="next-month" class="btn icon-btn"><i class="fas fa-chevron-right"></i></button>
+            <button id="next-month" class="btn icon-btn">
+              <i class="fas fa-chevron-right"></i>
+            </button>
           </div>
           <div id="calendar" class="calendar">
             <!-- Calendar will be generated here -->
           </div>
         </div>
-      </section>      <!-- Groups View -->
+      </section>
+
+      <!-- Groups View -->
       <section id="groups-view" class="view">
         <div class="groups-header">
           <h2>Mes Groupes</h2>
@@ -103,17 +115,25 @@
           <h3>Rejoindre un groupe existant</h3>
           <p>Entrez le code d'accès fourni par l'administrateur du groupe</p>
           <div class="join-form">
-            <input type="text" id="access-code-input" class="text-input" placeholder="Entrez le code d'accès" style="text-transform: uppercase; width: 70%; margin-right: 10px; font-weight: 500; letter-spacing: 1px;">
+            <input
+              type="text"
+              id="access-code-input"
+              class="text-input"
+              placeholder="Entrez le code d'accès"
+              style="text-transform: uppercase; width: 70%; margin-right: 10px; font-weight: 500; letter-spacing: 1px"
+            />
             <button id="join-group-submit" class="btn primary-btn">Rejoindre</button>
           </div>
         </div>
 
-        <div id="groups-grid" class="groups-grid" style="margin-top: 20px;">
+        <div id="groups-grid" class="groups-grid" style="margin-top: 20px">
           <!-- Groups will be inserted here -->
           <div class="empty-state">
             <i class="fas fa-users"></i>
             <p>Aucun groupe trouvé</p>
-            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Créez votre premier groupe ou rejoignez-en un avec un code d'accès</p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem">
+              Créez votre premier groupe ou rejoignez-en un avec un code d'accès
+            </p>
           </div>
         </div>
       </section>
@@ -158,18 +178,9 @@
       <!-- Settings View -->
       <section id="settings-view" class="view">
         <h2>Paramètres</h2>
-        
+
         <div class="settings-section">
           <h3>Apparence</h3>
-          <!-- <div class="setting-item">
-            <label for="notification-days">Jours avant l'anniversaire pour notifier</label>
-            <select id="notification-days" class="select-input">
-              <option value="0">Le jour même</option>
-              <option value="1">1 jour avant</option>
-              <option value="3">3 jours avant</option>
-              <option value="7">1 semaine avant</option>
-            </select>
-          </div> -->
           <div class="setting-item">
             <label for="theme-select">Thème d'affichage</label>
             <select id="theme-select" class="select-input">
@@ -179,17 +190,18 @@
             </select>
           </div>
         </div>
-      </section>      <!-- Profile View -->
+      </section>
+
+      <!-- Profile View -->
       <section id="profile-view" class="view">
         <div class="profile-container">
           <div class="profile-sidebar">
             <div class="profile-avatar">
               <img id="profile-avatar-img" src="/images/profile.png" alt="Avatar" />
-        
             </div>
             <h3 id="profile-username-display">Utilisateur</h3>
             <p id="profile-email-display">email@example.com</p>
-            
+
             <div class="profile-stats">
               <div class="profile-stat">
                 <span class="profile-stat-number" id="profile-birthdays-count">0</span>
@@ -214,48 +226,85 @@
 
             <div class="tab-content active" id="general">
               <h3><i class="fas fa-user-edit"></i> Informations personnelles</h3>
-              
-              <form id="profile-form">                <div class="profile-form-section">
+
+              <form id="profile-form">
+                <div class="profile-form-section">
                   <h4><i class="fas fa-id-card"></i> Identité</h4>
                   <div class="form-group">
                     <label for="profile-username">Nom d'utilisateur</label>
-                    <input type="text" id="profile-username" class="text-input" placeholder="Votre nom d'utilisateur" />
-                    <small class="form-help">Le nom d'utilisateur doit être unique et ne peut contenir que des lettres, chiffres, et tirets</small>
+                    <input
+                      type="text"
+                      id="profile-username"
+                      class="text-input"
+                      placeholder="Votre nom d'utilisateur"
+                    />
+                    <small class="form-help"
+                      >Le nom d'utilisateur doit être unique et ne peut contenir que des
+                      lettres, chiffres, et tirets</small
+                    >
                   </div>
                   <div class="form-row">
                     <div class="form-group">
                       <label for="profile-first-name">Prénom</label>
-                      <input type="text" id="profile-first-name" class="text-input" placeholder="Votre prénom" />
+                      <input
+                        type="text"
+                        id="profile-first-name"
+                        class="text-input"
+                        placeholder="Votre prénom"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="profile-last-name">Nom</label>
-                      <input type="text" id="profile-last-name" class="text-input" placeholder="Votre nom" />
+                      <input
+                        type="text"
+                        id="profile-last-name"
+                        class="text-input"
+                        placeholder="Votre nom"
+                      />
                     </div>
                   </div>
-                  
+
                   <div class="form-group">
                     <label for="profile-email">Adresse e-mail</label>
-                    <input type="email" id="profile-email" class="text-input" required placeholder="votre@email.com" />
+                    <input
+                      type="email"
+                      id="profile-email"
+                      class="text-input"
+                      required
+                      placeholder="votre@email.com"
+                    />
                   </div>
                 </div>
 
                 <div class="profile-form-section">
                   <h4><i class="fas fa-bell"></i> Préférences de notification</h4>
-                  
+
                   <div class="form-group-checkbox">
                     <input type="checkbox" id="profile-email-notifications" />
                     <label for="profile-email-notifications">
-                      <strong>Recevoir les rappels par e-mail</strong><br>
-                      <small>Vous recevrez des notifications par e-mail pour les anniversaires à venir</small>
+                      <strong>Recevoir les rappels par e-mail</strong><br />
+                      <small>
+                        Vous recevrez des notifications par e-mail pour les anniversaires à venir
+                      </small>
                     </label>
                   </div>
-                  
+
                   <div class="form-group">
                     <label for="profile-notification-days">
                       <i class="fas fa-calendar-alt"></i> Délai de notification (jours à l'avance)
                     </label>
-                    <input type="number" id="profile-notification-days" class="text-input" min="0" max="30" value="7" placeholder="7" />
-                    <small class="form-help">Nombre de jours avant l'anniversaire pour recevoir la notification</small>
+                    <input
+                      type="number"
+                      id="profile-notification-days"
+                      class="text-input"
+                      min="0"
+                      max="30"
+                      value="7"
+                      placeholder="7"
+                    />
+                    <small class="form-help">
+                      Nombre de jours avant l'anniversaire pour recevoir la notification
+                    </small>
                   </div>
                 </div>
 
@@ -263,42 +312,60 @@
                   <button type="submit" class="btn primary-btn">
                     <i class="fas fa-save"></i> Enregistrer les modifications
                   </button>
-                  <!-- <button type="button" class="btn secondary-btn" id="reset-profile-btn">
-                    <i class="fas fa-undo"></i> Annuler les modifications
-                  </button> -->
                 </div>
               </form>
             </div>
 
             <div class="tab-content" id="security">
               <h3><i class="fas fa-shield-alt"></i> Sécurité du compte</h3>
-              
+
               <div class="security-notice">
                 <i class="fas fa-info-circle"></i>
                 <div class="security-notice-content">
                   <h5>Sécurité de votre mot de passe</h5>
-                  <p>Utilisez un mot de passe fort d'au moins 8 caractères avec des lettres, chiffres et symboles.</p>
+                  <p>
+                    Utilisez un mot de passe fort d'au moins 8 caractères avec des lettres,
+                    chiffres et symboles.
+                  </p>
                 </div>
               </div>
-              
+
               <form id="password-form">
                 <div class="profile-form-section">
                   <h4><i class="fas fa-key"></i> Changer le mot de passe</h4>
-                  
+
                   <div class="form-group">
                     <label for="current-password">Mot de passe actuel</label>
-                    <input type="password" id="current-password" class="text-input" required placeholder="Entrez votre mot de passe actuel" />
+                    <input
+                      type="password"
+                      id="current-password"
+                      class="text-input"
+                      required
+                      placeholder="Entrez votre mot de passe actuel"
+                    />
                   </div>
-                  
+
                   <div class="form-row">
                     <div class="form-group">
                       <label for="new-password">Nouveau mot de passe</label>
-                      <input type="password" id="new-password" class="text-input" required placeholder="Nouveau mot de passe" />
-                      <div id="password-strength" class="password-strength" style="display: none;"></div>
+                      <input
+                        type="password"
+                        id="new-password"
+                        class="text-input"
+                        required
+                        placeholder="Nouveau mot de passe"
+                      />
+                      <div id="password-strength" class="password-strength" style="display: none"></div>
                     </div>
                     <div class="form-group">
                       <label for="confirm-new-password">Confirmer le nouveau mot de passe</label>
-                      <input type="password" id="confirm-new-password" class="text-input" required placeholder="Confirmez le mot de passe" />
+                      <input
+                        type="password"
+                        id="confirm-new-password"
+                        class="text-input"
+                        required
+                        placeholder="Confirmez le mot de passe"
+                      />
                     </div>
                   </div>
                 </div>
@@ -331,14 +398,14 @@
       </div>
       <div class="modal-body">
         <form id="birthday-form">
-          <input type="hidden" id="birthday-id">
+          <input type="hidden" id="birthday-id" />
           <div class="form-group">
             <label for="birthday-name">Nom</label>
-            <input type="text" id="birthday-name" class="text-input" required>
+            <input type="text" id="birthday-name" class="text-input" required />
           </div>
           <div class="form-group">
             <label for="birthday-date">Date de naissance</label>
-            <input type="date" id="birthday-date" class="text-input" required>
+            <input type="date" id="birthday-date" class="text-input" required />
           </div>
           <div class="form-group">
             <label for="birthday-group">Groupe</label>
@@ -352,8 +419,12 @@
             <textarea id="birthday-notes" class="text-input" rows="3"></textarea>
           </div>
           <div class="form-actions">
-            <button type="button" id="cancel-birthday-btn" class="btn secondary-btn">Annuler</button>
-            <button type="submit" id="save-birthday-btn" class="btn primary-btn">Enregistrer</button>
+            <button type="button" id="cancel-birthday-btn" class="btn secondary-btn">
+              Annuler
+            </button>
+            <button type="submit" id="save-birthday-btn" class="btn primary-btn">
+              Enregistrer
+            </button>
           </div>
         </form>
       </div>
@@ -369,10 +440,10 @@
       </div>
       <div class="modal-body">
         <form id="group-form">
-          <input type="hidden" id="group-id">
+          <input type="hidden" id="group-id" />
           <div class="form-group">
             <label for="group-name-input">Nom du groupe</label>
-            <input type="text" id="group-name-input" class="text-input" required>
+            <input type="text" id="group-name-input" class="text-input" required />
           </div>
           <div class="form-group">
             <label for="group-description">Description</label>
@@ -380,11 +451,15 @@
           </div>
           <div class="form-group">
             <label for="group-color">Couleur</label>
-            <input type="color" id="group-color" class="color-input" value="#4361ee">
+            <input type="color" id="group-color" class="color-input" value="#4361ee" />
           </div>
           <div class="form-actions">
-            <button type="button" id="cancel-group-btn" class="btn secondary-btn">Annuler</button>
-            <button type="submit" id="save-group-btn" class="btn primary-btn">Enregistrer</button>
+            <button type="button" id="cancel-group-btn" class="btn secondary-btn">
+              Annuler
+            </button>
+            <button type="submit" id="save-group-btn" class="btn primary-btn">
+              Enregistrer
+            </button>
           </div>
         </form>
       </div>
@@ -426,7 +501,8 @@
       <div class="modal-footer">
         <button id="cancel-confirm-btn" class="btn secondary-btn">Annuler</button>
         <button id="confirm-action-btn" class="btn danger-btn">Confirmer</button>
-      </div>    </div>
+      </div>
+    </div>
   </div>
 
   <!-- Auth Modal -->
@@ -436,55 +512,65 @@
         <h2 id="auth-title">Connexion</h2>
         <p id="auth-subtitle">Connectez-vous pour accéder à vos anniversaires</p>
       </div>
-      
+
       <!-- Login Form -->
       <form id="login-form" class="auth-form">
         <div class="form-group">
           <label for="login-username">Nom d'utilisateur ou email</label>
-          <input type="text" id="login-username" required>
-        </div>        <div class="form-group">
+          <input type="text" id="login-username" required />
+        </div>
+        <div class="form-group">
           <label for="login-password">Mot de passe</label>
-          <input type="password" id="login-password" required>
+          <input type="password" id="login-password" required />
         </div>
         <button type="submit" class="btn primary-btn full-width">
           <i class="fas fa-sign-in-alt"></i> Se connecter
         </button>
         <div class="forgot-password-link mt-2">
-          <button type="button" class="btn link-btn" onclick="authManager.showForgotPasswordForm()">
+          <button
+            type="button"
+            class="btn link-btn"
+            onclick="authManager.showForgotPasswordForm()"
+          >
             Mot de passe oublié ?
           </button>
         </div>
-      </form><!-- Register Form -->
+      </form>
+
+      <!-- Register Form -->
       <form id="register-form" class="auth-form hidden">
         <div class="form-group">
           <label for="register-username">Nom d'utilisateur</label>
-          <input type="text" id="register-username" required>
+          <input type="text" id="register-username" required />
         </div>
         <div class="form-group">
           <label for="register-email">Adresse email</label>
-          <input type="email" id="register-email" required>
+          <input type="email" id="register-email" required />
         </div>
         <div class="form-group">
           <label for="register-password">Mot de passe</label>
-          <input type="password" id="register-password" required>
+          <input type="password" id="register-password" required />
         </div>
         <div class="form-group">
           <label for="register-confirm-password">Confirmer le mot de passe</label>
-          <input type="password" id="register-confirm-password" required>
+          <input type="password" id="register-confirm-password" required />
         </div>
         <button type="submit" class="btn primary-btn full-width">
           <i class="fas fa-user-plus"></i> S'inscrire
-        </button>      </form>
+        </button>
+      </form>
 
       <!-- Forgot Password Form -->
       <form id="forgot-password-form" class="auth-form hidden">
         <div class="text-center mb-3">
           <h3>Mot de passe oublié</h3>
-          <p class="text-muted">Entrez votre email pour recevoir un lien de réinitialisation</p>
+          <p class="text-muted">
+            Entrez votre email pour recevoir un lien de réinitialisation
+          </p>
         </div>
         <div class="form-group">
           <label for="forgot-email">Adresse email</label>
-          <input type="email" id="forgot-email" required>
+          <input type="email" id="forgot-email" required />
         </div>
         <button type="submit" class="btn primary-btn full-width">
           <i class="fas fa-paper-plane"></i> Envoyer le lien
@@ -499,11 +585,16 @@
         </div>
         <div class="form-group">
           <label for="reset-new-password">Nouveau mot de passe</label>
-          <input type="password" id="reset-new-password" required minlength="6">
+          <input type="password" id="reset-new-password" required minlength="6" />
         </div>
         <div class="form-group">
           <label for="reset-confirm-password">Confirmer le mot de passe</label>
-          <input type="password" id="reset-confirm-password" required minlength="6">
+          <input
+            type="password"
+            id="reset-confirm-password"
+            required
+            minlength="6"
+          />
         </div>
         <button type="submit" class="btn primary-btn full-width">
           <i class="fas fa-key"></i> Modifier le mot de passe
@@ -518,9 +609,6 @@
       <div id="auth-error" class="error-message hidden"></div>
       <div id="auth-loading" class="loading-spinner hidden">
         <i class="fas fa-spinner fa-spin"></i> Connexion en cours...
-      </div>
-
-    
       </div>
     </div>
   </div>
