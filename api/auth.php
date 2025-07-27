@@ -378,13 +378,61 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 sendResponse(['error' => 'Le mot de passe doit contenir au moins 6 caractères'], 400);
             }
             
-            // Générer un token de vérification email
+            global $pdo, $dbType;
+
+            // Vérifier si un utilisateur existe avec le même nom d'utilisateur ou email
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+            $stmt->execute([$data['username'], $data['email']]);
+            $existingUser = $stmt->fetch();
+
             $emailVerificationToken = bin2hex(random_bytes(32));
-            
-            $user = createUser($data['username'], $data['email'], $data['password'], $emailVerificationToken);
-            
+            $user = null;
+
+            if ($existingUser) {
+                // Un utilisateur existe déjà
+                if ($existingUser['email_verified']) {
+                    // L'utilisateur est vérifié, c'est un conflit
+                    if (strcasecmp($existingUser['username'], $data['username']) == 0) {
+                        sendResponse(['error' => 'Ce nom d\'utilisateur est déjà utilisé.'], 409);
+                    }
+                    if (strcasecmp($existingUser['email'], $data['email']) == 0) {
+                        sendResponse(['error' => 'Cette adresse email est déjà utilisée.'], 409);
+                    }
+                    // Erreur générique si les deux champs sont différents mais correspondent à des utilisateurs différents
+                    sendResponse(['error' => 'Nom d\'utilisateur ou email déjà utilisé'], 409);
+                } else {
+                    // L'utilisateur existe mais n'est pas vérifié.
+                    // On met à jour ses informations et on renvoie un email de vérification.
+                    // Cela permet à un utilisateur de retenter une inscription s'il a échoué la première fois.
+                    
+                    // On vérifie que le nom d'utilisateur n'est pas pris par un AUTRE compte non vérifié
+                    if (strcasecmp($existingUser['email'], $data['email']) != 0) {
+                        sendResponse(['error' => 'Ce nom d\'utilisateur est déjà utilisé.'], 409);
+                    }
+
+                    $passwordHash = password_hash($data['password'], PASSWORD_DEFAULT);
+                    $currentTime = $dbType === 'sqlite' ? "datetime('now')" : "NOW()";
+                    
+                    $stmt = $pdo->prepare("
+                        UPDATE users 
+                        SET password_hash = ?, email_verification_token = ?, created_at = $currentTime, username = ?
+                        WHERE id = ?
+                    ");
+                    $stmt->execute([$passwordHash, $emailVerificationToken, $data['username'], $existingUser['id']]);
+                    
+                    $user = [
+                        'id' => $existingUser['id'],
+                        'username' => $data['username'],
+                        'email' => $data['email']
+                    ];
+                }
+            } else {
+                // Aucun utilisateur n'existe, on en crée un nouveau
+                $user = createUser($data['username'], $data['email'], $data['password'], $emailVerificationToken);
+            }
+
             if (!$user) {
-                sendResponse(['error' => 'Nom d\'utilisateur ou email déjà utilisé'], 409);
+                sendResponse(['error' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.'], 500);
             }
             
             // Envoyer l'email de vérification
