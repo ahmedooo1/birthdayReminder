@@ -549,7 +549,17 @@
         </div>
         <div class="form-group">
           <label for="register-password">Mot de passe</label>
-          <input type="password" id="register-password" required />
+          <input type="password" id="register-password" class="text-input" required />
+          <div id="password-strength-meter" class="password-strength-meter">
+            <div id="password-strength-bar" class="password-strength-bar"></div>
+          </div>
+          <div id="password-requirements" class="password-requirements">
+            <div class="requirement" id="length-req"><i class="fas fa-times-circle"></i> Au moins 8 caractères</div>
+            <div class="requirement" id="upper-req"><i class="fas fa-times-circle"></i> Une majuscule</div>
+            <div class="requirement" id="lower-req"><i class="fas fa-times-circle"></i> Une minuscule</div>
+            <div class="requirement" id="number-req"><i class="fas fa-times-circle"></i> Un chiffre</div>
+            <div class="requirement" id="special-req"><i class="fas fa-times-circle"></i> Un caractère spécial</div>
+          </div>
         </div>
         <div class="form-group">
           <label for="register-confirm-password">Confirmer le mot de passe</label>

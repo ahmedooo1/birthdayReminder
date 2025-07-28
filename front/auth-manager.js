@@ -81,6 +81,14 @@ class AuthManager {  constructor() {
         e.preventDefault();
         this.register();
       });
+
+      // Ajout de la validation du mot de passe en temps réel
+      const passwordInput = document.getElementById('register-password');
+      if (passwordInput) {
+        passwordInput.addEventListener('input', () => {
+          this.validatePasswordStrength(passwordInput.value);
+        });
+      }
     }
     if (this.authSwitchBtn) {
       this.authSwitchBtn.addEventListener('click', () => {
@@ -223,6 +231,13 @@ class AuthManager {  constructor() {
       this.showError('Les mots de passe ne correspondent pas');
       return;
     }
+
+    // Vérification de la force du mot de passe avant l'envoi
+    if (!this.isPasswordStrong(password)) {
+      this.showError('Le mot de passe ne respecte pas les critères de sécurité.');
+      return;
+    }
+
     this.setLoading(true);
     try {
       const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=register', {
@@ -299,6 +314,74 @@ class AuthManager {  constructor() {
       this.authError.style.color = '#28a745'; // green color for success
     }
   }
+
+  // --- Gestion de la force du mot de passe ---
+
+  validatePasswordStrength(password) {
+    const requirements = {
+      length: password.length >= 8,
+      upper: /[A-Z]/.test(password),
+      lower: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+
+    let score = 0;
+    for (const key in requirements) {
+      if (requirements[key]) {
+        score++;
+      }
+    }
+
+    // Mise à jour de la barre de force
+    const strengthBar = document.getElementById('password-strength-bar');
+    if (strengthBar) {
+      const percentage = (score / 5) * 100;
+      strengthBar.style.width = `${percentage}%`;
+      if (score <= 2) {
+        strengthBar.style.backgroundColor = '#f44336'; // Faible (rouge)
+      } else if (score <= 4) {
+        strengthBar.style.backgroundColor = '#ff9800'; // Moyen (orange)
+      } else {
+        strengthBar.style.backgroundColor = '#4caf50'; // Fort (vert)
+      }
+    }
+
+    // Mise à jour des icônes des exigences
+    this.updateRequirementStatus('length-req', requirements.length);
+    this.updateRequirementStatus('upper-req', requirements.upper);
+    this.updateRequirementStatus('lower-req', requirements.lower);
+    this.updateRequirementStatus('number-req', requirements.number);
+    this.updateRequirementStatus('special-req', requirements.special);
+  }
+
+  updateRequirementStatus(elementId, isValid) {
+    const reqElement = document.getElementById(elementId);
+    if (reqElement) {
+      const icon = reqElement.querySelector('i');
+      if (isValid) {
+        reqElement.classList.add('valid');
+        icon.classList.remove('fa-times-circle');
+        icon.classList.add('fa-check-circle');
+      } else {
+        reqElement.classList.remove('valid');
+        icon.classList.remove('fa-check-circle');
+        icon.classList.add('fa-times-circle');
+      }
+    }
+  }
+
+  isPasswordStrong(password) {
+    const requirements = {
+      length: password.length >= 8,
+      upper: /[A-Z]/.test(password),
+      lower: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+    return Object.values(requirements).every(Boolean);
+  }
+
 
   // Gérer la soumission du formulaire de mot de passe oublié
   async handleForgotPassword() {
