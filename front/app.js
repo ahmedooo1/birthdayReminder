@@ -177,6 +177,15 @@ function setupNavigation() {
     }
   }
   
+  // Logo click handler - navigate to dashboard
+  const logoLink = document.getElementById('logo-link');
+  if (logoLink) {
+    logoLink.addEventListener('click', () => {
+      console.log('Logo clicked - navigating to dashboard');
+      showView('dashboard');
+    });
+  }
+  
   // Back button for group details
   const backToGroupsBtn = document.getElementById('back-to-groups');
   if (backToGroupsBtn) {

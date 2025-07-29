@@ -9,6 +9,10 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
+  <!-- Google Fonts pour le logo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- SweetAlert2 pour les toasts avancés -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="icon" href="images/logo.ico" type="image/x-icon" />
@@ -19,14 +23,9 @@
       <button id="burger-menu-btn" class="burger-menu-btn">
         <i class="fas fa-bars"></i>
       </button>
-      <div class="logo">
-        <a
-          href="/"
-          style="text-decoration: none; color: inherit; display: flex; align-items: center"
-        >
-          <i class="fas fa-birthday-cake"></i>
-          <h1>RappelAnniv</h1>
-        </a>
+      <div class="logo" id="logo-link">
+        <i class="fas fa-birthday-cake"></i>
+        <h1> RappelAnniv</h1>
       </div>
       <nav class="main-nav">
         <button id="dashboard-btn" class="nav-btn active">Tableau de bord</button>

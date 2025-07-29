@@ -126,15 +126,41 @@ body.dark-theme {
     gap: 0.5rem;
     color: var(--primary-color);
     margin-right: 2rem;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+  }
+  
+  .logo:hover {
+    color: var(--primary-dark);
+    transform: scale(1.05);
   }
   
   .logo i {
     font-size: 1.5rem;
+    animation: bounce 2s infinite;
   }
   
   .logo h1 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
+    font-family: 'Fredoka', cursive;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-3px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
   }
 
   .burger-menu-btn {
@@ -225,10 +251,16 @@ body.dark-theme {
   
   .logo h1 {
     font-size: 1.2rem;
+    font-family: 'Fredoka', cursive;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .logo i {
     font-size: 1.3rem;
+    animation: bounce 2s infinite;
   }
   
   /* Afficher le burger menu */
@@ -2006,10 +2038,16 @@ body.dark-theme .notification-bell:hover {
   
   .logo h1 {
     font-size: 1rem;
+    font-family: 'Fredoka', cursive;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .logo i {
     font-size: 1.1rem;
+    animation: bounce 2s infinite;
   }
   
   .user-btn {
@@ -2140,6 +2178,11 @@ body.dark-theme .notification-bell:hover {
   
   .logo h1 {
     font-size: 1.2rem;
+    font-family: 'Fredoka', cursive;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .burger-menu-btn {
