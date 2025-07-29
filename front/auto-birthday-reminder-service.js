@@ -77,8 +77,8 @@ class AutoBirthdayReminderService {
      */
     showNotification(message) {
         // Utiliser le système de toast existant si disponible
-        if (window.showToast) {
-            window.showToast(message, 'success');
+        if (window.toastManager && typeof window.toastManager.success === 'function') {
+            window.toastManager.success('Rappels d\'anniversaire', message);
         } else {
             console.log('📧 ' + message);
         }

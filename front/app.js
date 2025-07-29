@@ -1520,19 +1520,25 @@ async function saveBirthday() {
   
   // Validate required fields
   if (!birthdayName.trim()) {
-    window.showToast('Le nom est requis', 'error');
+    if (window.toastManager) {
+      window.toastManager.error('Validation', 'Le nom est requis');
+    }
     return;
   }
   
   if (!birthdayDate) {
-    window.showToast('La date d\'anniversaire est requise', 'error');
+    if (window.toastManager) {
+      window.toastManager.error('Validation', 'La date d\'anniversaire est requise');
+    }
     return;
   }
   
   // Validate date format and that it's a valid date
   const dateObj = new Date(birthdayDate);
   if (isNaN(dateObj.getTime())) {
-    window.showToast('Date d\'anniversaire invalide', 'error');
+    if (window.toastManager) {
+      window.toastManager.error('Validation', 'Date d\'anniversaire invalide');
+    }
     return;
   }
   
@@ -1540,7 +1546,9 @@ async function saveBirthday() {
   const today = new Date();
   today.setHours(23, 59, 59, 999); // Set to end of today
   if (dateObj > today) {
-    window.showToast('La date d\'anniversaire ne peut pas être dans le futur', 'error');
+    if (window.toastManager) {
+      window.toastManager.error('Validation', 'La date d\'anniversaire ne peut pas être dans le futur');
+    }
     return;
   }
   
@@ -1567,10 +1575,14 @@ async function saveBirthday() {
     }
     
     console.log("💾 [SAVE BIRTHDAY] Birthday operation completed successfully");
-    window.showToast(birthdayId ? 'Anniversaire modifié avec succès' : 'Anniversaire ajouté avec succès', 'success');
+    if (window.toastManager) {
+      window.toastManager.success('Succès', birthdayId ? 'Anniversaire modifié avec succès' : 'Anniversaire ajouté avec succès');
+    }
   } catch (error) {
     console.error("💾 [SAVE BIRTHDAY] Error during birthday operation:", error);
-    window.showToast('Erreur lors de la sauvegarde', 'error');
+    if (window.toastManager) {
+      window.toastManager.error('Erreur', 'Erreur lors de la sauvegarde');
+    }
     // Don't hide modal on error so user can try again
     return;
   }
