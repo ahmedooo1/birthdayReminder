@@ -1798,17 +1798,30 @@ async function loadNotifications() {
     for (const notification of notifications) {
       const notificationItem = document.createElement('div');
       notificationItem.className = 'notification-item';
-      if (!notification.read) {
+      
+      // Handle both 'read' and 'is_read' field names
+      const isRead = notification.read !== undefined ? notification.read : (notification.is_read || false);
+      if (!isRead) {
         notificationItem.classList.add('unread');
       }
       
-      const notificationDate = new Date(notification.created_at);
-      const formattedDate = notificationDate.toLocaleDateString('fr-FR', {
-        day: 'numeric',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      // Handle both createdAt (from API) and created_at (legacy) field names
+      const dateField = notification.createdAt || notification.created_at || new Date().toISOString();
+      const notificationDate = new Date(dateField);
+      
+      // Check if the date is valid
+      let formattedDate;
+      if (isNaN(notificationDate.getTime())) {
+        console.warn(`Invalid notification date: ${dateField}`);
+        formattedDate = 'Date invalide';
+      } else {
+        formattedDate = notificationDate.toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
       
       notificationItem.innerHTML = `
         <div class="notification-header">
@@ -1816,12 +1829,12 @@ async function loadNotifications() {
           <span class="notification-date">${formattedDate}</span>
         </div>
         <p class="notification-message">${notification.message}</p>
-        ${!notification.read ? '<div class="notification-unread-indicator"></div>' : ''}
+        ${!isRead ? '<div class="notification-unread-indicator"></div>' : ''}
       `;
       
       // Mark as read when clicked
       notificationItem.addEventListener('click', async () => {
-        if (!notification.read) {
+        if (!isRead) {
           await dataManager.markNotificationAsRead(notification.id);
           notificationItem.classList.remove('unread');
           notificationManager.updateNotificationBadge();

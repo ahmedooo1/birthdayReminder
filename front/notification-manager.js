@@ -55,7 +55,10 @@ class NotificationManager {
 
             for (const birthday of upcomingBirthdays) {
                 const existingNotification = Array.isArray(currentNotifications) ? currentNotifications.find(
-                    n => n.birthdayId === birthday.id && new Date(n.createdAt).toDateString() === today.toDateString()
+                    n => {
+                        const dateField = n.createdAt || n.created_at;
+                        return n.birthdayId === birthday.id && dateField && new Date(dateField).toDateString() === today.toDateString();
+                    }
                 ) : undefined;
 
                 if (!existingNotification) {
@@ -119,8 +122,12 @@ class NotificationManager {
     */
     async updateNotificationBadge() { // Make async
         const notificationsArray = await this.dataManager.getNotifications(); // Await
-        // Ensure notificationsArray is an array before filtering
-        const unreadCount = Array.isArray(notificationsArray) ? notificationsArray.filter(n => !n.read).length : 0;
+        // Ensure notificationsArray is an array before filtering and handle both read field names
+        const unreadCount = Array.isArray(notificationsArray) ? notificationsArray.filter(n => {
+            // Handle both 'read' and 'is_read' field names
+            const isRead = n.read !== undefined ? n.read : (n.is_read || false);
+            return !isRead;
+        }).length : 0;
         const badge = document.getElementById('notification-count');
 
         if (badge) {
@@ -142,7 +149,9 @@ class NotificationManager {
         // Ensure notifications is an array before iterating
         if (Array.isArray(notificationsArray)) {
             for (const notification of notificationsArray) {
-                if (!notification.read) {
+                // Handle both 'read' and 'is_read' field names
+                const isRead = notification.read !== undefined ? notification.read : (notification.is_read || false);
+                if (!isRead) {
                     await this.dataManager.markNotificationAsRead(notification.id); // dataManager.markNotificationAsRead is async
                 }
             }

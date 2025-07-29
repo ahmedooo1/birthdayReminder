@@ -702,7 +702,13 @@ class DataManager {    constructor() {
     }
     
     if (notifications && Array.isArray(notifications)) {
-        this.data.notifications = notifications;
+        // Normalize field names from API response
+        this.data.notifications = notifications.map(notification => ({
+            ...notification,
+            read: notification.is_read || notification.read || false,
+            // Ensure we have consistent date field
+            createdAt: notification.createdAt || notification.created_at || new Date().toISOString()
+        }));
     }
     return this.data.notifications;
     } catch (error) {
