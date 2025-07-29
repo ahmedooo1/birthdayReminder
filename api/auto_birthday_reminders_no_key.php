@@ -10,7 +10,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Pour les tests - RETIREZ CETTE SECTION EN PRODUCTION
-if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '.aa-world.store') !== false) {
+if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '.aaweb.fr') !== false) {
     // OK pour les domaines autorisés
 } else {
     http_response_code(403);

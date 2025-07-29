@@ -26,8 +26,8 @@ if (!$debug_mode) {
 
 // Vérification du domaine pour sécurité minimale
 if ($_SERVER['HTTP_HOST'] !== 'localhost' && 
-    strpos($_SERVER['HTTP_HOST'], '.aa-world.store') === false && 
-    strpos($_SERVER['HTTP_HOST'], 'rappelanniv.aa-world.store') === false) {
+    strpos($_SERVER['HTTP_HOST'], '.aaweb.fr') === false && 
+    strpos($_SERVER['HTTP_HOST'], 'rappelanniv.aaweb.fr') === false) {
     http_response_code(403);
     echo json_encode(['error' => 'Accès refusé depuis ce domaine']);
     exit;

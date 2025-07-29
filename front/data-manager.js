@@ -3,7 +3,7 @@
 * Handles all data operations including saving, loading, and manipulating data
 */
 class DataManager {    constructor() {
-        this.apiUrl = 'https://rappelanniv.aa-world.store/api/';
+        this.apiUrl = 'https://rappelanniv.aaweb.fr/api/';
         this.data = {
             groups: [],
             birthdays: [],

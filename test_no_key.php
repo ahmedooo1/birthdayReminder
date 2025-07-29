@@ -1,7 +1,7 @@
 <?php
 echo "=== TEST DIRECT SANS CLE API ===\n\n";
 
-$url = "https://rappelanniv.aa-world.store/api/auto_birthday_reminders_no_key.php";
+$url = "https://rappelanniv.aaweb.fr/api/auto_birthday_reminders_no_key.php";
 echo "URL testée : $url\n\n";
 
 $ch = curl_init();

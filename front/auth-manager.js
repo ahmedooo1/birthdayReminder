@@ -192,7 +192,7 @@ class AuthManager {  constructor() {
     if (!password) password = document.getElementById('login-password').value;
     this.setLoading(true);
     try {
-      const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=login', {
+      const res = await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -240,7 +240,7 @@ class AuthManager {  constructor() {
 
     this.setLoading(true);
     try {
-      const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=register', {
+      const res = await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
@@ -261,7 +261,7 @@ class AuthManager {  constructor() {
   }
   async verifySession(token) {
     try {
-      const res = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=verify', {
+      const res = await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_token: token })
@@ -281,7 +281,7 @@ class AuthManager {  constructor() {
   async logout() {
     const token = localStorage.getItem('session_token');
     if (!token) return;    try {
-      await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=logout', {
+      await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_token: token })
@@ -452,7 +452,7 @@ class AuthManager {  constructor() {
   // Demande de réinitialisation de mot de passe
   async forgotPassword(email) {
     try {
-      const response = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=forgotpassword', {
+      const response = await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=forgotpassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -478,7 +478,7 @@ class AuthManager {  constructor() {
   // Réinitialisation du mot de passe avec token
   async resetPassword(token, newPassword, confirmPassword) {
     try {
-      const response = await fetch('https://rappelanniv.aa-world.store/api/auth.php?action=reset_password', {
+      const response = await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=reset_password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

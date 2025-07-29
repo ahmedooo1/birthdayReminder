@@ -1,7 +1,7 @@
 <?php
 echo "=== TEST DE L'URL DE PRODUCTION ===\n\n";
 
-$url = "https://rappelanniv.aa-world.store/api/auto_birthday_reminders.php?api_key=bd_12345_auto_reminder_secret_key_change_this";
+$url = "https://rappelanniv.aaweb.fr/api/auto_birthday_reminders.php?api_key=bd_12345_auto_reminder_secret_key_change_this";
 
 echo "URL testée : $url\n\n";
 

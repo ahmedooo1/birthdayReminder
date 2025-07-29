@@ -7,7 +7,7 @@ require_once __DIR__ . '/error_handler.php';
 
 // Enable CORS
 $allowedOrigins = [
-    'https://rappelanniv.aa-world.store', // Production domain
+    'https://rappelanniv.aaweb.fr', // Production domain
     'http://localhost:5500',
     'http://127.0.0.1:5500',
     'http://localhost:3000', // For development

@@ -11,7 +11,7 @@
 # ================================
 
 # URL à appeler :
-# https://votre-domaine.com/api/auto_birthday_reminders.php?api_key=your-secret-key-here
+# https://rappelanniv.aaweb.fr/api/auto_birthday_reminders.php?api_key=your-secret-key-here
 
 # Fréquence : Tous les jours à 08h00
 # Expression CRON : 0 8 * * *
@@ -23,7 +23,7 @@
 1. Aller sur https://cron-job.org/
 2. Créer un compte gratuit
 3. Ajouter un nouveau CRON job avec :
-   - URL : https://votre-domaine.com/api/auto_birthday_reminders.php?api_key=your-secret-key-here
+   - URL : https://rappelanniv.aaweb.fr/api/auto_birthday_reminders.php?api_key=your-secret-key-here
    - Fréquence : Tous les jours à 8h00
    - Expression CRON : 0 8 * * *
 
@@ -35,7 +35,7 @@
 # ================================
 
 # Vous pouvez tester manuellement en visitant :
-# https://votre-domaine.com/api/auto_birthday_reminders.php?api_key=your-secret-key-here
+# https://rappelanniv.aaweb.fr/api/auto_birthday_reminders.php?api_key=your-secret-key-here
 
 # ================================
 # SÉCURITÉ
