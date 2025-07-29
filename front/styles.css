@@ -764,7 +764,7 @@ body.dark-theme {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--modal-bg-color); /* Use theme variable */
-    padding: 2rem;
+    /* padding: 2rem; */
     border-radius: var(--border-radius);
     width: 90%;
     z-index: 1001;
