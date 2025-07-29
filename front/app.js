@@ -1518,11 +1518,37 @@ async function saveBirthday() {
   console.log("💾 [SAVE BIRTHDAY] - Date:", birthdayDate);
   console.log("💾 [SAVE BIRTHDAY] - Group:", birthdayGroup);
   
+  // Validate required fields
+  if (!birthdayName.trim()) {
+    window.showToast('Le nom est requis', 'error');
+    return;
+  }
+  
+  if (!birthdayDate) {
+    window.showToast('La date d\'anniversaire est requise', 'error');
+    return;
+  }
+  
+  // Validate date format and that it's a valid date
+  const dateObj = new Date(birthdayDate);
+  if (isNaN(dateObj.getTime())) {
+    window.showToast('Date d\'anniversaire invalide', 'error');
+    return;
+  }
+  
+  // Check if date is not in the future (birth date should be in the past)
+  const today = new Date();
+  today.setHours(23, 59, 59, 999); // Set to end of today
+  if (dateObj > today) {
+    window.showToast('La date d\'anniversaire ne peut pas être dans le futur', 'error');
+    return;
+  }
+  
   const birthdayData = {
-    name: birthdayName,
+    name: birthdayName.trim(),
     date: birthdayDate,
     groupId: birthdayGroup,
-    notes: document.getElementById('birthday-notes').value
+    notes: document.getElementById('birthday-notes').value.trim()
   };
   
   console.log("💾 [SAVE BIRTHDAY] Final birthday data object:", birthdayData);
@@ -1541,8 +1567,10 @@ async function saveBirthday() {
     }
     
     console.log("💾 [SAVE BIRTHDAY] Birthday operation completed successfully");
+    window.showToast(birthdayId ? 'Anniversaire modifié avec succès' : 'Anniversaire ajouté avec succès', 'success');
   } catch (error) {
     console.error("💾 [SAVE BIRTHDAY] Error during birthday operation:", error);
+    window.showToast('Erreur lors de la sauvegarde', 'error');
     // Don't hide modal on error so user can try again
     return;
   }

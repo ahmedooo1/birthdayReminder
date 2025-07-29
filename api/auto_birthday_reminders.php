@@ -52,6 +52,12 @@ try {
         $groupId = $birthday['group_id'];
 
         $daysUntil = daysUntilNextBirthday($birthdayDate);
+        
+        // Skip birthdays with invalid dates
+        if ($daysUntil === -1) {
+            continue;
+        }
+        
         $nextBirthdayDateFormatted = formatDate(getNextBirthdayDate($birthdayDate), 'd/m/Y');
         
         $birthdayResult = [

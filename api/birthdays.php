@@ -74,16 +74,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $birthdays = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         // Ajouter des informations supplémentaires à chaque anniversaire
-        foreach ($birthdays as &$birthday) {
+        $validBirthdays = [];
+        foreach ($birthdays as $birthday) {
+            // Skip birthdays with invalid dates
+            $daysUntil = daysUntilNextBirthday($birthday['date']);
+            if ($daysUntil === -1) {
+                error_log("Skipping birthday with invalid date: " . $birthday['name'] . " - " . $birthday['date']);
+                continue;
+            }
+            
             // Calculer l'âge
             $birthday['age'] = calculateAge($birthday['date']);
             
             // Calculer le nombre de jours jusqu'au prochain anniversaire
-            $birthday['days_until'] = daysUntilNextBirthday($birthday['date']);
+            $birthday['days_until'] = $daysUntil;
             
             // Obtenir la date du prochain anniversaire
             $birthday['next_birthday'] = getNextBirthdayDate($birthday['date']);
+            
+            $validBirthdays[] = $birthday;
         }
+        $birthdays = $validBirthdays;
         
         // Filtrer par mois si demandé
         if ($month !== null && $month >= 1 && $month <= 12) {

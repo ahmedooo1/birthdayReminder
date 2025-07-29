@@ -972,6 +972,13 @@ class DataManager {    constructor() {
     
     for (const birthday of this.data.birthdays) {
     const birthdayDate = new Date(birthday.date);
+    
+    // Check if the date is valid
+    if (isNaN(birthdayDate.getTime())) {
+        console.warn(`Invalid birthday date for ${birthday.name}: ${birthday.date}`);
+        continue; // Skip this birthday
+    }
+    
     const thisYearBirthday = new Date(
     today.getFullYear(),
     birthdayDate.getMonth(),
@@ -1011,6 +1018,13 @@ class DataManager {    constructor() {
     }
     return this.data.birthdays.filter(birthday => {
     const birthdayDate = new Date(birthday.date);
+    
+    // Check if the date is valid
+    if (isNaN(birthdayDate.getTime())) {
+        console.warn(`Invalid birthday date for ${birthday.name}: ${birthday.date}`);
+        return false; // Exclude this birthday
+    }
+    
     return birthdayDate.getMonth() === month;
     });
     }

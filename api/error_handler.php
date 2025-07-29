@@ -222,6 +222,26 @@ function validateInput($data, $rules) {
                         $errors[$field] = 'Ce champ doit être une date au format YYYY-MM-DD';
                         continue 2;
                     }
+                    // Validate that it's actually a valid date
+                    try {
+                        $dateObj = new DateTime($value);
+                        if ($dateObj->format('Y-m-d') !== $value) {
+                            $errors[$field] = 'Ce champ doit être une date valide';
+                            continue 2;
+                        }
+                        // Check if date is not in the future (for birthday dates)
+                        if ($field === 'date') {
+                            $today = new DateTime();
+                            $today->setTime(23, 59, 59);
+                            if ($dateObj > $today) {
+                                $errors[$field] = 'La date d\'anniversaire ne peut pas être dans le futur';
+                                continue 2;
+                            }
+                        }
+                    } catch (Exception $e) {
+                        $errors[$field] = 'Ce champ doit être une date valide';
+                        continue 2;
+                    }
                     break;
             }
         }

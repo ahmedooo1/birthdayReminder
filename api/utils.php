@@ -33,8 +33,13 @@ function generateUniqueId($prefix = '') {
  * @return string Date formatée
  */
 function formatDate($date, $format = 'd/m/Y') {
-    $dateObj = new DateTime($date);
-    return $dateObj->format($format);
+    try {
+        $dateObj = new DateTime($date);
+        return $dateObj->format($format);
+    } catch (Exception $e) {
+        error_log("Invalid date format: " . $date . " - " . $e->getMessage());
+        return 'Date invalide';
+    }
 }
 
 /**
@@ -44,10 +49,15 @@ function formatDate($date, $format = 'd/m/Y') {
  * @return int Âge en années
  */
 function calculateAge($birthdate) {
-    $birth = new DateTime($birthdate);
-    $now = new DateTime();
-    $interval = $now->diff($birth);
-    return $interval->y;
+    try {
+        $birth = new DateTime($birthdate);
+        $now = new DateTime();
+        $interval = $now->diff($birth);
+        return $interval->y;
+    } catch (Exception $e) {
+        error_log("Invalid birthdate format: " . $birthdate . " - " . $e->getMessage());
+        return 0; // Return 0 as fallback age
+    }
 }
 
 /**
@@ -57,21 +67,26 @@ function calculateAge($birthdate) {
  * @return int Nombre de jours
  */
 function daysUntilNextBirthday($birthdate) {
-    $birth = new DateTime($birthdate);
-    $now = new DateTime();
-    
-    // Créer une date pour l'anniversaire cette année
-    $nextBirthday = new DateTime();
-    $nextBirthday->setDate($now->format('Y'), $birth->format('m'), $birth->format('d'));
-    
-    // Si l'anniversaire est déjà passé cette année, passer à l'année prochaine
-    if ($nextBirthday < $now) {
-        $nextBirthday->modify('+1 year');
+    try {
+        $birth = new DateTime($birthdate);
+        $now = new DateTime();
+        
+        // Créer une date pour l'anniversaire cette année
+        $nextBirthday = new DateTime();
+        $nextBirthday->setDate($now->format('Y'), $birth->format('m'), $birth->format('d'));
+        
+        // Si l'anniversaire est déjà passé cette année, passer à l'année prochaine
+        if ($nextBirthday < $now) {
+            $nextBirthday->modify('+1 year');
+        }
+        
+        // Calculer la différence en jours
+        $diff = $now->diff($nextBirthday);
+        return $diff->days;
+    } catch (Exception $e) {
+        error_log("Invalid birthdate format: " . $birthdate . " - " . $e->getMessage());
+        return -1; // Return -1 to indicate invalid date
     }
-    
-    // Calculer la différence en jours
-    $diff = $now->diff($nextBirthday);
-    return $diff->days;
 }
 
 /**
@@ -81,19 +96,24 @@ function daysUntilNextBirthday($birthdate) {
  * @return string Date du prochain anniversaire au format YYYY-MM-DD
  */
 function getNextBirthdayDate($birthdate) {
-    $birth = new DateTime($birthdate);
-    $now = new DateTime();
-    
-    // Créer une date pour l'anniversaire cette année
-    $nextBirthday = new DateTime();
-    $nextBirthday->setDate($now->format('Y'), $birth->format('m'), $birth->format('d'));
-    
-    // Si l'anniversaire est déjà passé cette année, passer à l'année prochaine
-    if ($nextBirthday < $now) {
-        $nextBirthday->modify('+1 year');
+    try {
+        $birth = new DateTime($birthdate);
+        $now = new DateTime();
+        
+        // Créer une date pour l'anniversaire cette année
+        $nextBirthday = new DateTime();
+        $nextBirthday->setDate($now->format('Y'), $birth->format('m'), $birth->format('d'));
+        
+        // Si l'anniversaire est déjà passé cette année, passer à l'année prochaine
+        if ($nextBirthday < $now) {
+            $nextBirthday->modify('+1 year');
+        }
+        
+        return $nextBirthday->format('Y-m-d');
+    } catch (Exception $e) {
+        error_log("Invalid birthdate format: " . $birthdate . " - " . $e->getMessage());
+        return date('Y-m-d'); // Return today's date as fallback
     }
-    
-    return $nextBirthday->format('Y-m-d');
 }
 
 /**
