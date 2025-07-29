@@ -785,7 +785,7 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
                         <h2 style="color: #4361ee; margin-bottom: 20px;">Réinitialisation de mot de passe</h2>
                         <p>Bonjour ' . htmlspecialchars($userName) . ',</p>
-                        <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Birthday Reminder.</p>
+                        <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte RappelAnniv.</p>
                         <p>Cliquez sur le lien ci-dessous pour créer un nouveau mot de passe :</p>
                         <div style="text-align: center; margin: 30px 0;">
                             <a href="' . $resetUrl . '" 
