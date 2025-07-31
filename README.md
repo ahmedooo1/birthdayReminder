@@ -138,7 +138,5 @@ Les contributions sont les bienvenues ! Si vous souhaitez contribuer au projet, 
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-## Contact
 
-Si vous avez des questions ou des suggestions, n'hésitez pas à nous contacter à l'adresse suivante : contact@birthdayreminder.com
 
