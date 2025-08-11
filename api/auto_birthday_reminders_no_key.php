@@ -27,6 +27,7 @@ try {
     
     $processedBirthdays = [];
     $totalEmailsSent = 0;
+    $totalSmsSent = 0;
     
     foreach ($birthdays as $birthday) {
         $birthdayName = $birthday['name'];
@@ -38,25 +39,27 @@ try {
         
         // Récupérer les membres du groupe
         $stmt = $pdo->prepare("
-            SELECT u.email, u.username, u.email_notifications, u.notification_days
+            SELECT u.email, u.username, u.email_notifications, u.notification_days, 
+                   u.phone_number, u.sms_notifications
             FROM users u
             JOIN group_members gm ON u.id = gm.user_id
-            WHERE gm.group_id = ? AND u.email_notifications = 1
+            WHERE gm.group_id = ?
         ");
         $stmt->execute([$groupId]);
         $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         foreach ($members as $member) {
-            if (empty($member['email'])) continue;
-            
             $userPrefDays = (int)$member['notification_days'];
             $shouldSendEmail = false;
+            $shouldSendSms = false;
             $emailSubject = '';
             $emailMessage = '';
+            $smsMessage = '';
             
             if ($daysUntil == 0) {
                 // Anniversaire aujourd'hui
                 $shouldSendEmail = true;
+                $shouldSendSms = true;
                 $emailSubject = "🎉 Joyeux Anniversaire " . $birthdayName . " !";
                 $emailMessage = "
                 <html>
@@ -69,9 +72,11 @@ try {
                     <p>Cordialement,<br>Votre Application de Rappel d'Anniversaires</p>
                 </body>
                 </html>";
+                $smsMessage = "Rappel: C'est l'anniversaire de {$birthdayName} aujourd'hui 🎉";
             } elseif ($daysUntil > 0 && $daysUntil == $userPrefDays) {
                 // Rappel basé sur la préférence
                 $shouldSendEmail = true;
+                $shouldSendSms = true;
                 $plural = ($daysUntil > 1) ? 's' : '';
                 $emailSubject = "⏰ Rappel : Anniversaire de " . $birthdayName . " dans " . $daysUntil . " jour" . $plural;
                 $emailMessage = "
@@ -85,12 +90,19 @@ try {
                     <p>Cordialement,<br>Votre Application de Rappel d'Anniversaires</p>
                 </body>
                 </html>";
+                $smsMessage = "Rappel: Anniversaire de {$birthdayName} dans {$daysUntil} jour{$plural}.";
             }
             
-            if ($shouldSendEmail) {
+            if ($shouldSendEmail && !empty($member['email']) && (int)$member['email_notifications'] === 1) {
                 if (sendEmail($member['email'], $emailSubject, $emailMessage)) {
                     $emailsSentForThisBirthday++;
                     $totalEmailsSent++;
+                }
+            }
+
+            if ($shouldSendSms && !empty($member['phone_number']) && (int)($member['sms_notifications'] ?? 0) === 1) {
+                if (sendSms($member['phone_number'], $smsMessage)) {
+                    $totalSmsSent++;
                 }
             }
         }
@@ -110,7 +122,8 @@ try {
         'status' => 'completed',
         'timestamp' => date('Y-m-d H:i:s'),
         'birthdays_processed' => $processedBirthdays,
-        'total_emails_sent' => $totalEmailsSent,
+    'total_emails_sent' => $totalEmailsSent,
+    'total_sms_sent' => $totalSmsSent,
         'execution_time' => $executionTime . ' secondes'
     ], JSON_PRETTY_PRINT);
     

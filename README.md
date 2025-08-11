@@ -9,20 +9,10 @@ Une application web pour gérer et recevoir des rappels d'anniversaires.
 
 ## Fonctionnalités
 
-- 👥 **Gestion des groupes** : Organisez les anniversaires par groupes (famille, amis, collègues...)
-- 🎂 **Gestion des anniversaires** : Ajoutez, modifiez et supprimez des anniversaires
-- 🔔 **Notifications** : Recevez des rappels par email avant les anniversaires
-- 📅 **Calendrier** : Visualisez les anniversaires dans un calendrier mensuel
-- 📊 **Statistiques** : Consultez des statistiques sur les anniversaires
-- 🔄 **Synchronisation** : Partagez des groupes avec d'autres utilisateurs
-- 📱 **Responsive** : Interface adaptée aux appareils mobiles
-- 🔒 **Sécurité** : Authentification sécurisée et protection des données
+- Optionnel : Rappels SMS via Twilio
 
 ## Captures d'écran
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <img src="screenshots/dashboard.png" alt="Tableau de bord" width="400"/>
-    <img src="screenshots/calendar.png" alt="Calendrier" width="400"/>
     <img src="screenshots/add_birthday.png" alt="Ajout d'anniversaire" width="400"/>
     <img src="screenshots/groups.png" alt="Gestion des groupes" width="400"/>
 </div>
@@ -30,14 +20,15 @@ Une application web pour gérer et recevoir des rappels d'anniversaires.
 ## Prérequis
 
 - PHP 7.4 ou supérieur
+    - Pour SMS (optionnel) : définissez `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` (format E.164, par exemple +33612345678)
 - SQLite 3 ou MySQL 5.7+ / MariaDB 10.3+
 - Serveur web (Apache, Nginx, etc.)
 
-## Installation rapide
+- Pour activer les préférences SMS, assurez-vous que les colonnes existent. Soit réexécutez le schéma, soit visitez `api/add_sms_columns.php` une fois pour ajouter : `users.phone_number`, `users.sms_notifications`, et les champs Twilio dans `app_settings`.
 
 1. Téléchargez et extrayez l'archive dans votre répertoire web
 2. Assurez-vous que les permissions sont correctement configurées
-3. Accédez à l'application via votre navigateur
+- Lorsque les SMS sont configurés et que les utilisateurs ont opté pour un numéro de téléphone, le cron enverra également des rappels SMS.
 4. Suivez l'assistant d'installation
 
 Pour des instructions détaillées, consultez le [Guide d'installation](INSTALLATION.md).

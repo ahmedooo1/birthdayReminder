@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
     email_notifications TINYINT(1) DEFAULT 1,
     notification_days INT DEFAULT 3,
     system_notifications_enabled TINYINT(1) DEFAULT 1, -- Added this line
+    phone_number VARCHAR(30) NULL,
+    sms_notifications TINYINT(1) DEFAULT 0,
     email_verified TINYINT(1) DEFAULT 0,
     email_verification_token VARCHAR(255) NULL,
     reset_token VARCHAR(255) NULL,
@@ -96,7 +98,10 @@ CREATE TABLE IF NOT EXISTS app_settings (
     email_port INT DEFAULT 587,
     email_username VARCHAR(100),
     email_password VARCHAR(100),
-    email_from_name VARCHAR(100) DEFAULT 'Birthday Reminder'
+    email_from_name VARCHAR(100) DEFAULT 'Birthday Reminder',
+    twilio_account_sid VARCHAR(100) NULL,
+    twilio_auth_token VARCHAR(100) NULL,
+    twilio_from_number VARCHAR(30) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insérer les paramètres par défaut s'ils n'existent pas

@@ -202,6 +202,87 @@ function sendEmail($to, $subject, $message, $headers = []) {
 }
 
 /**
+ * Envoyer un SMS via Twilio (ou compatible API Twilio)
+ *
+ * Nécessite les variables d'environnement:
+ * - TWILIO_ACCOUNT_SID
+ * - TWILIO_AUTH_TOKEN
+ * - TWILIO_FROM_NUMBER (format E.164, ex: +33712345678)
+ *
+ * @param string $to Numéro du destinataire (format E.164, ex: +33612345678)
+ * @param string $message Contenu du SMS (160-500 caractères recommandé)
+ * @return bool Succès de l'envoi
+ */
+function sendSms($to, $message) {
+    // Charger la configuration Twilio depuis l'env
+    $sid = env('TWILIO_ACCOUNT_SID', '');
+    $token = env('TWILIO_AUTH_TOKEN', '');
+    $from = env('TWILIO_FROM_NUMBER', '');
+    $messagingServiceSid = env('TWILIO_MESSAGING_SERVICE_SID', '');
+
+    if (empty($sid) || empty($token)) {
+        error_log('SMS non envoyé: configuration Twilio incomplète (TWILIO_ACCOUNT_SID/TWILIO_AUTH_TOKEN)');
+        return false;
+    }
+    // Nécessite soit un numéro From soit un Messaging Service SID
+    if (empty($from) && empty($messagingServiceSid)) {
+        error_log('SMS non envoyé: définir TWILIO_FROM_NUMBER ou TWILIO_MESSAGING_SERVICE_SID');
+        return false;
+    }
+
+    if (empty($to)) {
+        error_log('SMS non envoyé: numéro destinataire vide');
+        return false;
+    }
+
+    // Nettoyage simple du message
+    $body = trim($message ?? '');
+    if ($body === '') {
+        error_log('SMS non envoyé: message vide');
+        return false;
+    }
+
+    // Endpoint Twilio
+    $url = "https://api.twilio.com/2010-04-01/Accounts/{$sid}/Messages.json";
+
+    $payload = [
+        'To' => $to,
+        'Body' => $body,
+    ];
+    if (!empty($messagingServiceSid)) {
+        $payload['MessagingServiceSid'] = $messagingServiceSid;
+    } else {
+        $payload['From'] = $from;
+    }
+    $postFields = http_build_query($payload);
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+    curl_setopt($ch, CURLOPT_USERPWD, $sid . ':' . $token);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    if ($response === false) {
+        $err = curl_error($ch);
+        curl_close($ch);
+        error_log('Erreur cURL Twilio: ' . $err);
+        return false;
+    }
+    curl_close($ch);
+
+    if ($httpCode >= 200 && $httpCode < 300) {
+        error_log("SMS envoyé à {$to} ({$httpCode})");
+        return true;
+    }
+
+    error_log('Echec envoi SMS. HTTP ' . $httpCode . ' Réponse: ' . $response);
+    return false;
+}
+
+/**
  * Paginer un tableau de résultats
  * 
  * @param array $items Tableau d'éléments à paginer

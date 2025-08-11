@@ -112,6 +112,36 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                     return false;
                 });
             }
+
+            // Phone normalization and SMS hinting
+            const phoneInput = document.getElementById('profile-phone-number');
+            const smsCheckbox = document.getElementById('profile-sms-notifications');
+            if (phoneInput) {
+                phoneInput.addEventListener('blur', () => {
+                    const original = phoneInput.value.trim();
+                    const normalized = this.normalizePhoneNumber(original);
+                    if (normalized && normalized !== original) {
+                        phoneInput.value = normalized;
+                        if (this.toast && this.toast.info) {
+                            this.toast.info('Numéro normalisé', `Format E.164: ${normalized}`);
+                        }
+                    }
+                });
+            }
+            if (smsCheckbox) {
+                smsCheckbox.addEventListener('change', () => {
+                    if (smsCheckbox.checked) {
+                        const phone = (document.getElementById('profile-phone-number')?.value || '').trim();
+                        const normalized = this.normalizePhoneNumber(phone);
+                        if (!normalized || !this.isValidE164(normalized)) {
+                            if (this.toast && this.toast.warning) {
+                                this.toast.warning('SMS activé', 'Ajoutez un numéro valide (ex: +33612345678).');
+                            }
+                            document.getElementById('profile-phone-number')?.focus();
+                        }
+                    }
+                });
+            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));
@@ -122,6 +152,34 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             this.passwordForm.saveBtn.removeEventListener('click', this._boundHandlePasswordSaveClick);
             this.passwordForm.saveBtn.addEventListener('click', this._boundHandlePasswordSaveClick);
         }
+    }
+
+    // Validate E.164 format: +[country][number], 7 to 15 digits total after country code
+    isValidE164(phone) {
+        return /^\+[1-9]\d{6,14}$/.test(phone);
+    }
+
+    // Normalize common French formats to E.164 and handle a few generic cases
+    normalizePhoneNumber(input) {
+        if (!input) return '';
+        let s = String(input).trim();
+        // Convert leading 00 to +
+        if (s.startsWith('00')) s = '+' + s.slice(2);
+        // Remove spaces, dashes, parentheses
+        s = s.replace(/[\s\-()]/g, '');
+        // French mobile/landline like 06XXXXXXXX or 01XXXXXXXX => +33
+        if (/^0\d{9}$/.test(s)) {
+            return '+33' + s.slice(1);
+        }
+        // If starts with 33 without +, add +
+        if (/^33\d{8,13}$/.test(s)) {
+            return '+' + s;
+        }
+        // If already looks like +E164, keep it
+        if (/^\+[1-9]\d{6,14}$/.test(s)) {
+            return s;
+        }
+        return s; // Return cleaned string; validator will decide if acceptable
     }
 
     /**
@@ -186,6 +244,8 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         const lastNameInput = document.getElementById('profile-last-name');
         const emailInput = document.getElementById('profile-email');
         const emailNotificationsCheckbox = document.getElementById('profile-email-notifications');
+    const smsNotificationsCheckbox = document.getElementById('profile-sms-notifications');
+    const phoneNumberInput = document.getElementById('profile-phone-number');
         const notificationDaysInput = document.getElementById('profile-notification-days');
 
         if (usernameInput) usernameInput.value = user.username || '';
@@ -194,7 +254,9 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         if (emailInput) emailInput.value = user.email || '';
         
         // Remplir les champs de notification seulement s'ils existent
-        if (emailNotificationsCheckbox) emailNotificationsCheckbox.checked = user.email_notifications == 1;
+    if (emailNotificationsCheckbox) emailNotificationsCheckbox.checked = user.email_notifications == 1;
+    if (smsNotificationsCheckbox) smsNotificationsCheckbox.checked = (user.sms_notifications == 1);
+    if (phoneNumberInput) phoneNumberInput.value = user.phone_number || '';
         if (notificationDaysInput) {
             // Correctly display 0 if it's the value, otherwise default to 7 if null/undefined
             notificationDaysInput.value = (user.notification_days !== null && typeof user.notification_days !== 'undefined') ? user.notification_days : 7;
@@ -259,11 +321,22 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 email: document.getElementById('profile-email').value.trim()
             };            // Ajouter les champs de notification seulement s'ils existent dans le DOM
             const emailNotificationsCheckbox = document.getElementById('profile-email-notifications');
+            const smsNotificationsCheckbox = document.getElementById('profile-sms-notifications');
+            const phoneNumberInput = document.getElementById('profile-phone-number');
             const notificationDaysInput = document.getElementById('profile-notification-days');
             
             if (emailNotificationsCheckbox) {
                 formData.email_notifications = emailNotificationsCheckbox.checked;
                 console.log('Email notifications checkbox:', emailNotificationsCheckbox.checked);
+            }
+            if (smsNotificationsCheckbox) {
+                formData.sms_notifications = smsNotificationsCheckbox.checked;
+                console.log('SMS notifications checkbox:', smsNotificationsCheckbox.checked);
+            }
+            if (phoneNumberInput) {
+                const normalizedPhone = this.normalizePhoneNumber(phoneNumberInput.value.trim());
+                formData.phone_number = normalizedPhone;
+                console.log('Phone number input:', formData.phone_number);
             }
             
             if (notificationDaysInput) {

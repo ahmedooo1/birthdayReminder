@@ -625,6 +625,20 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 // Assumes $data['notification_days'] is either null or a validated integer from frontend
                 $params[] = $data['notification_days']; 
             }
+
+            // Phone number (optional, normalized)
+            if (array_key_exists('phone_number', $data)) {
+                $rawPhone = trim((string)$data['phone_number']);
+                $normalized = preg_replace('/[^+0-9]/', '', $rawPhone);
+                $fields[] = "phone_number = ?";
+                $params[] = $normalized;
+            }
+
+            // SMS notifications opt-in
+            if (isset($data['sms_notifications'])) {
+                $fields[] = "sms_notifications = ?";
+                $params[] = $data['sms_notifications'] ? 1 : 0;
+            }
             
             if (empty($fields)) {
                 sendResponse(['error' => 'Aucune donnée à mettre à jour'], 400);

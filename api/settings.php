@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'notification_days' => $userSettings['notification_days'] ?? 3,
             'email_notifications' => $userSettings['email_notifications'] ?? 1,
             'system_notifications_enabled' => $userSettings['system_notifications_enabled'] ?? 1, // Added
+            'sms_notifications' => $userSettings['sms_notifications'] ?? 0,
+            'phone_number' => $userSettings['phone_number'] ?? '',
             'username' => $userSettings['username'],
             'email' => $userSettings['email'],
             'first_name' => $userSettings['first_name'] ?? '',
@@ -89,6 +91,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             $stmt->execute([$data['system_notifications_enabled'] ? 1 : 0, $user['user_id']]);
         }
 
+        if (isset($data['sms_notifications'])) {
+            $stmt = $pdo->prepare("UPDATE users SET sms_notifications = ? WHERE id = ?");
+            $stmt->execute([$data['sms_notifications'] ? 1 : 0, $user['user_id']]);
+        }
+
+        if (array_key_exists('phone_number', $data)) {
+            // Normaliser: retirer espaces, garder + et chiffres
+            $raw = trim((string)$data['phone_number']);
+            $normalized = preg_replace('/[^+0-9]/', '', $raw);
+            $stmt = $pdo->prepare("UPDATE users SET phone_number = ? WHERE id = ?");
+            $stmt->execute([$normalized, $user['user_id']]);
+        }
+
         if (isset($data['first_name'])) {
             $stmt = $pdo->prepare("UPDATE users SET first_name = ? WHERE id = ?");
             $stmt->execute([$data['first_name'], $user['user_id']]);
@@ -108,6 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             'notification_days' => $userSettings['notification_days'],
             'email_notifications' => $userSettings['email_notifications'],
             'system_notifications_enabled' => $userSettings['system_notifications_enabled'],
+            'sms_notifications' => $userSettings['sms_notifications'] ?? 0,
+            'phone_number' => $userSettings['phone_number'] ?? '',
             'username' => $userSettings['username'],
             'email' => $userSettings['email'],
             'first_name' => $userSettings['first_name'] ?? '',
