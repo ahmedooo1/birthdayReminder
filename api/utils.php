@@ -421,3 +421,33 @@ function searchArray($items, $query, $fields) {
     });
 }
 
+function sendTelegramMessage($botToken, $chatId, $message) {
+    if (empty($botToken) || empty($chatId)) {
+        return false;
+    }
+
+    $url = "https://api.telegram.org/bot{$botToken}/sendMessage";
+    $data = [
+        'chat_id' => $chatId,
+        'text' => $message,
+        'parse_mode' => 'HTML' // Permet d'utiliser des balises comme <b>, <i>
+    ];
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query($data),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+    ]);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Log de la réponse pour le débogage (optionnel, peut être retiré)
+    // file_put_contents('telegram_debug.log', date('Y-m-d H:i:s') . " - Response: " . $response . "\n", FILE_APPEND);
+
+    return $httpCode === 200;
+}
+

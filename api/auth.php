@@ -640,6 +640,22 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 $params[] = $data['sms_notifications'] ? 1 : 0;
             }
             
+            // Telegram fields
+            if (isset($data['telegram_bot_token'])) {
+                $fields[] = "telegram_bot_token = ?";
+                $params[] = $data['telegram_bot_token'];
+            }
+            
+            if (isset($data['telegram_chat_id'])) {
+                $fields[] = "telegram_chat_id = ?";
+                $params[] = $data['telegram_chat_id'];
+            }
+            
+            if (isset($data['telegram_notifications'])) {
+                $fields[] = "telegram_notifications = ?";
+                $params[] = $data['telegram_notifications'] ? 1 : 0;
+            }
+            
             if (empty($fields)) {
                 sendResponse(['error' => 'Aucune donnée à mettre à jour'], 400);
             }

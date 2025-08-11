@@ -40,7 +40,8 @@ try {
         // Récupérer les membres du groupe
         $stmt = $pdo->prepare("
             SELECT u.email, u.username, u.email_notifications, u.notification_days, 
-                   u.phone_number, u.sms_notifications
+                   u.phone_number, u.sms_notifications,
+                   u.telegram_bot_token, u.telegram_chat_id, u.telegram_notifications
             FROM users u
             JOIN group_members gm ON u.id = gm.user_id
             WHERE gm.group_id = ?
@@ -52,14 +53,17 @@ try {
             $userPrefDays = (int)$member['notification_days'];
             $shouldSendEmail = false;
             $shouldSendSms = false;
+            $shouldSendTelegram = false;
             $emailSubject = '';
             $emailMessage = '';
             $smsMessage = '';
+            $telegramMessage = '';
             
             if ($daysUntil == 0) {
                 // Anniversaire aujourd'hui
                 $shouldSendEmail = true;
                 $shouldSendSms = true;
+                $shouldSendTelegram = true;
                 $emailSubject = "🎉 Joyeux Anniversaire " . $birthdayName . " !";
                 $emailMessage = "
                 <html>
@@ -73,10 +77,12 @@ try {
                 </body>
                 </html>";
                 $smsMessage = "Rappel: C'est l'anniversaire de {$birthdayName} aujourd'hui 🎉";
+                $telegramMessage = "🎉 <b>Joyeux Anniversaire !</b> 🎉\nC'est l'anniversaire de <b>{$birthdayName}</b> aujourd'hui ! N'oubliez pas de lui souhaiter ! 🎂";
             } elseif ($daysUntil > 0 && $daysUntil == $userPrefDays) {
                 // Rappel basé sur la préférence
                 $shouldSendEmail = true;
                 $shouldSendSms = true;
+                $shouldSendTelegram = true;
                 $plural = ($daysUntil > 1) ? 's' : '';
                 $emailSubject = "⏰ Rappel : Anniversaire de " . $birthdayName . " dans " . $daysUntil . " jour" . $plural;
                 $emailMessage = "
@@ -91,6 +97,7 @@ try {
                 </body>
                 </html>";
                 $smsMessage = "Rappel: Anniversaire de {$birthdayName} dans {$daysUntil} jour{$plural}.";
+                $telegramMessage = "⏰ <b>Rappel d'Anniversaire</b> ⏰\nL'anniversaire de <b>{$birthdayName}</b> est dans <b>{$daysUntil} jour{$plural}</b> !";
             }
             
             if ($shouldSendEmail && !empty($member['email']) && (int)$member['email_notifications'] === 1) {
@@ -98,6 +105,11 @@ try {
                     $emailsSentForThisBirthday++;
                     $totalEmailsSent++;
                 }
+            }
+
+            // Envoi Telegram
+            if ($shouldSendTelegram && (int)($member['telegram_notifications'] ?? 0) === 1) {
+                sendTelegramMessage($member['telegram_bot_token'], $member['telegram_chat_id'], $telegramMessage);
             }
 
             // Temporairement désactivé

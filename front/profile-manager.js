@@ -247,6 +247,9 @@ class ProfileManager {    constructor(dataManager, toastManager) {
     const smsNotificationsCheckbox = document.getElementById('profile-sms-notifications');
     const phoneNumberInput = document.getElementById('profile-phone-number');
         const notificationDaysInput = document.getElementById('profile-notification-days');
+        const telegramBotTokenInput = document.getElementById('profile-telegram-bot-token');
+        const telegramChatIdInput = document.getElementById('profile-telegram-chat-id');
+        const telegramNotificationsCheckbox = document.getElementById('profile-telegram-notifications');
 
         if (usernameInput) usernameInput.value = user.username || '';
         if (firstNameInput) firstNameInput.value = user.first_name || '';
@@ -261,6 +264,9 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             // Correctly display 0 if it's the value, otherwise default to 7 if null/undefined
             notificationDaysInput.value = (user.notification_days !== null && typeof user.notification_days !== 'undefined') ? user.notification_days : 7;
         }
+        if (telegramBotTokenInput) telegramBotTokenInput.value = user.telegram_bot_token || '';
+        if (telegramChatIdInput) telegramChatIdInput.value = user.telegram_chat_id || '';
+        if (telegramNotificationsCheckbox) telegramNotificationsCheckbox.checked = user.telegram_notifications == 1;
     }
 
     /**
@@ -324,6 +330,9 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             const smsNotificationsCheckbox = document.getElementById('profile-sms-notifications');
             const phoneNumberInput = document.getElementById('profile-phone-number');
             const notificationDaysInput = document.getElementById('profile-notification-days');
+            const telegramBotTokenInput = document.getElementById('profile-telegram-bot-token');
+            const telegramChatIdInput = document.getElementById('profile-telegram-chat-id');
+            const telegramNotificationsCheckbox = document.getElementById('profile-telegram-notifications');
             
             if (emailNotificationsCheckbox) {
                 formData.email_notifications = emailNotificationsCheckbox.checked;
@@ -356,6 +365,18 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                     formData.notification_days = parseInt(daysValue, 10); // Final value is an integer
                 }
                 console.log('Notification days input:', notificationDaysInput.value, 'Processed as:', formData.notification_days);
+            }
+            if (telegramBotTokenInput) {
+                formData.telegram_bot_token = telegramBotTokenInput.value.trim();
+                console.log('Telegram bot token input:', formData.telegram_bot_token);
+            }
+            if (telegramChatIdInput) {
+                formData.telegram_chat_id = telegramChatIdInput.value.trim();
+                console.log('Telegram chat ID input:', formData.telegram_chat_id);
+            }
+            if (telegramNotificationsCheckbox) {
+                formData.telegram_notifications = telegramNotificationsCheckbox.checked;
+                console.log('Telegram notifications checkbox:', telegramNotificationsCheckbox.checked);
             }
 
             console.log('Form data to save:', formData);
