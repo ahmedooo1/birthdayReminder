@@ -985,6 +985,60 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 sendResponse(['error' => 'Erreur serveur'], 500);
             }
             break;
+        case 'test_telegram':
+            // Envoi d'un message de test Telegram pour l'utilisateur courant
+            $sessionToken = $_GET['session_token'] ?? $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+
+            if (!$sessionToken) {
+                sendResponse(['success' => false, 'message' => 'Session requise'], 401);
+            }
+
+            // Enlever "Bearer " si présent
+            if (strpos($sessionToken, 'Bearer ') === 0) {
+                $sessionToken = substr($sessionToken, 7);
+            }
+
+            $user = verifySession($sessionToken);
+            if (!$user) {
+                sendResponse(['success' => false, 'message' => 'Session invalide'], 401);
+            }
+
+            try {
+                // Récupérer les champs Telegram stockés pour cet utilisateur
+                $stmt = $pdo->prepare("SELECT username, telegram_bot_token, telegram_chat_id, telegram_notifications FROM users WHERE id = ?");
+                $stmt->execute([$user['user_id']]);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$row) {
+                    sendResponse(['success' => false, 'message' => 'Utilisateur introuvable'], 404);
+                }
+
+                $enabled = (int)($row['telegram_notifications'] ?? 0) === 1;
+                $botToken = trim((string)($row['telegram_bot_token'] ?? ''));
+                $chatId = trim((string)($row['telegram_chat_id'] ?? ''));
+
+                if (!$enabled) {
+                    sendResponse(['success' => false, 'message' => 'Les notifications Telegram ne sont pas activées dans votre profil.']);
+                }
+                if (empty($botToken) || empty($chatId)) {
+                    sendResponse(['success' => false, 'message' => 'Token du bot ou Chat ID manquant. Veuillez compléter vos réglages Telegram.']);
+                }
+
+                require_once __DIR__ . '/utils.php';
+                $username = $row['username'] ?? 'Utilisateur';
+                $text = "Test Telegram RappelAnniv pour @{$username} : OK ✅";
+                $ok = sendTelegramMessage($botToken, $chatId, $text);
+
+                if ($ok) {
+                    sendResponse(['success' => true, 'message' => 'Message Telegram envoyé. Vérifiez votre application.']);
+                } else {
+                    sendResponse(['success' => false, 'message' => "Échec de l'envoi Telegram. Vérifiez le token, le chat ID et que vous avez bien démarré une conversation avec votre bot."]);
+                }
+            } catch (PDOException $e) {
+                error_log('test_telegram error: ' . $e->getMessage());
+                sendResponse(['success' => false, 'message' => 'Erreur serveur.'], 500);
+            }
+            break;
         default:
             sendResponse(['error' => 'Action non reconnue'], 400);
     }

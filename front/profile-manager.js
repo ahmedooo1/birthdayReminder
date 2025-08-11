@@ -142,6 +142,42 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                     }
                 });
             }
+
+            // Telegram: collapse toggle
+            const toggleTelegramBtn = document.getElementById('toggle-telegram-settings');
+            const telegramBody = document.getElementById('telegram-settings-body');
+            if (toggleTelegramBtn && telegramBody) {
+                toggleTelegramBtn.addEventListener('click', () => {
+                    const isHidden = telegramBody.classList.contains('hidden');
+                    telegramBody.classList.toggle('hidden');
+                    toggleTelegramBtn.setAttribute('aria-expanded', String(isHidden));
+                    // Optional: rotate icon
+                    const icon = toggleTelegramBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-rotate-180');
+                    }
+                });
+            }
+
+            // Telegram: test send button
+            const testTelegramBtn = document.getElementById('test-telegram-btn');
+            if (testTelegramBtn) {
+                testTelegramBtn.addEventListener('click', async () => {
+                    try {
+                        const loading = this.toast?.loading ? this.toast.loading('Test Telegram', 'Envoi en cours...') : null;
+                        const resp = await this.dataManager.apiRequest('auth.php?action=test_telegram', 'GET');
+                        if (loading) loading.remove();
+                        if (resp && resp.success) {
+                            this.toast?.success && this.toast.success('Succès', resp.message || 'Message envoyé.');
+                        } else {
+                            const msg = (resp && resp.message) ? resp.message : 'Échec de l\'envoi.';
+                            this.toast?.error && this.toast.error('Erreur', msg);
+                        }
+                    } catch (err) {
+                        this.toast?.error && this.toast.error('Erreur', err.message || 'Une erreur est survenue.');
+                    }
+                });
+            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));
