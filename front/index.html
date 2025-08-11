@@ -331,7 +331,7 @@
 
                   <hr>
                   <h5><i class="fab fa-telegram-plane"></i> Notifications Telegram</h5>
-                  <p><small>Recevez les rappels directement sur Telegram. <a href="#" data-toggle="modal" data-target="#telegram-help-modal">Comment ça marche ?</a></small></p>
+                  <p><small>Recevez les rappels directement sur Telegram. <a href="#" id="open-telegram-help">Comment ça marche ?</a></small></p>
                   <div class="form-group">
                     <label for="profile-telegram-bot-token">Token du Bot Telegram</label>
                     <input type="text" id="profile-telegram-bot-token" class="form-control" placeholder="Ex: 123456:ABC-DEF123456...">
@@ -541,6 +541,38 @@
         <button id="confirm-action-btn" class="btn danger-btn">Confirmer</button>
       </div>
     </div>
+
+    <!-- Telegram Help Modal (custom modal system) -->
+    <div id="telegram-help-modal" class="modal hidden">
+      <div class="modal-header">
+        <h3 id="telegram-help-label">Configurer les notifications Telegram</h3>
+        <button id="close-telegram-help-modal" class="btn icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Pour recevoir des notifications sur Telegram, créez un bot et récupérez deux informations :</p>
+        <ol>
+          <li><strong>Token du Bot</strong>
+            <ul>
+              <li>Ouvrez Telegram et cherchez <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a>.</li>
+              <li>Envoyez-lui <code>/newbot</code> puis suivez les instructions.</li>
+              <li>Copiez le <strong>token</strong> qu'il vous donne et collez-le dans le champ correspondant.</li>
+            </ul>
+          </li>
+          <li><strong>Votre Chat ID</strong>
+            <ul>
+              <li>Ouvrez <a href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">@userinfobot</a> et envoyez <code>/start</code>.</li>
+              <li>Copiez l'<strong>ID</strong> affiché et collez-le dans le champ "Chat ID".</li>
+            </ul>
+          </li>
+        </ol>
+        <p><em>Important</em> : envoyez un premier message à votre nouveau bot (ex: "bonjour") pour autoriser la conversation.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="close-telegram-help-modal-footer" class="btn secondary-btn">J'ai compris</button>
+      </div>
+    </div>
   </div>
 
   <!-- Auth Modal -->
@@ -674,5 +706,34 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Tiny helper to open/close the custom Telegram help modal -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const openLink = document.getElementById('open-telegram-help');
+      const modal = document.getElementById('telegram-help-modal');
+      const overlay = document.getElementById('modal-overlay');
+      const closeBtn = document.getElementById('close-telegram-help-modal');
+      const closeBtnFooter = document.getElementById('close-telegram-help-modal-footer');
+
+      function openModal(e) {
+        if (e) e.preventDefault();
+        if (modal) modal.classList.remove('hidden');
+        if (overlay) overlay.classList.remove('hidden');
+      }
+      function closeModal(e) {
+        if (e) e.preventDefault();
+        if (modal) modal.classList.add('hidden');
+        if (overlay) overlay.classList.add('hidden');
+      }
+
+      if (openLink) openLink.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (closeBtnFooter) closeBtnFooter.addEventListener('click', closeModal);
+      if (overlay) overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal(e);
+      });
+    });
+  </script>
 </body>
 </html>
