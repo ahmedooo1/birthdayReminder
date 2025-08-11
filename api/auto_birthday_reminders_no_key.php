@@ -100,11 +100,12 @@ try {
                 }
             }
 
-            if ($shouldSendSms && !empty($member['phone_number']) && (int)($member['sms_notifications'] ?? 0) === 1) {
-                if (sendSms($member['phone_number'], $smsMessage)) {
-                    $totalSmsSent++;
-                }
-            }
+            // Temporairement désactivé
+            // if ($shouldSendSms && !empty($member['phone_number']) && (int)($member['sms_notifications'] ?? 0) === 1) {
+            //     if (sendSms($member['phone_number'], $smsMessage)) {
+            //         $totalSmsSent++;
+            //     }
+            // }
         }
         
         $processedBirthdays[] = [
