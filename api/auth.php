@@ -1029,12 +1029,11 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 }
 
                 require_once __DIR__ . '/utils.php';
-                $username = $row['username'] ?? 'Utilisateur';
-                $text = "Test Telegram RappelAnniv pour @{$username} : OK ✅";
+                $text = "Ceci est un message de test de RappelAnniv. Si vous recevez ce message, vos notifications sont configurées correctement ! ✅";
                 $ok = sendTelegramMessage($botToken, $chatId, $text);
 
                 if ($ok) {
-                    sendResponse(['success' => true, 'message' => 'Message Telegram envoyé. Vérifiez votre application.']);
+                    sendResponse(['success' => true, 'message' => 'Message de test envoyé avec succès ! Vérifiez votre application Telegram.']);
                 } else {
                     sendResponse(['success' => false, 'message' => "Échec de l'envoi Telegram. Vérifiez le token, le chat ID et que vous avez bien démarré une conversation avec votre bot."]);
                 }
