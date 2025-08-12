@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
       window.authManager.showAuthModal();
     });
   }
+
+  // If not logged in, show the hero section behind the auth modal
+  const sessionToken = localStorage.getItem('session_token');
+  if (!sessionToken) {
+    showView('hero');
+  }
   
   // AuthManager will handle authentication check in its init() method
   // and dispatch authSuccess event if user is already authenticated
