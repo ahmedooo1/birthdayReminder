@@ -305,6 +305,7 @@ class AuthManager {  constructor() {
     this.updateUsernameDisplay('Invité');
     this.toggleUserSection(false); // Afficher le bouton de connexion
     document.dispatchEvent(new Event('authLogout'));
+    window.location.reload(); // Reload the page to reset the state
     // this.showAuthModal(); // Ne plus afficher la modale automatiquement
   }
 
