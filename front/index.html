@@ -333,16 +333,17 @@
                   <h5><i class="fab fa-telegram-plane"></i> Notifications Telegram</h5>
                   <p><small>Recevez les rappels directement sur Telegram. Par défaut, tous les messages proviennent du bot de l'administrateur. <a href="#" id="open-telegram-help">Comment ça marche ?</a></small></p>
                   <div class="form-group">
-                    <label for="profile-telegram-bot-token">Token du Bot Telegram <small>(souvent pré-configuré par l'administrateur)</small></label>
-                    <input type="text" id="profile-telegram-bot-token" class="form-control" placeholder="Ex: 123456:ABC-DEF123456...">
-                  </div>
-                  <div class="form-group">
                     <label for="profile-telegram-chat-id">Chat ID Telegram</label>
                     <input type="text" id="profile-telegram-chat-id" class="form-control" placeholder="Ex: 123456789">
                   </div>
                   <div class="form-check">
                     <input type="checkbox" id="profile-telegram-notifications" class="form-check-input">
                     <label for="profile-telegram-notifications" class="form-check-label">Activer les notifications Telegram</label>
+                  </div>
+                  <div class="form-group" style="margin-top:10px;">
+                    <button type="button" id="test-telegram-btn" class="btn primary-btn">
+                      <i class="fas fa-paper-plane"></i> Tester l'envoi Telegram
+                    </button>
                   </div>
                 </div>
 
