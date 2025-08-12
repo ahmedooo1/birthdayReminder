@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize authentication first
   window.authManager = new AuthManager();
+
+  // Add click listener for the hero CTA button
+  const heroCtaBtn = document.getElementById('hero-cta-btn');
+  if (heroCtaBtn) {
+    heroCtaBtn.addEventListener('click', () => {
+      window.authManager.showAuthModal();
+    });
+  }
   
   // AuthManager will handle authentication check in its init() method
   // and dispatch authSuccess event if user is already authenticated
@@ -108,6 +116,7 @@ document.addEventListener('authSuccess', () => {
 
 document.addEventListener('authLogout', () => {
   console.log('User logged out, resetting app');
+  showView('hero');
   window.resetApp();
 });
 
@@ -326,8 +335,20 @@ function showView(viewId) {
   });
   
   const targetView = document.getElementById(`${viewId}-view`);
+  if (!targetView && viewId === 'hero') {
+    const heroSection = document.getElementById('hero-section');
+    if(heroSection) {
+      heroSection.classList.add('active');
+      heroSection.style.display = 'block';
+    }
+    return;
+  }
+  
   if (targetView) {
     targetView.classList.add('active');
+    if(viewId === 'hero') {
+      targetView.style.display = 'block';
+    }
   } else {
     console.error(`View ${viewId}-view not found`);
     return;
@@ -548,7 +569,13 @@ async function initializeApp() {
     // Load initial view: restore last active view or default to dashboard
     const lastViewId = localStorage.getItem('lastActiveView');
     const lastGroupId = localStorage.getItem('lastActiveGroupId');
-    const validMainViews = ['dashboard', 'groups', 'profile', 'settings']; // Renamed for clarity
+    const validMainViews = ['dashboard', 'groups', 'profile', 'settings'];
+
+    // Si l'utilisateur n'est pas connecté, afficher la section hero
+    if (!dataManager.getCurrentUser()) {
+      showView('hero');
+      return;
+    }
 
     if (lastViewId === 'group-details' && lastGroupId && document.getElementById('group-details-view')) {
       console.log(`Restoring last active group view: ${lastViewId} with groupId: ${lastGroupId}`);
