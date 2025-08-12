@@ -3226,7 +3226,7 @@ body.dark-theme .notification-bell:hover {
 /* --- Site Footer --- */
 .site-footer {
   background: var(--header-bg-color);
-  border-top: 1px solid var(--gray-300);
+  /* border-top removed per request to hide line at the end */
   margin-top: 2rem;
 }
 .footer-container {

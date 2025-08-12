@@ -93,16 +93,13 @@ window.resetApp = function() {
     connectionCheckInterval = null;
   }
   
-  // Clear any cached data
-  const views = document.querySelectorAll('.view');
-  views.forEach(view => {
-    if (!view.classList.contains('hidden')) {
-      view.classList.add('hidden');
-    }
-  });
+  // Clear last view context and ensure all views are not force-hidden
+  localStorage.removeItem('lastActiveView');
+  localStorage.removeItem('lastActiveGroupId');
+  document.querySelectorAll('.view').forEach(view => view.classList.remove('hidden', 'active'));
   
-  // Show dashboard by default
-  showView('dashboard');
+  // Show hero for logged-out users
+  showView('hero');
   
   // Clear any modals
   const modals = document.querySelectorAll('.modal');
@@ -122,7 +119,6 @@ document.addEventListener('authSuccess', () => {
 
 document.addEventListener('authLogout', () => {
   console.log('User logged out, resetting app');
-  showView('hero');
   window.resetApp();
 });
 
