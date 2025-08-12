@@ -552,23 +552,17 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Pour recevoir des notifications sur Telegram, vous devez au minimum indiquer votre <strong>Chat ID</strong>. Le <strong>token du bot</strong> est généralement <em>déjà configuré par l'administrateur</em> pour que tous les messages proviennent du même bot.</p>
+        <p>Pour recevoir des notifications sur Telegram, vous devez simplement nous fournir votre <strong>Chat ID</strong>. Tous les messages proviennent d'un bot central géré par l'administrateur.</p>
         <ol>
-          <li><strong>Token du Bot</strong> (uniquement si l'administrateur ne l'a pas déjà configuré globalement)
+          <li><strong>Trouver Votre Chat ID</strong>
             <ul>
-              <li>Ouvrez Telegram et cherchez <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a>.</li>
-              <li>Envoyez-lui <code>/newbot</code> puis suivez les instructions.</li>
-              <li>Copiez le <strong>token</strong> qu'il vous donne et collez-le dans le champ correspondant.</li>
-            </ul>
-          </li>
-          <li><strong>Votre Chat ID</strong>
-            <ul>
-              <li>Ouvrez <a href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">@userinfobot</a> et envoyez <code>/start</code>.</li>
-              <li>Copiez l'<strong>ID</strong> affiché et collez-le dans le champ "Chat ID".</li>
+              <li>Ouvrez Telegram et cherchez le bot <a href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">@userinfobot</a>.</li>
+              <li>Envoyez-lui la commande <code>/start</code>.</li>
+              <li>Le bot vous répondra avec vos informations, incluant votre <strong>ID</strong>. Copiez cet ID et collez-le dans le champ "Chat ID" de votre profil.</li>
             </ul>
           </li>
         </ol>
-        <p><em>Important</em> : envoyez un premier message à votre nouveau bot (ex: "bonjour") pour autoriser la conversation.</p>
+        <p><em>Important</em> : Une fois votre Chat ID enregistré, cliquez sur "Tester l'envoi" pour vous assurer que tout fonctionne correctement.</p>
       </div>
       <div class="modal-footer">
         <button id="close-telegram-help-modal-footer" class="btn secondary-btn">J'ai compris</button>
