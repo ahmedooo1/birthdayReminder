@@ -17,13 +17,17 @@ Ce guide vous explique comment utiliser l'application Birthday Reminder pour gé
 
 ## Présentation de l'application
 
-Birthday Reminder est une application web qui vous permet de gérer les anniversaires de vos proches. Elle vous offre les fonctionnalités suivantes :
+**RappelAnniv** est votre assistant personnel pour ne plus jamais oublier un anniversaire important ! Conçu pour être simple et efficace, notre service vous permet de sauvegarder les dates d'anniversaire de vos proches, de les organiser en groupes et de recevoir des rappels automatiques pour ne manquer aucune occasion.
 
-- Création de groupes pour organiser les anniversaires (famille, amis, collègues, etc.)
-- Ajout, modification et suppression d'anniversaires
-- Notifications par email avant les anniversaires
-- Affichage des anniversaires à venir
-- Statistiques sur les anniversaires
+Fini le stress des oublis de dernière minute ! Avec RappelAnniv, vous serez toujours prêt à souhaiter un joyeux anniversaire.
+
+Elle vous offre les fonctionnalités suivantes :
+
+- **Tableau de Bord Intuitif** : Dès votre connexion, visualisez en un coup d'œil les anniversaires à venir et naviguez facilement grâce à un calendrier interactif.
+- **Gestion Simplifiée des Anniversaires** : Ajoutez, modifiez ou supprimez des anniversaires en quelques clics.
+- **Organisation par Groupes** : Créez des groupes ("Famille", "Amis", "Collègues") et invitez d'autres personnes à les rejoindre avec un simple code d'accès.
+- **Notifications Personnalisées** : Recevez des rappels par **E-mail** ou directement sur **Telegram**.
+- **Profil Personnalisable** : Gérez vos informations, votre mot de passe et vos préférences de notification en toute simplicité.
 
 ## Création d'un compte
 
