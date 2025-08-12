@@ -162,21 +162,30 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             // Telegram: test send button
             const testTelegramBtn = document.getElementById('test-telegram-btn');
             if (testTelegramBtn) {
+                console.log('🟢 Test Telegram button found, attaching listener.');
                 testTelegramBtn.addEventListener('click', async () => {
+                    console.log('🔵 Test Telegram button CLICKED.');
                     try {
+                        console.log('🔵 Calling API: auth.php?action=test_telegram');
                         const loading = this.toast?.loading ? this.toast.loading('Test Telegram', 'Envoi en cours...') : null;
                         const resp = await this.dataManager.apiRequest('auth.php?action=test_telegram', 'GET');
+                        console.log('🔵 API Response received:', resp);
                         if (loading) loading.remove();
                         if (resp && resp.success) {
+                            console.log('✅ Success:', resp.message);
                             this.toast?.success && this.toast.success('Succès', resp.message || 'Message envoyé.');
                         } else {
                             const msg = (resp && resp.message) ? resp.message : 'Échec de l\'envoi.';
+                            console.error('❌ API Error:', msg);
                             this.toast?.error && this.toast.error('Erreur', msg);
                         }
                     } catch (err) {
+                        console.error('❌ CRITICAL: Exception during test send.', err);
                         this.toast?.error && this.toast.error('Erreur', err.message || 'Une erreur est survenue.');
                     }
                 });
+            } else {
+                console.error('❌ Test Telegram button NOT found!');
             }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
