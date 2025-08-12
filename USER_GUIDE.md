@@ -36,7 +36,7 @@ Elle vous offre les fonctionnalités suivantes :
 3. Remplissez le formulaire d'inscription :
    - Nom d'utilisateur
    - Adresse email
-   - Mot de passe (au moins 6 caractères)
+   - Mot de passe (au moins 8 caractères)
 4. Cliquez sur "Créer un compte"
 
 ## Connexion et déconnexion
