@@ -331,9 +331,9 @@
 
                   <hr>
                   <h5><i class="fab fa-telegram-plane"></i> Notifications Telegram</h5>
-                  <p><small>Recevez les rappels directement sur Telegram. <a href="#" id="open-telegram-help">Comment ça marche ?</a></small></p>
+                  <p><small>Recevez les rappels directement sur Telegram. Par défaut, tous les messages proviennent du bot de l'administrateur. <a href="#" id="open-telegram-help">Comment ça marche ?</a></small></p>
                   <div class="form-group">
-                    <label for="profile-telegram-bot-token">Token du Bot Telegram</label>
+                    <label for="profile-telegram-bot-token">Token du Bot Telegram <small>(souvent pré-configuré par l'administrateur)</small></label>
                     <input type="text" id="profile-telegram-bot-token" class="form-control" placeholder="Ex: 123456:ABC-DEF123456...">
                   </div>
                   <div class="form-group">
@@ -543,7 +543,7 @@
     </div>
 
     <!-- Telegram Help Modal (custom modal system) -->
-    <div id="telegram-help-modal" class="modal hidden">
+  <div id="telegram-help-modal" class="modal hidden">
       <div class="modal-header">
         <h3 id="telegram-help-label">Configurer les notifications Telegram</h3>
         <button id="close-telegram-help-modal" class="btn icon-btn">
@@ -551,9 +551,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Pour recevoir des notifications sur Telegram, créez un bot et récupérez deux informations :</p>
+        <p>Pour recevoir des notifications sur Telegram, vous devez au minimum indiquer votre <strong>Chat ID</strong>. Le <strong>token du bot</strong> est généralement <em>déjà configuré par l'administrateur</em> pour que tous les messages proviennent du même bot.</p>
         <ol>
-          <li><strong>Token du Bot</strong>
+          <li><strong>Token du Bot</strong> (uniquement si l'administrateur ne l'a pas déjà configuré globalement)
             <ul>
               <li>Ouvrez Telegram et cherchez <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a>.</li>
               <li>Envoyez-lui <code>/newbot</code> puis suivez les instructions.</li>

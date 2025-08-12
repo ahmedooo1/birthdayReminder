@@ -49,7 +49,7 @@ try {
         $stmt->execute([$groupId]);
         $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        foreach ($members as $member) {
+    foreach ($members as $member) {
             $userPrefDays = (int)$member['notification_days'];
             $shouldSendEmail = false;
             $shouldSendSms = false;
@@ -109,7 +109,12 @@ try {
 
             // Envoi Telegram
             if ($shouldSendTelegram && (int)($member['telegram_notifications'] ?? 0) === 1) {
-                sendTelegramMessage($member['telegram_bot_token'], $member['telegram_chat_id'], $telegramMessage);
+                // Prefer global bot token if configured, else fallback to per-user token (legacy)
+                $globalBotToken = env('TELEGRAM_BOT_TOKEN', '');
+                $tokenToUse = !empty($globalBotToken) ? $globalBotToken : ($member['telegram_bot_token'] ?? '');
+                if (!empty($tokenToUse) && !empty($member['telegram_chat_id'])) {
+                    sendTelegramMessage($tokenToUse, $member['telegram_chat_id'], $telegramMessage);
+                }
             }
 
             // Temporairement désactivé

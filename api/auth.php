@@ -538,6 +538,8 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             
             // Enlever le hash du mot de passe
             unset($userProfile['password_hash']);
+            // Ajouter un indicateur si un bot Telegram global est configuré côté serveur
+            $userProfile['telegram_global_bot'] = !empty(env('TELEGRAM_BOT_TOKEN', '')) ? 1 : 0;
             
             sendResponse($userProfile);
             break;
@@ -1014,7 +1016,9 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
                 }
 
                 $enabled = (int)($row['telegram_notifications'] ?? 0) === 1;
-                $botToken = trim((string)($row['telegram_bot_token'] ?? ''));
+                // Prefer a global bot token, else use user token for backward compatibility
+                $globalBot = env('TELEGRAM_BOT_TOKEN', '');
+                $botToken = trim((string)(!empty($globalBot) ? $globalBot : ($row['telegram_bot_token'] ?? '')));
                 $chatId = trim((string)($row['telegram_chat_id'] ?? ''));
 
                 if (!$enabled) {

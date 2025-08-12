@@ -283,7 +283,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
     const smsNotificationsCheckbox = document.getElementById('profile-sms-notifications');
     const phoneNumberInput = document.getElementById('profile-phone-number');
         const notificationDaysInput = document.getElementById('profile-notification-days');
-        const telegramBotTokenInput = document.getElementById('profile-telegram-bot-token');
+    const telegramBotTokenInput = document.getElementById('profile-telegram-bot-token');
         const telegramChatIdInput = document.getElementById('profile-telegram-chat-id');
         const telegramNotificationsCheckbox = document.getElementById('profile-telegram-notifications');
 
@@ -300,7 +300,15 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             // Correctly display 0 if it's the value, otherwise default to 7 if null/undefined
             notificationDaysInput.value = (user.notification_days !== null && typeof user.notification_days !== 'undefined') ? user.notification_days : 7;
         }
-        if (telegramBotTokenInput) telegramBotTokenInput.value = user.telegram_bot_token || '';
+        if (telegramBotTokenInput) {
+            telegramBotTokenInput.value = user.telegram_bot_token || '';
+            // If a global bot is configured, disable editing local token to ensure single bot usage
+            const isGlobal = (user.telegram_global_bot === 1 || user.telegram_global_bot === '1' || user.telegram_global_bot === true);
+            telegramBotTokenInput.disabled = !!isGlobal;
+            if (isGlobal) {
+                telegramBotTokenInput.placeholder = 'Pré-configuré par l\'administrateur';
+            }
+        }
         if (telegramChatIdInput) telegramChatIdInput.value = user.telegram_chat_id || '';
         if (telegramNotificationsCheckbox) telegramNotificationsCheckbox.checked = user.telegram_notifications == 1;
     }
@@ -402,7 +410,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
                 }
                 console.log('Notification days input:', notificationDaysInput.value, 'Processed as:', formData.notification_days);
             }
-            if (telegramBotTokenInput) {
+            if (telegramBotTokenInput && !telegramBotTokenInput.disabled) {
                 formData.telegram_bot_token = telegramBotTokenInput.value.trim();
                 console.log('Telegram bot token input:', formData.telegram_bot_token);
             }
