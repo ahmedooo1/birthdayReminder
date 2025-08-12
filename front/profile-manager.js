@@ -18,6 +18,7 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         // and to have stable references for add/removeEventListener.        this._boundHandleProfileSubmit = this._handleProfileSubmit.bind(this);
         this._boundHandlePasswordSaveClick = this._handlePasswordSaveClick.bind(this);
         this._boundHandleTabLinkClick = this._handleTabLinkClick.bind(this);
+        this._boundHandleTestTelegramClick = this._handleTestTelegramClick.bind(this);
 
         this.initializeEventListeners();
         
@@ -51,6 +52,29 @@ class ProfileManager {    constructor(dataManager, toastManager) {
         const tabName = e.currentTarget.dataset.tab; 
         console.log('Tab clicked:', tabName); // Keep debug log from original
         this.switchTab(tabName);
+    }
+
+    async _handleTestTelegramClick(e) {
+        e.preventDefault();
+        console.log('🔵 Test Telegram button CLICKED.');
+        try {
+            console.log('🔵 Calling API: auth.php?action=test_telegram');
+            const loading = this.toast?.loading ? this.toast.loading('Test Telegram', 'Envoi en cours...') : null;
+            const resp = await this.dataManager.apiRequest('auth.php?action=test_telegram', 'GET');
+            console.log('🔵 API Response received:', resp);
+            if (loading) loading.remove();
+            if (resp && resp.success) {
+                console.log('✅ Success:', resp.message);
+                this.toast?.success && this.toast.success('Succès', resp.message || 'Message envoyé.');
+            } else {
+                const msg = (resp && resp.message) ? resp.message : 'Échec de l\'envoi.';
+                console.error('❌ API Error:', msg);
+                this.toast?.error && this.toast.error('Erreur', msg);
+            }
+        } catch (err) {
+            console.error('❌ CRITICAL: Exception during test send.', err);
+            this.toast?.error && this.toast.error('Erreur', err.message || 'Une erreur est survenue.');
+        }
     }
 
     /**
@@ -163,27 +187,8 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             const testTelegramBtn = document.getElementById('test-telegram-btn');
             if (testTelegramBtn) {
                 console.log('🟢 Test Telegram button found, attaching listener.');
-                testTelegramBtn.addEventListener('click', async () => {
-                    console.log('🔵 Test Telegram button CLICKED.');
-                    try {
-                        console.log('🔵 Calling API: auth.php?action=test_telegram');
-                        const loading = this.toast?.loading ? this.toast.loading('Test Telegram', 'Envoi en cours...') : null;
-                        const resp = await this.dataManager.apiRequest('auth.php?action=test_telegram', 'GET');
-                        console.log('🔵 API Response received:', resp);
-                        if (loading) loading.remove();
-                        if (resp && resp.success) {
-                            console.log('✅ Success:', resp.message);
-                            this.toast?.success && this.toast.success('Succès', resp.message || 'Message envoyé.');
-                        } else {
-                            const msg = (resp && resp.message) ? resp.message : 'Échec de l\'envoi.';
-                            console.error('❌ API Error:', msg);
-                            this.toast?.error && this.toast.error('Erreur', msg);
-                        }
-                    } catch (err) {
-                        console.error('❌ CRITICAL: Exception during test send.', err);
-                        this.toast?.error && this.toast.error('Erreur', err.message || 'Une erreur est survenue.');
-                    }
-                });
+                testTelegramBtn.removeEventListener('click', this._boundHandleTestTelegramClick); // Prevent duplicates
+                testTelegramBtn.addEventListener('click', this._boundHandleTestTelegramClick);
             } else {
                 console.error('❌ Test Telegram button NOT found!');
             }
