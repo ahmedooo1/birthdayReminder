@@ -66,7 +66,6 @@ Les groupes vous permettent d'organiser les anniversaires par catégorie (famill
    - Nom du groupe
    - Description (optionnel)
    - Couleur (pour identifier visuellement le groupe)
-   - Privé/Public (un groupe privé n'est visible que par vous)
 4. Cliquez sur "Créer"
 
 ### Modifier un groupe
@@ -142,11 +141,19 @@ L'application peut vous envoyer des notifications par email avant les anniversai
 ### Configurer les notifications
 
 1. Cliquez sur votre nom d'utilisateur en haut à droite
-2. Sélectionnez "Paramètres" dans le menu déroulant
-3. Dans l'onglet "Notifications" :
-   - Activez ou désactivez les notifications par email
-   - Définissez combien de jours à l'avance vous souhaitez être notifié
-4. Cliquez sur "Enregistrer"
+2. Sélectionnez "Profil" dans le menu déroulant
+3. Dans la section "Préférences de notification" :
+   - **E-mail** : Cochez la case pour activer ou désactiver les notifications par e-mail.
+   - **Telegram** : Cochez la case pour activer les notifications Telegram. Vous devrez fournir votre "Chat ID" pour que cela fonctionne.
+   - **Délai** : Définissez combien de jours à l'avance vous souhaitez être notifié.
+4. Cliquez sur "Enregistrer les modifications" en bas de la page.
+
+#### Comment trouver son Chat ID Telegram ?
+Pour recevoir des notifications sur Telegram, vous devez simplement nous fournir votre **Chat ID**.
+1.  Ouvrez Telegram et cherchez le bot **@userinfobot**.
+2.  Envoyez-lui la commande `/start`.
+3.  Le bot vous répondra avec vos informations, incluant votre **ID**. Copiez cet ID et collez-le dans le champ "Chat ID" de votre profil.
+4.  Utilisez le bouton "Tester l'envoi Telegram" pour vérifier que la configuration est correcte.
 
 ### Consulter les notifications
 
@@ -179,25 +186,10 @@ L'application peut vous envoyer des notifications par email avant les anniversai
 
 ### Calendrier
 
-1. Cliquez sur "Calendrier" dans le menu principal
-2. Consultez les anniversaires du mois en cours
+1. Cliquez sur "Tableau de bord" dans le menu principal
+2. Consultez les anniversaires du mois en cours dans la section "Calendrier"
 3. Naviguez entre les mois à l'aide des flèches
 4. Cliquez sur un jour pour voir les anniversaires de ce jour
-
-### Statistiques
-
-1. Cliquez sur "Statistiques" dans le menu principal
-2. Consultez les graphiques et statistiques :
-   - Répartition des anniversaires par mois
-   - Répartition des anniversaires par groupe
-   - Âge moyen par groupe
-
-### Exportation des données
-
-1. Cliquez sur "Anniversaires" dans le menu principal
-2. Cliquez sur le bouton "Exporter"
-3. Choisissez le format d'exportation (CSV, PDF)
-4. Cliquez sur "Télécharger"
 
 ## Astuces et conseils
 
