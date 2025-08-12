@@ -17,7 +17,7 @@
     --input-border-color: var(--gray-300);
     --header-bg-color: white;
     --modal-bg-color: white;
-    --text-muted-color: #fff;
+    --text-muted-color: #6c757d; /* var(--gray-600) */
 
     --gray-100: #f8f9fa;
     --gray-200: #e9ecef;
@@ -1013,6 +1013,7 @@ body.dark-theme {
 }
 
 .auth-container {
+  position: relative; /* For positioning the close button */
   background: var(--card-bg-color);
   border-radius: var(--border-radius);
   padding: 2rem;
@@ -1021,6 +1022,19 @@ body.dark-theme {
   box-shadow: var(--box-shadow);
   animation: slideIn 0.3s ease;
   color: var(--text-color); /* Ensure auth container text is themed */
+}
+
+.auth-container .close-modal-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.auth-container .close-modal-btn:hover {
+    color: var(--primary-dark);
+    background-color: transparent; /* Ensure no background on hover */
 }
 
 .auth-header {

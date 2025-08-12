@@ -13,6 +13,7 @@ class AuthManager {  constructor() {
     this.usernameDisplay = document.getElementById('username-display');
     this.logoutBtn = document.getElementById('logout-btn');
     this.profileBtn = document.getElementById('profile-btn');
+    this.closeAuthModalBtn = document.getElementById('close-auth-modal-btn');
     this.demoBtns = document.querySelectorAll('.demo-btn');
     
     console.log('AuthManager elements found:', {
@@ -56,20 +57,32 @@ class AuthManager {  constructor() {
         console.log('Session verification result:', isValid);
         if (isValid) {
           this.hideAuthModal();
+          this.toggleUserSection(true); // Afficher le menu utilisateur
           document.dispatchEvent(new Event('authSuccess'));
         } else {
           console.log('Session invalid, showing auth modal');
-          this.showAuthModal();
+          this.toggleUserSection(false); // Afficher le bouton de connexion
+          this.showAuthModal(); 
         }
       });
     } else {
       console.log('No session token, showing auth modal');
       this.showAuthModal();
+      this.toggleUserSection(false); // Afficher le bouton de connexion
     }
     this.setupEvents();
   }
 
   setupEvents() {
+    const loginBtn = document.getElementById('login-btn-header');
+    if(loginBtn) {
+        loginBtn.addEventListener('click', () => this.showAuthModal());
+    }
+
+    if(this.closeAuthModalBtn) {
+        this.closeAuthModalBtn.addEventListener('click', () => this.hideAuthModal());
+    }
+
     if (this.loginForm) {
       this.loginForm.addEventListener('submit', e => {
         e.preventDefault();
@@ -290,8 +303,9 @@ class AuthManager {  constructor() {
     localStorage.removeItem('session_token');
     localStorage.removeItem('user_data');
     this.updateUsernameDisplay('Invité');
+    this.toggleUserSection(false); // Afficher le bouton de connexion
     document.dispatchEvent(new Event('authLogout'));
-    this.showAuthModal();
+    // this.showAuthModal(); // Ne plus afficher la modale automatiquement
   }
 
   updateUsernameDisplay(username) {
@@ -312,6 +326,19 @@ class AuthManager {  constructor() {
       this.authError.textContent = msg;
       this.authError.classList.remove('hidden');
       this.authError.style.color = '#28a745'; // green color for success
+    }
+  }
+
+  toggleUserSection(isLoggedIn) {
+    const userMenu = document.querySelector('.user-menu');
+    const loginBtn = document.getElementById('login-btn-header');
+
+    if (isLoggedIn) {
+      if (userMenu) userMenu.style.display = 'flex';
+      if (loginBtn) loginBtn.style.display = 'none';
+    } else {
+      if (userMenu) userMenu.style.display = 'none';
+      if (loginBtn) loginBtn.style.display = 'flex';
     }
   }
 

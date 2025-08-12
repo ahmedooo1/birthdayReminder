@@ -38,7 +38,10 @@
           <i class="fas fa-bell"></i>
           <span id="notification-count" class="notification-badge hidden">0</span>
         </div>
-        <div class="user-menu">
+        <button id="login-btn-header" class="btn primary-btn" style="display: none;">
+            <i class="fas fa-sign-in-alt"></i> Se connecter
+        </button>
+        <div class="user-menu" style="display: flex;">
           <button id="user-menu-btn" class="user-btn">
             <i class="fas fa-user"></i>
             <span id="username-display">Invité</span>
@@ -573,6 +576,9 @@
   <!-- Auth Modal -->
   <div id="auth-modal" class="modal auth-modal hidden">
     <div class="auth-container">
+      <button id="close-auth-modal-btn" class="btn icon-btn close-modal-btn">
+          <i class="fas fa-times"></i>
+      </button>
       <div class="auth-header">
         <h2 id="auth-title">Connexion</h2>
         <p id="auth-subtitle">Connectez-vous pour accéder à vos anniversaires</p>
