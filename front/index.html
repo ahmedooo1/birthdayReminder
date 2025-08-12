@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RappelAnniv</title>
-  <link rel="stylesheet" href="styles.css?v=1.0.1" />
+  <link rel="stylesheet" href="styles.css?v=1.0.2" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -71,6 +71,76 @@
           <img src="images/hero-image.svg" alt="Illustration de personnes célébrant un événement">
         </div>
       </div>
+
+      <!-- Feature Sections (visible avant connexion) -->
+      <div class="features">
+        <!-- Feature 1: Rappels automatiques (texte gauche, image droite) -->
+        <section class="feature-section" aria-labelledby="feature-reminders-title">
+          <div class="feature-grid">
+            <div class="feature-content">
+              <span class="feature-kicker"><i class="fas fa-magic"></i> Automatique</span>
+              <h3 id="feature-reminders-title">Rappels intelligents et automatiques</h3>
+              <p>Planifiez une fois, puis laissez RappelAnniv vous alerter au bon moment par email ou Telegram. Des rappels fiables, sans effort.</p>
+              <ul class="feature-bullets">
+                <li><i class="fas fa-check-circle"></i> Prévenez J-1, J-3, J-7… à votre choix</li>
+                <li><i class="fas fa-check-circle"></i> Notes et informations utiles par personne</li>
+                <li><i class="fas fa-check-circle"></i> Aucune pub, interface claire</li>
+              </ul>
+              <div class="feature-actions">
+                <button class="btn primary-btn" data-open-auth><i class="fas fa-user-plus"></i> Créer un compte</button>
+              </div>
+            </div>
+            <div class="feature-image">
+              <img src="images/hero-image.svg" alt="Rappels automatiques illustrés">
+            </div>
+          </div>
+        </section>
+
+        <!-- Feature 2: Groupes et partage (inverse) -->
+        <section class="feature-section reverse" aria-labelledby="feature-groups-title">
+          <div class="feature-grid">
+            <div class="feature-image">
+              <img src="images/hero-image.svg" alt="Groupes et partage illustrés">
+            </div>
+            <div class="feature-content">
+              <span class="feature-kicker"><i class="fas fa-users"></i> En équipe</span>
+              <h3 id="feature-groups-title">Groupes & partage simplifiés</h3>
+              <p>Créez des groupes pour votre famille, vos amis ou votre équipe et partagez les anniversaires avec un simple code d’accès.</p>
+              <ul class="feature-bullets">
+                <li><i class="fas fa-check-circle"></i> Code d’accès pour rejoindre un groupe</li>
+                <li><i class="fas fa-check-circle"></i> Vue d’ensemble par groupe</li>
+                <li><i class="fas fa-check-circle"></i> Gestion collaborative</li>
+              </ul>
+              <div class="feature-actions">
+                <button class="btn secondary-btn" data-open-auth><i class="fas fa-sign-in-alt"></i> Rejoindre</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Feature 3: Notifications Telegram -->
+        <section class="feature-section" aria-labelledby="feature-telegram-title">
+          <div class="feature-grid">
+            <div class="feature-content">
+              <span class="feature-kicker"><i class="fab fa-telegram-plane"></i> Instantané</span>
+              <h3 id="feature-telegram-title">Notifications Telegram</h3>
+              <p>Recevez vos rappels directement sur Telegram via notre bot central. Ajoutez simplement votre Chat ID, testez l’envoi et c’est parti.</p>
+              <ul class="feature-bullets">
+                <li><i class="fas fa-check-circle"></i> Envoi rapide et gratuit</li>
+                <li><i class="fas fa-check-circle"></i> Configuration en 30 secondes</li>
+                <li><i class="fas fa-check-circle"></i> Test d’envoi intégré</li>
+              </ul>
+              <div class="feature-actions">
+                <button class="btn primary-btn" data-open-auth><i class="fas fa-arrow-right"></i> Essayer maintenant</button>
+              </div>
+            </div>
+            <div class="feature-image">
+              <img src="images/hero-image.svg" alt="Notifications Telegram illustrées">
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- /Feature Sections -->
     </section>
 
       <!-- Dashboard View -->

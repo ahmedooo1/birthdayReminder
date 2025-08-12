@@ -19,6 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Open auth modal from landing feature buttons
+  document.querySelectorAll('[data-open-auth]').forEach(btn => {
+    btn.addEventListener('click', () => window.authManager && window.authManager.showAuthModal());
+  });
+
+  // Animate feature sections on scroll
+  const featureSections = document.querySelectorAll('.feature-section');
+  if (featureSections.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    featureSections.forEach(sec => io.observe(sec));
+  }
+
   // If not logged in, show the hero section behind the auth modal
   const sessionToken = localStorage.getItem('session_token');
   if (!sessionToken) {

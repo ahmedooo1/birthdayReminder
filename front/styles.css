@@ -1248,6 +1248,92 @@ body.dark-theme #hero-section {
   margin-top: 0.5rem;
 }
 
+/* --- Landing Feature Sections --- */
+.features {
+  margin-top: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.feature-section {
+  background: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-section::after {
+  content: '';
+  position: absolute;
+  right: -120px;
+  top: -120px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient( circle at center, rgba(67,97,238,0.12), transparent 60% );
+  pointer-events: none;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.feature-section.reverse .feature-grid {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.feature-content h3 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 1.75rem;
+}
+
+.feature-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .25rem .6rem;
+  border-radius: 999px;
+  background: rgba(67,97,238,0.12);
+  color: var(--primary-color);
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+.feature-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 1rem;
+  display: grid;
+  gap: .5rem;
+}
+.feature-bullets li { color: var(--text-color); }
+.feature-bullets i { color: var(--primary-color); margin-right: .5rem; }
+
+.feature-image { position: relative; }
+.feature-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,.15));
+  transform: translateZ(0);
+}
+
+.feature-actions { margin-top: .75rem; }
+
+/* Scroll-in animation */
+.feature-section { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+.feature-section.in-view { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .feature-grid { grid-template-columns: 1fr; }
+  .feature-section.reverse .feature-grid { grid-template-columns: 1fr; }
+}
+
 .mt-3 {
   margin-top: 1rem;
 }
