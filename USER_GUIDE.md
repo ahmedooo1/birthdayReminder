@@ -126,14 +126,6 @@ Les groupes vous permettent d'organiser les anniversaires par catégorie (famill
 3. Cliquez sur l'icône de corbeille à côté du nom
 4. Confirmez la suppression
 
-### Filtrer les anniversaires
-
-1. Cliquez sur "Anniversaires" dans le menu principal
-2. Utilisez les filtres disponibles :
-   - Par groupe
-   - Par mois
-   - Par recherche (nom, notes)
-
 ## Notifications
 
 L'application peut vous envoyer des notifications par email avant les anniversaires.
