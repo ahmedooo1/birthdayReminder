@@ -192,6 +192,39 @@ class ProfileManager {    constructor(dataManager, toastManager) {
             } else {
                 console.error('❌ Test Telegram button NOT found!');
             }
+
+            // Telegram: quick connect (front-only)
+            const connectTelegramBtn = document.getElementById('connect-telegram-btn');
+            if (connectTelegramBtn) {
+                connectTelegramBtn.addEventListener('click', () => {
+                    try {
+                        const username = (window.APP_CONFIG && window.APP_CONFIG.TELEGRAM_BOT_USERNAME) || '';
+                        if (!username) {
+                            this.toast?.warning && this.toast.warning('Configuration requise', 'Bot Telegram non configuré. Définissez TELEGRAM_BOT_USERNAME dans config.js');
+                            return;
+                        }
+                        // Deep link with start parameter. The user taps once; this satisfies Telegram start requirement.
+                        const url = `https://t.me/${encodeURIComponent(username)}?start=connect`;
+                        window.open(url, '_blank');
+                    } catch (e) {
+                        console.error('Erreur ouverture Telegram:', e);
+                    }
+                });
+            }
+
+            // Optional helper: paste detection for Chat ID
+            const chatIdInput = document.getElementById('profile-telegram-chat-id');
+            if (chatIdInput) {
+                chatIdInput.addEventListener('input', () => {
+                    const v = chatIdInput.value.trim();
+                    // simple validation: digits and optional leading - for channels/supergroups
+                    if (/^-?\d{5,}$/.test(v)) {
+                        chatIdInput.setCustomValidity('');
+                    } else {
+                        chatIdInput.setCustomValidity('Chat ID numérique attendu');
+                    }
+                });
+            }
         } else {
             console.error('❌ Profile form NOT found! ID: profile-form');
             console.error('❌ Available forms:', document.querySelectorAll('form'));

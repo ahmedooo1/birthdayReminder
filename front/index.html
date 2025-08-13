@@ -91,8 +91,7 @@
               </div>
             </div>
             <div class="feature-image">
-              <img src="images/hero-image.svg" alt="Rappels automatiques illustrés">
-            </div>
+<img width="300" height="300" src="https://img.icons8.com/bubbles/100/calendar--v2.png" alt="calendar--v2"/>            </div>
           </div>
         </section>
 
@@ -421,6 +420,10 @@
                   <div class="form-group">
                     <label for="profile-telegram-chat-id">Chat ID Telegram</label>
                     <input type="text" id="profile-telegram-chat-id" class="form-control" placeholder="Ex: 123456789">
+                    <div class="mt-2" style="display:flex; gap:.5rem; flex-wrap:wrap;">
+                      <button type="button" id="connect-telegram-btn" class="btn secondary-btn"><i class="fab fa-telegram"></i> Connecter Telegram</button>
+                      <a id="get-chatid-link" class="btn link-btn" href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">Obtenir mon Chat ID</a>
+                    </div>
                   </div>
                   <div class="form-check">
                     <input type="checkbox" id="profile-telegram-notifications" class="form-check-input">
@@ -790,6 +793,7 @@
   </footer>
 
   <!-- Important: Load scripts in the correct order -->
+  <script src="config.js"></script>
   <script src="toast-manager.js"></script>
   <script src="profile-manager.js"></script>
   <script src="auth-manager.js"></script>
