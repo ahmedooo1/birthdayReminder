@@ -40,11 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // If not logged in, show the hero section behind the auth modal
   const sessionToken = localStorage.getItem('session_token');
+  // Always start with header controls hidden to avoid flash for logged-out state
+  setHeaderAuthVisibility(false);
   if (!sessionToken) {
     showView('hero');
   }
-  // Toggle header elements based on auth state
-  setHeaderAuthVisibility(!!sessionToken);
   
   // AuthManager will handle authentication check in its init() method
   // and dispatch authSuccess event if user is already authenticated
@@ -648,8 +648,12 @@ async function initializeApp() {
 function setHeaderAuthVisibility(isAuthenticated) {
   const burgerBtn = document.getElementById('burger-menu-btn');
   const notifBell = document.querySelector('.notification-bell');
+  const mainNav = document.querySelector('.main-nav');
+  const userSection = document.querySelector('.user-section');
   if (burgerBtn) burgerBtn.style.display = isAuthenticated ? '' : 'none';
   if (notifBell) notifBell.style.display = isAuthenticated ? '' : 'none';
+  if (mainNav) mainNav.style.display = isAuthenticated ? '' : 'none';
+  if (userSection) userSection.style.display = isAuthenticated ? '' : 'none';
 }
 
 // Helper: return true if there is at least one group
