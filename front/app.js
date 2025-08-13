@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!sessionToken) {
     showView('hero');
   }
+  // Toggle header elements based on auth state
+  setHeaderAuthVisibility(!!sessionToken);
   
   // AuthManager will handle authentication check in its init() method
   // and dispatch authSuccess event if user is already authenticated
@@ -133,11 +135,13 @@ window.resetApp = function() {
 // Add event listeners for auth events
 document.addEventListener('authSuccess', () => {
   console.log('Authentication successful, initializing app');
+  setHeaderAuthVisibility(true);
   initializeApp();
 });
 
 document.addEventListener('authLogout', () => {
   console.log('User logged out, resetting app');
+  setHeaderAuthVisibility(false);
   window.resetApp();
 });
 
@@ -638,6 +642,14 @@ async function initializeApp() {
   }
 
   console.log("App initialized (async part completed or error handled)");
+}
+
+// Show/hide burger menu and notification bell depending on auth state
+function setHeaderAuthVisibility(isAuthenticated) {
+  const burgerBtn = document.getElementById('burger-menu-btn');
+  const notifBell = document.querySelector('.notification-bell');
+  if (burgerBtn) burgerBtn.style.display = isAuthenticated ? '' : 'none';
+  if (notifBell) notifBell.style.display = isAuthenticated ? '' : 'none';
 }
 
 // Helper: return true if there is at least one group
