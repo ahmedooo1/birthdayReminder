@@ -11,9 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize authentication first
   window.authManager = new AuthManager();
 
-  // Ensure navigation (including burger menu) works even when logged out
-  setupNavigation();
-
   // Add click listener for the hero CTA button
   const heroCtaBtn = document.getElementById('hero-cta-btn');
   if (heroCtaBtn) {
@@ -292,9 +289,7 @@ function setupNavigation() {
     };
 
     const openMenu = () => {
-  // Ensure nav becomes visible (even if hidden by auth toggle) so the burger reveals it
-  mainNav.style.display = '';
-  mainNav.classList.add('active');
+      mainNav.classList.add('active');
       newBurgerBtn.innerHTML = '<i class="fas fa-times"></i>';
       newBurgerBtn.setAttribute('aria-label', 'Fermer le menu');
       newBurgerBtn.setAttribute('aria-expanded', 'true');
