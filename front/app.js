@@ -1638,6 +1638,14 @@ async function saveBirthday() {
     return;
   }
   
+  // Require group selection
+  if (!birthdayGroup) {
+    if (window.toastManager) {
+      window.toastManager.error('Validation', 'Veuillez sélectionner un groupe');
+    }
+    return;
+  }
+  
   // Validate date format and that it's a valid date
   const dateObj = new Date(birthdayDate);
   if (isNaN(dateObj.getTime())) {
