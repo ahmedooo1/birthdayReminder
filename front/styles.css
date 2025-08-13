@@ -1187,6 +1187,13 @@ body.dark-theme #hero-section {
   color: var(--text-color); /* Use theme variable */
 }
 
+/* Red asterisk for required fields */
+.form-group label.required::after {
+  content: ' *';
+  color: var(--danger-color);
+  margin-left: 2px;
+}
+
 .form-group input {
   width: 100%;
   padding: 0.75rem;

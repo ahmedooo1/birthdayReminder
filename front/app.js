@@ -586,6 +586,10 @@ async function initializeApp() {
     if (calendar && typeof calendar.init === 'function') {
       calendar.init(); // Initialize calendar after data is available
     }
+    // Ensure UI reflects group availability (for Add birthday button)
+    if (typeof updateAddBirthdayButtonsState === 'function') {
+      updateAddBirthdayButtonsState();
+    }
 
     // Load initial view: restore last active view or default to dashboard
     const lastViewId = localStorage.getItem('lastActiveView');
@@ -636,6 +640,47 @@ async function initializeApp() {
   console.log("App initialized (async part completed or error handled)");
 }
 
+// Helper: return true if there is at least one group
+function hasAtLeastOneGroup() {
+  const groups = (window.dataManager && window.dataManager.data && Array.isArray(window.dataManager.data.groups))
+    ? window.dataManager.data.groups
+    : [];
+  return groups.length > 0;
+}
+
+// Helper: show a prompt guiding user to Groups view
+function promptCreateGroupFirst() {
+  if (window.toastManager && typeof window.toastManager.confirm === 'function') {
+    window.toastManager.confirm({
+      title: "Créez un groupe d'abord",
+      text: "Vous devez créer ou rejoindre un groupe avant d'ajouter un anniversaire.",
+      icon: 'info',
+      confirmButtonText: 'Aller aux groupes',
+      cancelButtonText: 'Annuler'
+    }).then((confirmed) => {
+      if (confirmed) showView('groups');
+    });
+  } else {
+    if (confirm("Vous devez créer ou rejoindre un groupe avant d'ajouter un anniversaire. Aller aux groupes ?")) {
+      showView('groups');
+    }
+  }
+}
+
+// Helper: toggle Add birthday actions based on groups availability
+function updateAddBirthdayButtonsState() {
+  const hasGroups = hasAtLeastOneGroup();
+  const addBirthdayBtn = document.getElementById('add-birthday-btn');
+  if (addBirthdayBtn) {
+    addBirthdayBtn.style.display = hasGroups ? '' : 'none';
+  }
+  const addGroupBirthdayBtn = document.getElementById('add-group-birthday-btn');
+  if (addGroupBirthdayBtn) {
+    addGroupBirthdayBtn.disabled = !hasGroups;
+    addGroupBirthdayBtn.title = hasGroups ? '' : "Créez ou rejoignez un groupe d'abord";
+  }
+}
+
 function setupModals() {
   console.log("Setting up modals");
   
@@ -654,6 +699,10 @@ function setupModals() {
   
   if (addBirthdayBtn) {
     addBirthdayBtn.addEventListener('click', () => {
+      if (!hasAtLeastOneGroup()) {
+        promptCreateGroupFirst();
+        return;
+      }
       openBirthdayModal();
     });
   }
@@ -661,6 +710,10 @@ function setupModals() {
   const addGroupBirthdayBtn = document.getElementById('add-group-birthday-btn');
   if (addGroupBirthdayBtn) {
     addGroupBirthdayBtn.addEventListener('click', () => {
+      if (!hasAtLeastOneGroup()) {
+        promptCreateGroupFirst();
+        return;
+      }
       const groupDetailsView = document.getElementById('group-details-view');
       if (groupDetailsView && groupDetailsView.dataset.groupId) {
         openBirthdayModal(null, groupDetailsView.dataset.groupId);
@@ -1035,6 +1088,8 @@ function setupModals() {
  */
 async function loadDashboard() {
   console.log("Loading dashboard");
+  // Reflect groups availability in UI
+  updateAddBirthdayButtonsState();
   
   // Refresh birthday data from API first
   await window.dataManager.getBirthdays();
@@ -1165,6 +1220,8 @@ async function loadGroups() {
     }
   }
   const groups = uniqueGroups;
+  // Reflect groups availability in UI
+  updateAddBirthdayButtonsState();
   const groupsGrid = document.getElementById('groups-grid');
   if (!groupsGrid) {
     console.error("Groups grid element not found");
