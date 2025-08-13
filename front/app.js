@@ -210,14 +210,6 @@ function setupNavigation() {
       console.error(`Button ${buttonId} not found`);
     }
   }
-
-  // Login entry in nav (burger menu) for unauthenticated users
-  const navLoginBtn = document.getElementById('nav-login-btn');
-  if (navLoginBtn) {
-    navLoginBtn.addEventListener('click', () => {
-      if (window.authManager) window.authManager.showAuthModal();
-    });
-  }
   
   // Logo click handler - navigate to dashboard
   const logoLink = document.getElementById('logo-link');
@@ -658,25 +650,10 @@ function setHeaderAuthVisibility(isAuthenticated) {
   const notifBell = document.querySelector('.notification-bell');
   const mainNav = document.querySelector('.main-nav');
   const userSection = document.querySelector('.user-section');
-  const navLoginBtn = document.getElementById('nav-login-btn');
-  const dashboardBtn = document.getElementById('dashboard-btn');
-  const groupsBtn = document.getElementById('groups-btn');
-  const profileBtnNav = document.getElementById('profile-btn-nav');
-  const settingsBtn = document.getElementById('settings-btn');
-
-  // Burger and bell visible only when authenticated
-  if (burgerBtn) burgerBtn.style.display = isAuthenticated ? '' : '';
+  if (burgerBtn) burgerBtn.style.display = isAuthenticated ? '' : 'none';
   if (notifBell) notifBell.style.display = isAuthenticated ? '' : 'none';
-  // Keep mainNav visible for burger usage, but toggle which items show
-  if (mainNav) mainNav.style.display = '';
+  if (mainNav) mainNav.style.display = isAuthenticated ? '' : 'none';
   if (userSection) userSection.style.display = isAuthenticated ? '' : 'none';
-
-  // Toggle individual nav items
-  if (dashboardBtn) dashboardBtn.style.display = isAuthenticated ? '' : 'none';
-  if (groupsBtn) groupsBtn.style.display = isAuthenticated ? '' : 'none';
-  if (profileBtnNav) profileBtnNav.style.display = isAuthenticated ? '' : 'none';
-  if (settingsBtn) settingsBtn.style.display = isAuthenticated ? '' : 'none';
-  if (navLoginBtn) navLoginBtn.style.display = isAuthenticated ? 'none' : '';
 }
 
 // Helper: return true if there is at least one group
