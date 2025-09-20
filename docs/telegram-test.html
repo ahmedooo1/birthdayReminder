@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RappelAnniv - Test Telegram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            color: white;
+            text-decoration: none;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-help {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+        }
+
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-link {
+            background: transparent;
+            color: #667eea;
+            text-decoration: underline;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .btn-link:hover {
+            color: #5a6fd8;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .help-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .help-section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #667eea;
+            color: white;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .response-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .response-section.show {
+            display: block;
+        }
+
+        .response-section pre {
+            background: #e9ecef;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Retour à l'accueil
+        </a>
+
+        <header class="header">
+            <h1><i class="fab fa-telegram-plane"></i> Test Telegram</h1>
+            <p>Testez l'envoi de messages avec votre bot Telegram</p>
+        </header>
+
+        <div class="card">
+            <div class="help-section">
+                <h3><i class="fas fa-info-circle"></i> Comment utiliser cet outil</h3>
+                <ol class="steps">
+                    <li>Créez un bot Telegram en envoyant <code>/newbot</code> à <a href="https://t.me/BotFather" target="_blank">@BotFather</a></li>
+                    <li>Copiez le token de votre bot (format: 123456789:ABCdef...)</li>
+                    <li>Obtenez votre Chat ID en envoyant un message à <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a></li>
+                    <li>Remplissez les champs ci-dessous et testez l'envoi</li>
+                </ol>
+            </div>
+
+            <form id="telegram-test-form">
+                <div class="form-group">
+                    <label for="bot-token"><i class="fas fa-robot"></i> Token du Bot</label>
+                    <input type="text" id="bot-token" class="form-control" placeholder="123456789:ABCdef1234567890..." required>
+                    <div class="form-help">Token obtenu depuis @BotFather</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="chat-id"><i class="fas fa-user"></i> Chat ID</label>
+                    <input type="text" id="chat-id" class="form-control" placeholder="123456789" required>
+                    <div class="form-help">Votre ID utilisateur Telegram (obtenu via @userinfobot)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message"><i class="fas fa-message"></i> Message de test</label>
+                    <input type="text" id="message" class="form-control" value="Test depuis RappelAnniv 🎂" required>
+                    <div class="form-help">Message qui sera envoyé pour tester la configuration</div>
+                </div>
+
+                <button type="submit" id="test-btn" class="btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Envoyer le test
+                </button>
+
+                <button type="button" id="get-chatid-btn" class="btn btn-secondary">
+                    <i class="fas fa-external-link-alt"></i>
+                    Obtenir mon Chat ID
+                </button>
+            </form>
+
+            <div id="response-section" class="response-section">
+                <h4><i class="fas fa-code"></i> Réponse de l'API</h4>
+                <pre id="response-content"></pre>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-question-circle"></i> Questions fréquentes</h3>
+            
+            <details style="margin-bottom: 1rem;">
+                <summary style="cursor: pointer; font-weight: 500; padding: 0.5rem 0;">
+                    <i class="fas fa-chevron-right"></i> Où trouver le token de mon bot ?
+                </summary>
+                <div style="padding: 1rem; background: #f8f9fa; border-radius: 4px; margin-top: 0.5rem;">
+                    <p>1. Ouvrez Telegram et cherchez <a href="https://t.me/BotFather" target="_blank">@BotFather</a></p>
+                    <p>2. Envoyez la commande <code>/newbot</code></p>
+                    <p>3. Suivez les instructions pour nommer votre bot</p>
+                    <p>4. BotFather vous donnera un token comme : <code>123456789:ABCdef1234567890...</code></p>
+                </div>
+            </details>
+
+            <details style="margin-bottom: 1rem;">
+                <summary style="cursor: pointer; font-weight: 500; padding: 0.5rem 0;">
+                    <i class="fas fa-chevron-right"></i> Comment obtenir mon Chat ID ?
+                </summary>
+                <div style="padding: 1rem; background: #f8f9fa; border-radius: 4px; margin-top: 0.5rem;">
+                    <p>1. Ouvrez Telegram et cherchez <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a></p>
+                    <p>2. Envoyez n'importe quel message au bot</p>
+                    <p>3. Le bot vous répondra avec votre Chat ID (un nombre comme 123456789)</p>
+                </div>
+            </details>
+
+            <details>
+                <summary style="cursor: pointer; font-weight: 500; padding: 0.5rem 0;">
+                    <i class="fas fa-chevron-right"></i> Le test échoue, que faire ?
+                </summary>
+                <div style="padding: 1rem; background: #f8f9fa; border-radius: 4px; margin-top: 0.5rem;">
+                    <p>• Vérifiez que le token du bot est correct</p>
+                    <p>• Vérifiez que le Chat ID est correct</p>
+                    <p>• Assurez-vous d'avoir envoyé au moins un message à votre bot</p>
+                    <p>• Le bot doit être démarré avec la commande <code>/start</code></p>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <script>
+        class TelegramTester {
+            constructor() {
+                this.initializeElements();
+                this.attachEventListeners();
+            }
+
+            initializeElements() {
+                this.form = document.getElementById('telegram-test-form');
+                this.tokenInput = document.getElementById('bot-token');
+                this.chatIdInput = document.getElementById('chat-id');
+                this.messageInput = document.getElementById('message');
+                this.testBtn = document.getElementById('test-btn');
+                this.getChatIdBtn = document.getElementById('get-chatid-btn');
+                this.responseSection = document.getElementById('response-section');
+                this.responseContent = document.getElementById('response-content');
+            }
+
+            attachEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                this.getChatIdBtn.addEventListener('click', () => this.openChatIdBot());
+                
+                // Auto-save form data
+                [this.tokenInput, this.chatIdInput, this.messageInput].forEach(input => {
+                    input.addEventListener('input', () => this.saveFormData());
+                });
+
+                // Load saved data
+                this.loadFormData();
+            }
+
+            saveFormData() {
+                const data = {
+                    token: this.tokenInput.value,
+                    chatId: this.chatIdInput.value,
+                    message: this.messageInput.value
+                };
+                localStorage.setItem('telegramTestData', JSON.stringify(data));
+            }
+
+            loadFormData() {
+                try {
+                    const saved = localStorage.getItem('telegramTestData');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.tokenInput.value = data.token || '';
+                        this.chatIdInput.value = data.chatId || '';
+                        this.messageInput.value = data.message || 'Test depuis RappelAnniv 🎂';
+                    }
+                } catch (e) {
+                    console.log('Could not load saved form data');
+                }
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                const token = this.tokenInput.value.trim();
+                const chatId = this.chatIdInput.value.trim();
+                const message = this.messageInput.value.trim();
+
+                if (!token || !chatId || !message) {
+                    this.showError('Veuillez remplir tous les champs');
+                    return;
+                }
+
+                await this.sendTestMessage(token, chatId, message);
+            }
+
+            async sendTestMessage(token, chatId, message) {
+                this.setLoading(true);
+                this.hideResponse();
+
+                try {
+                    // Use the Telegram API directly since we're on GitHub Pages
+                    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: message,
+                            parse_mode: 'HTML'
+                        })
+                    });
+
+                    const data = await response.json();
+                    this.showResponse(data, response.status);
+
+                    if (data.ok) {
+                        this.showSuccess('Message envoyé avec succès !');
+                    } else {
+                        this.showError(`Erreur: ${data.description || 'Échec de l\'envoi'}`);
+                    }
+                } catch (error) {
+                    console.error('Network error:', error);
+                    this.showError(`Erreur réseau: ${error.message}`);
+                    this.showResponse({ error: error.message, network_error: true }, 0);
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            setLoading(loading) {
+                const icon = this.testBtn.querySelector('i');
+                if (loading) {
+                    this.testBtn.disabled = true;
+                    icon.className = 'fas fa-spinner spinner';
+                    this.testBtn.querySelector('span') || this.testBtn.appendChild(document.createTextNode('')).textContent = ' Envoi en cours...';
+                } else {
+                    this.testBtn.disabled = false;
+                    icon.className = 'fas fa-paper-plane';
+                    this.testBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer le test';
+                }
+            }
+
+            showResponse(data, statusCode) {
+                const responseData = {
+                    status_code: statusCode,
+                    timestamp: new Date().toISOString(),
+                    response: data
+                };
+
+                this.responseContent.textContent = JSON.stringify(responseData, null, 2);
+                this.responseSection.classList.add('show');
+            }
+
+            hideResponse() {
+                this.responseSection.classList.remove('show');
+            }
+
+            showSuccess(message) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès !',
+                    text: message,
+                    confirmButtonColor: '#667eea'
+                });
+            }
+
+            showError(message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur',
+                    text: message,
+                    confirmButtonColor: '#667eea'
+                });
+            }
+
+            openChatIdBot() {
+                window.open('https://t.me/userinfobot', '_blank');
+            }
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new TelegramTester();
+        });
+
+        // Handle details toggle animation
+        document.querySelectorAll('details').forEach(details => {
+            details.addEventListener('toggle', () => {
+                const icon = details.querySelector('i');
+                if (details.open) {
+                    icon.className = 'fas fa-chevron-down';
+                } else {
+                    icon.className = 'fas fa-chevron-right';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

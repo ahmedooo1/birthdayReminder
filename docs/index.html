@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RappelAnniv - Documentation & Outils</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-birthday-cake"></i> RappelAnniv</h1>
+            <p>Documentation & Outils en ligne</p>
+        </header>
+
+        <div class="cards-grid">
+            <!-- Telegram Test Tool -->
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fab fa-telegram-plane"></i>
+                </div>
+                <h3>Test Telegram</h3>
+                <p>Testez l'envoi de messages Telegram avec votre bot. Vérifiez votre configuration et votre Chat ID directement en ligne.</p>
+                <a href="telegram-test.html" class="btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Tester Telegram
+                </a>
+            </div>
+
+            <!-- Documentation -->
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Documentation</h3>
+                <p>Guide complet pour installer et utiliser RappelAnniv. Instructions détaillées et exemples.</p>
+                <a href="https://github.com/ahmedooo1/birthdayReminder/blob/main/README.md" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    Voir la Documentation
+                </a>
+            </div>
+
+            <!-- Application -->
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3>Application Complète</h3>
+                <p>Accédez à l'application complète pour gérer vos anniversaires, créer des groupes et configurer les notifications.</p>
+                <a href="../front/index.html" class="btn">
+                    <i class="fas fa-arrow-right"></i>
+                    Utiliser l'Application
+                </a>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2025 RappelAnniv - Outil de gestion d'anniversaires</p>
+        </footer>
+    </div>
+</body>
+</html>
