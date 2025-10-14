@@ -7,7 +7,7 @@ Une application web pour gérer et recevoir des rappels d'anniversaires.
 ![SQLite](https://img.shields.io/badge/SQLite-3.0+-orange.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-5.7+-purple.svg)
 
-## Fonctionnalités
+## Fonctionnalités :
 
 - Optionnel : Rappels SMS via Twilio
 
