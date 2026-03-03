@@ -228,7 +228,14 @@ body.dark-theme {
     justify-content: center;
   }
   
-
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
   /* =========================
      HEADER MOBILE REDESIGN
      ========================= */
@@ -381,6 +388,7 @@ body.dark-theme {
   
   .main-content {
     flex: 1;
+    max-width: 1200px;
     margin: 0 auto;
     width: 100%;
   }
