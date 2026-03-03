@@ -649,11 +649,16 @@ function setHeaderAuthVisibility(isAuthenticated) {
   const burgerBtn = document.getElementById('burger-menu-btn');
   const notifBell = document.querySelector('.notification-bell');
   const mainNav = document.querySelector('.main-nav');
-  const userSection = document.querySelector('.user-section');
+  const userMenu = document.querySelector('.user-menu');
+  const loginBtn = document.getElementById('login-btn-header');
+
   if (burgerBtn) burgerBtn.style.display = isAuthenticated ? '' : 'none';
   if (notifBell) notifBell.style.display = isAuthenticated ? '' : 'none';
   if (mainNav) mainNav.style.display = isAuthenticated ? '' : 'none';
-  if (userSection) userSection.style.display = isAuthenticated ? '' : 'none';
+
+  // Gérer séparément : login btn visible si non connecté, user menu si connecté
+  if (loginBtn) loginBtn.style.display = isAuthenticated ? 'none' : 'flex';
+  if (userMenu) userMenu.style.display = isAuthenticated ? 'flex' : 'none';
 }
 
 // Helper: return true if there is at least one group

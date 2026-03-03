@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RappelAnniv</title>
-  <link rel="stylesheet" href="styles.css?v=1.0.2" />
+  <link rel="stylesheet" href="styles.css?v=2.0.0" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -63,12 +63,60 @@
       <section id="hero-section" class="view">
       <div class="hero-container">
         <div class="hero-text">
-          <h1 class="hero-title">Ne Manquez Plus Jamais un Anniversaire</h1>
+          <div class="hero-badge"><i class="fas fa-gift"></i> Rappels d'anniversaires gratuits</div>
+          <h1 class="hero-title">Ne Manquez Plus Jamais<br><span>un Anniversaire</span></h1>
           <p class="hero-subtitle">Organisez, planifiez et recevez des rappels automatiques pour tous les jours importants de vos proches. Simple, efficace et entièrement personnalisable.</p>
-          <button id="hero-cta-btn" class="btn primary-btn">Commencer Gratuitement <i class="fas fa-arrow-right"></i></button>
+          <div class="hero-cta-group">
+            <button id="hero-cta-btn" class="btn primary-btn">Commencer Gratuitement <i class="fas fa-arrow-right"></i></button>
+            <div class="hero-social-proof">
+              <div class="avatars">
+                <span>A</span><span>M</span><span>L</span>
+              </div>
+              <span>Déjà utilisé par des centaines</span>
+            </div>
+          </div>
         </div>
         <div class="hero-image">
-          <img src="images/hero-image.svg" alt="Illustration de personnes célébrant un événement">
+          <div class="hero-visual-card">
+            <div class="hvc-header">
+              <div class="hvc-icon"><i class="fas fa-birthday-cake"></i></div>
+              <div>
+                <div class="hvc-title">Prochains anniversaires</div>
+                <div class="hvc-sub">Mars 2026</div>
+              </div>
+            </div>
+            <ul class="hvc-list">
+              <li>
+                <div class="hvc-avatar" style="background:linear-gradient(135deg,#f72585,#7209b7)">S</div>
+                <div>
+                  <div class="hvc-name">Sophie M.</div>
+                  <div class="hvc-date">Aujourd'hui</div>
+                </div>
+                <span class="hvc-tag today">Aujourd'hui</span>
+              </li>
+              <li>
+                <div class="hvc-avatar" style="background:linear-gradient(135deg,#4361ee,#4cc9f0)">T</div>
+                <div>
+                  <div class="hvc-name">Thomas R.</div>
+                  <div class="hvc-date">Dans 3 jours</div>
+                </div>
+                <span class="hvc-tag soon">J-3</span>
+              </li>
+              <li>
+                <div class="hvc-avatar" style="background:linear-gradient(135deg,#3a0ca3,#4cc9f0)">L</div>
+                <div>
+                  <div class="hvc-name">Laura K.</div>
+                  <div class="hvc-date">Dans 7 jours</div>
+                </div>
+                <span class="hvc-tag week">J-7</span>
+              </li>
+            </ul>
+            <div class="hvc-footer">
+              <div class="hvc-stat"><strong>12</strong><span>Contacts</span></div>
+              <div class="hvc-stat"><strong>3</strong><span>Ce mois</span></div>
+              <div class="hvc-stat"><strong>100%</strong><span>Rappelés</span></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -78,6 +126,7 @@
         <section class="feature-section" aria-labelledby="feature-reminders-title">
           <div class="feature-grid">
             <div class="feature-content">
+              <span class="feature-number">01</span>
               <span class="feature-kicker"><i class="fas fa-magic"></i> Automatique</span>
               <h3 id="feature-reminders-title">Rappels intelligents et automatiques</h3>
               <p>Planifiez une fois, puis laissez RappelAnniv vous alerter au bon moment par email ou Telegram. Des rappels fiables, sans effort.</p>
@@ -91,7 +140,10 @@
               </div>
             </div>
             <div class="feature-image">
-<img width="300" height="300" src="https://img.icons8.com/bubbles/100/calendar--v2.png" alt="calendar--v2"/>            </div>
+              <div class="feature-img-wrapper">
+                <img src="https://img.icons8.com/bubbles/100/calendar--v2.png" alt="Rappels intelligents" />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -99,11 +151,14 @@
         <section class="feature-section reverse" aria-labelledby="feature-groups-title">
           <div class="feature-grid">
             <div class="feature-image">
-              <img src="images/hero-image.svg" alt="Groupes et partage illustrés">
+              <div class="feature-img-wrapper">
+                <img src="https://img.icons8.com/bubbles/100/conference-call.png" alt="Groupes et partage" />
+              </div>
             </div>
             <div class="feature-content">
+              <span class="feature-number">02</span>
               <span class="feature-kicker"><i class="fas fa-users"></i> En équipe</span>
-              <h3 id="feature-groups-title">Groupes & partage simplifiés</h3>
+              <h3 id="feature-groups-title">Groupes &amp; partage simplifiés</h3>
               <p>Créez des groupes pour votre famille, vos amis ou votre équipe et partagez les anniversaires avec un simple code d’accès.</p>
               <ul class="feature-bullets">
                 <li><i class="fas fa-check-circle"></i> Code d’accès pour rejoindre un groupe</li>
@@ -121,6 +176,7 @@
         <section class="feature-section" aria-labelledby="feature-telegram-title">
           <div class="feature-grid">
             <div class="feature-content">
+              <span class="feature-number">03</span>
               <span class="feature-kicker"><i class="fab fa-telegram-plane"></i> Instantané</span>
               <h3 id="feature-telegram-title">Notifications Telegram</h3>
               <p>Recevez vos rappels directement sur Telegram via notre bot central. Ajoutez simplement votre Chat ID, testez l’envoi et c’est parti.</p>
@@ -134,7 +190,9 @@
               </div>
             </div>
             <div class="feature-image">
-              <img src="images/hero-image.svg" alt="Notifications Telegram illustrées">
+              <div class="feature-img-wrapper">
+                <img src="https://img.icons8.com/bubbles/100/telegram-app.png" alt="Notifications Telegram" />
+              </div>
             </div>
           </div>
         </section>
