@@ -868,9 +868,10 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             
         case 'reset_password':
             // Réinitialisation effective du mot de passe
-            $token = $_POST['token'] ?? '';
-            $newPassword = $_POST['new_password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $data = json_decode(file_get_contents('php://input'), true);
+            $token = $data['token'] ?? '';
+            $newPassword = $data['new_password'] ?? '';
+            $confirmPassword = $data['confirm_password'] ?? '';
             
             if (empty($token) || empty($newPassword) || empty($confirmPassword)) {
                 sendResponse(['error' => 'Tous les champs sont requis'], 400);
