@@ -10,7 +10,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // SOLUTION TEMPORAIRE : Désactiver la vérification de clé API
-$debug_mode = true; // CHANGEZ CECI À false EN PRODUCTION
+$debug_mode = false; // CHANGEZ CECI À false EN PRODUCTION
 
 if (!$debug_mode) {
     // Vérification de la clé API (normalement activée)
