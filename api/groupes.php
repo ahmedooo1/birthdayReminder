@@ -326,7 +326,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             $stmt = $pdo->prepare("DELETE FROM group_members WHERE group_id = ?");
             $stmt->execute([$id]);
 
-            // Supprimer le groupe (les anniversaires seront supprimés automatiquement via CASCADE)
+            // Supprimer les anniversaires du groupe. La contrainte reelle sur
+            // birthdays.group_id est ON DELETE SET NULL (pas CASCADE comme le
+            // commentaire precedent le supposait), donc sans ce DELETE explicite
+            // les anniversaires survivent orphelins (group_id = NULL) au lieu
+            // d'etre supprimes avec le groupe.
+            $stmt = $pdo->prepare("DELETE FROM birthdays WHERE group_id = ?");
+            $stmt->execute([$id]);
+
+            // Supprimer le groupe
             $stmt = $pdo->prepare("DELETE FROM groupes WHERE id = ?");
             $stmt->execute([$id]);
 
