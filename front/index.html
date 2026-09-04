@@ -26,6 +26,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts for the redesigned homepage (hero + feature cards only) -->
+  <link href="https://fonts.googleapis.com/css2?family=Domine:wght@500;700&family=Karla:wght@400;500;600;700&family=Gochi+Hand&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <!-- SweetAlert2 pour les toasts avancés -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="icon" href="images/logo.ico" type="image/x-icon" />
@@ -74,141 +76,93 @@
 
     <main class="main-content">
       <section id="hero-section" class="view">
-      <div class="hero-container">
-        <div class="hero-text">
-          <div class="hero-badge"><i class="fas fa-gift"></i> Rappels d'anniversaires gratuits</div>
-          <h1 class="hero-title">Ne Manquez Plus Jamais<br><span>un Anniversaire</span></h1>
-          <p class="hero-subtitle">Organisez, planifiez et recevez des rappels automatiques pour tous les jours importants de vos proches. Simple, efficace et entièrement personnalisable.</p>
-          <div class="hero-cta-group">
-            <button id="hero-cta-btn" class="btn primary-btn">Commencer Gratuitement <i class="fas fa-arrow-right"></i></button>
-            <div class="hero-social-proof">
-              <div class="avatars">
-                <span>A</span><span>M</span><span>L</span>
-              </div>
-              <span>Déjà utilisé par des centaines</span>
-            </div>
+      <div class="home-hero">
+        <div class="home-hero-text">
+          <h1 class="home-title">Ne rate plus<br>jamais un<br><span class="home-title-circled">anniversaire<svg class="home-title-circle-svg" viewBox="0 0 340 90" aria-hidden="true"><path d="M18 46 C 12 16, 60 6, 170 6 C 290 6, 328 18, 322 44 C 316 74, 260 84, 170 84 C 68 84, 14 72, 18 44" /></svg></span></h1>
+          <p class="home-subtitle">Organise, planifie et reçois des rappels automatiques pour tous les jours importants de tes proches. Simple, gratuit, sans prise de tête.</p>
+          <div class="home-cta-row">
+            <button id="hero-cta-btn" class="home-cta-btn">
+              <span>Commencer gratuitement</span>
+              <svg class="home-cta-circle" viewBox="0 0 240 74" aria-hidden="true"><path d="M14 40 C 10 12, 44 6, 120 6 C 206 6, 228 16, 224 40 C 220 64, 184 68, 120 68 C 50 68, 12 60, 14 38" /></svg>
+            </button>
+            <p class="home-cta-note">Rejoins ceux qui n'oublient plus rien.</p>
           </div>
         </div>
-        <div class="hero-image">
-          <div class="hero-visual-card">
-            <div class="hvc-header">
-              <div class="hvc-icon"><i class="fas fa-birthday-cake"></i></div>
-              <div>
-                <div class="hvc-title">Prochains anniversaires</div>
-                <div class="hvc-sub">Mars 2026</div>
+
+        <div class="home-hero-visual">
+          <div class="home-calendar-card">
+            <span class="home-tape" aria-hidden="true"></span>
+            <div class="home-calendar-head">
+              <span class="home-calendar-eyebrow"><i class="fas fa-birthday-cake"></i> Cette semaine</span>
+              <span class="home-calendar-badge">2 anniversaires</span>
+            </div>
+            <div class="home-week" aria-hidden="true">
+              <div class="home-day"><span class="dow">Lun</span><span class="dom">9</span></div>
+              <div class="home-day"><span class="dow">Mar</span><span class="dom">10</span></div>
+              <div class="home-day"><span class="dow">Mer</span><span class="dom">11</span></div>
+              <div class="home-day home-day--today">
+                <span class="dow">Jeu</span>
+                <span class="dom-wrap">
+                  <span class="dom">12</span>
+                  <svg class="home-today-circle" viewBox="0 0 60 60" aria-hidden="true"><path d="M6 32 C 4 12, 20 4, 30 4 C 42 4, 56 10, 54 30 C 52 50, 38 56, 30 56 C 18 56, 8 50, 6 30" /></svg>
+                </span>
               </div>
+              <div class="home-day"><span class="dow">Ven</span><span class="dom">13</span></div>
+              <div class="home-day home-day--flag"><span class="dow">Sam</span><span class="dom">14</span></div>
+              <div class="home-day"><span class="dow">Dim</span><span class="dom">15</span></div>
             </div>
-            <ul class="hvc-list">
-              <li>
-                <div class="hvc-avatar" style="background:linear-gradient(135deg,#f72585,#7209b7)">S</div>
-                <div>
-                  <div class="hvc-name">Sophie M.</div>
-                  <div class="hvc-date">Aujourd'hui</div>
-                </div>
-                <span class="hvc-tag today">Aujourd'hui</span>
-              </li>
-              <li>
-                <div class="hvc-avatar" style="background:linear-gradient(135deg,#4361ee,#4cc9f0)">T</div>
-                <div>
-                  <div class="hvc-name">Thomas R.</div>
-                  <div class="hvc-date">Dans 3 jours</div>
-                </div>
-                <span class="hvc-tag soon">J-3</span>
-              </li>
-              <li>
-                <div class="hvc-avatar" style="background:linear-gradient(135deg,#3a0ca3,#4cc9f0)">L</div>
-                <div>
-                  <div class="hvc-name">Laura K.</div>
-                  <div class="hvc-date">Dans 7 jours</div>
-                </div>
-                <span class="hvc-tag week">J-7</span>
-              </li>
-            </ul>
-            <div class="hvc-footer">
-              <div class="hvc-stat"><strong>12</strong><span>Contacts</span></div>
-              <div class="hvc-stat"><strong>3</strong><span>Ce mois</span></div>
-              <div class="hvc-stat"><strong>100%</strong><span>Rappelés</span></div>
-            </div>
+            <p class="home-annotation home-annotation--today">Sophie, aujourd'hui !</p>
+            <p class="home-annotation home-annotation--soon">Thomas dans 2 jours</p>
           </div>
         </div>
       </div>
 
       <!-- Feature Sections (visible avant connexion) -->
-      <div class="features">
-        <!-- Feature 1: Rappels automatiques (texte gauche, image droite) -->
-        <section class="feature-section" aria-labelledby="feature-reminders-title">
-          <div class="feature-grid">
-            <div class="feature-content">
-              <span class="feature-number">01</span>
-              <span class="feature-kicker"><i class="fas fa-magic"></i> Automatique</span>
-              <h3 id="feature-reminders-title">Rappels intelligents et automatiques</h3>
-              <p>Planifiez une fois, puis laissez RappelAnniv vous alerter au bon moment par email ou Telegram. Des rappels fiables, sans effort.</p>
-              <ul class="feature-bullets">
-                <li><i class="fas fa-check-circle"></i> Prévenez J-1, J-3, J-7… à votre choix</li>
-                <li><i class="fas fa-check-circle"></i> Notes et informations utiles par personne</li>
-                <li><i class="fas fa-check-circle"></i> Aucune pub, interface claire</li>
-              </ul>
-              <div class="feature-actions">
-                <button class="btn primary-btn" data-open-auth><i class="fas fa-user-plus"></i> Créer un compte</button>
-              </div>
-            </div>
-            <div class="feature-image">
-              <div class="feature-img-wrapper">
-                <img src="https://img.icons8.com/bubbles/100/calendar--v2.png" alt="Rappels intelligents" />
-              </div>
-            </div>
-          </div>
-        </section>
+      <div class="home-features">
+        <article class="home-feature-card home-feature-card--1" aria-labelledby="feature-reminders-title">
+          <span class="home-feature-fold" aria-hidden="true"></span>
+          <span class="home-feature-num">01</span>
+          <span class="home-feature-mark" aria-hidden="true"><i class="fas fa-bell"></i></span>
+          <span class="home-feature-kicker">Automatique</span>
+          <h3 id="feature-reminders-title">Rappels intelligents et automatiques</h3>
+          <p>Planifie une fois, puis laisse RappelAnniv t'alerter au bon moment par email ou Telegram. Des rappels fiables, sans effort.</p>
+          <ul class="home-feature-list">
+            <li>Préviens J-1, J-3, J-7… à ton choix</li>
+            <li>Notes et informations utiles par personne</li>
+            <li>Aucune pub, interface claire</li>
+          </ul>
+          <button class="home-feature-cta" data-open-auth>Créer un compte <i class="fas fa-arrow-right"></i></button>
+        </article>
 
-        <!-- Feature 2: Groupes et partage (inverse) -->
-        <section class="feature-section reverse" aria-labelledby="feature-groups-title">
-          <div class="feature-grid">
-            <div class="feature-image">
-              <div class="feature-img-wrapper">
-                <img src="https://img.icons8.com/bubbles/100/conference-call.png" alt="Groupes et partage" />
-              </div>
-            </div>
-            <div class="feature-content">
-              <span class="feature-number">02</span>
-              <span class="feature-kicker"><i class="fas fa-users"></i> En équipe</span>
-              <h3 id="feature-groups-title">Groupes &amp; partage simplifiés</h3>
-              <p>Créez des groupes pour votre famille, vos amis ou votre équipe et partagez les anniversaires avec un simple code d’accès.</p>
-              <ul class="feature-bullets">
-                <li><i class="fas fa-check-circle"></i> Code d’accès pour rejoindre un groupe</li>
-                <li><i class="fas fa-check-circle"></i> Vue d’ensemble par groupe</li>
-                <li><i class="fas fa-check-circle"></i> Gestion collaborative</li>
-              </ul>
-              <div class="feature-actions">
-                <button class="btn secondary-btn" data-open-auth><i class="fas fa-sign-in-alt"></i> Rejoindre</button>
-              </div>
-            </div>
-          </div>
-        </section>
+        <article class="home-feature-card home-feature-card--2" aria-labelledby="feature-groups-title">
+          <span class="home-feature-fold" aria-hidden="true"></span>
+          <span class="home-feature-num">02</span>
+          <span class="home-feature-mark" aria-hidden="true"><i class="fas fa-users"></i></span>
+          <span class="home-feature-kicker">En équipe</span>
+          <h3 id="feature-groups-title">Groupes &amp; partage simplifiés</h3>
+          <p>Crée des groupes pour ta famille, tes amis ou ton équipe et partage les anniversaires avec un simple code d'accès.</p>
+          <ul class="home-feature-list">
+            <li>Code d'accès pour rejoindre un groupe</li>
+            <li>Vue d'ensemble par groupe</li>
+            <li>Gestion collaborative</li>
+          </ul>
+          <button class="home-feature-cta" data-open-auth>Rejoindre <i class="fas fa-arrow-right"></i></button>
+        </article>
 
-        <!-- Feature 3: Notifications Telegram -->
-        <section class="feature-section" aria-labelledby="feature-telegram-title">
-          <div class="feature-grid">
-            <div class="feature-content">
-              <span class="feature-number">03</span>
-              <span class="feature-kicker"><i class="fab fa-telegram-plane"></i> Instantané</span>
-              <h3 id="feature-telegram-title">Notifications Telegram</h3>
-              <p>Recevez vos rappels directement sur Telegram via notre bot central. Ajoutez simplement votre Chat ID, testez l’envoi et c’est parti.</p>
-              <ul class="feature-bullets">
-                <li><i class="fas fa-check-circle"></i> Envoi rapide et gratuit</li>
-                <li><i class="fas fa-check-circle"></i> Configuration en 30 secondes</li>
-                <li><i class="fas fa-check-circle"></i> Test d’envoi intégré</li>
-              </ul>
-              <div class="feature-actions">
-                <button class="btn primary-btn" data-open-auth><i class="fas fa-arrow-right"></i> Essayer maintenant</button>
-              </div>
-            </div>
-            <div class="feature-image">
-              <div class="feature-img-wrapper">
-                <img src="https://img.icons8.com/bubbles/100/telegram-app.png" alt="Notifications Telegram" />
-              </div>
-            </div>
-          </div>
-        </section>
+        <article class="home-feature-card home-feature-card--3" aria-labelledby="feature-telegram-title">
+          <span class="home-feature-fold" aria-hidden="true"></span>
+          <span class="home-feature-num">03</span>
+          <span class="home-feature-mark" aria-hidden="true"><i class="fab fa-telegram-plane"></i></span>
+          <span class="home-feature-kicker">Instantané</span>
+          <h3 id="feature-telegram-title">Notifications Telegram</h3>
+          <p>Reçois tes rappels directement sur Telegram via notre bot central. Ajoute simplement ton Chat ID, teste l'envoi et c'est parti.</p>
+          <ul class="home-feature-list">
+            <li>Envoi rapide et gratuit</li>
+            <li>Configuration en 30 secondes</li>
+            <li>Test d'envoi intégré</li>
+          </ul>
+          <button class="home-feature-cta" data-open-auth>Essayer maintenant <i class="fas fa-arrow-right"></i></button>
+        </article>
       </div>
       <!-- /Feature Sections -->
     </section>
@@ -873,6 +827,7 @@
   <script src="calendar.js"></script>
   <script src="auto-birthday-reminder-service.js"></script>
   <script src="app.js"></script>
+  <script src="home-hero.js" defer></script>
 
   <!-- Scripts pour Bootstrap (pour les modales, dropdowns, etc.) -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

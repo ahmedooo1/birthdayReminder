@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Animate feature sections on scroll
-  const featureSections = document.querySelectorAll('.feature-section');
+  const featureSections = document.querySelectorAll('.home-feature-card');
   if (featureSections.length) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
