@@ -60,14 +60,12 @@ class AuthManager {  constructor() {
           this.toggleUserSection(true); // Afficher le menu utilisateur
           document.dispatchEvent(new Event('authSuccess'));
         } else {
-          console.log('Session invalid, showing auth modal');
+          console.log('Session invalid, showing login button (no auto-popup)');
           this.toggleUserSection(false); // Afficher le bouton de connexion
-          this.showAuthModal(); 
         }
       });
     } else {
-      console.log('No session token, showing auth modal');
-      this.showAuthModal();
+      console.log('No session token, showing login button (no auto-popup)');
       this.toggleUserSection(false); // Afficher le bouton de connexion
     }
     this.setupEvents();
@@ -333,13 +331,22 @@ class AuthManager {  constructor() {
   toggleUserSection(isLoggedIn) {
     const userMenu = document.querySelector('.user-menu');
     const loginBtn = document.getElementById('login-btn-header');
+    // Dashboard/groups/profile/settings links mean nothing to a logged-out
+    // visitor -- without hiding these, the mobile menu opened onto a list
+    // of links that did nothing useful, which read as "the menu is broken".
+    const mainNav = document.querySelector('.main-nav');
+    const burgerBtn = document.getElementById('burger-menu-btn');
 
     if (isLoggedIn) {
       if (userMenu) userMenu.style.display = 'flex';
       if (loginBtn) loginBtn.style.display = 'none';
+      if (mainNav) mainNav.style.display = '';
+      if (burgerBtn) burgerBtn.style.display = '';
     } else {
       if (userMenu) userMenu.style.display = 'none';
       if (loginBtn) loginBtn.style.display = 'flex';
+      if (mainNav) mainNav.style.display = 'none';
+      if (burgerBtn) burgerBtn.style.display = 'none';
     }
   }
 

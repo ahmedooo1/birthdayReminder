@@ -2939,7 +2939,16 @@ body.dark-theme .notification-bell:hover {
     margin-left: auto;
     margin-right: 1rem;
   }
-  
+
+  /* The header's "Se connecter" button reused the same size as full-page
+     CTA buttons, which dominated the mobile header next to the small
+     logo. Keep it compact here only -- other .primary-btn uses (hero,
+     forms) are untouched. */
+  #login-btn-header {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+  }
+
   .user-btn {
     background-color: var(--gray-100);
     border: 1px solid var(--gray-300);
