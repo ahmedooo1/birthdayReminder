@@ -269,9 +269,9 @@ body.dark-theme {
     animation: bounce 2s infinite;
   }
   
-  /* Afficher le burger menu */
+  /* Afficher le burger menu (masque quand deconnecte via JS inline style) */
   .burger-menu-btn {
-    display: block !important;
+    display: block;
     order: 2;
     background: none;
     border: none;
@@ -895,6 +895,15 @@ body.dark-theme {
   .primary-btn {
     background-color: var(--primary-color);
     color: white;
+  }
+
+  .icon-only-btn {
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    gap: 0;
+    font-size: 1.1rem;
   }
   
   .primary-btn:hover {
@@ -2841,7 +2850,6 @@ body.dark-theme .notification-bell:hover {
   }
   
   .burger-menu-btn {
-    display: block !important;
     order: 3;
     background: none;
     border: none;
@@ -2854,7 +2862,7 @@ body.dark-theme .notification-bell:hover {
     touch-action: manipulation;
     min-width: 48px;
     min-height: 48px;
-    display: flex !important;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
