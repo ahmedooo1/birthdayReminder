@@ -1033,9 +1033,18 @@ body.dark-theme {
   padding: 2rem;
   width: 100%;
   max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: var(--box-shadow);
   animation: slideIn 0.3s ease;
   color: var(--text-color); /* Ensure auth container text is themed */
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    max-height: 92vh;
+    padding: 1.5rem 1.25rem;
+  }
 }
 
 .auth-container .close-modal-btn {
