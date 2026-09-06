@@ -1043,7 +1043,49 @@ body.dark-theme {
 @media (max-width: 480px) {
   .auth-container {
     max-height: 92vh;
-    padding: 1.5rem 1.25rem;
+    padding: 1.25rem 1.1rem;
+  }
+
+  .auth-header {
+    margin-bottom: 1rem;
+  }
+
+  .auth-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .auth-form {
+    margin-bottom: 0.75rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.6rem;
+  }
+
+  .form-group label {
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .form-group input {
+    padding: 0.55rem 0.7rem;
+  }
+
+  .password-strength-meter {
+    margin-top: 3px;
+  }
+
+  .password-requirements {
+    margin-top: 5px;
+    gap: 2px;
+  }
+
+  .auth-divider {
+    margin: 0.7rem 0;
+  }
+
+  .auth-switch {
+    margin-bottom: 0;
   }
 }
 
