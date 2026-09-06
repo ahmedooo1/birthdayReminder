@@ -1,4 +1,6 @@
 // AuthManager pour BirthdayReminder
+const GOOGLE_CLIENT_ID = '414455530289-h8girtqfqn2uj4qm9g8en5kk9ergtpl5.apps.googleusercontent.com';
+
 class AuthManager {  constructor() {
     console.log('Initializing AuthManager...');
     
@@ -69,6 +71,67 @@ class AuthManager {  constructor() {
       this.toggleUserSection(false); // Afficher le bouton de connexion
     }
     this.setupEvents();
+    this.initGoogleSignIn();
+  }
+
+  initGoogleSignIn() {
+    const render = () => {
+      if (!window.google?.accounts?.id) return;
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: (response) => this.googleLogin(response.credential),
+      });
+      ['google-signin-login', 'google-signin-register'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          window.google.accounts.id.renderButton(el, {
+            theme: 'outline',
+            size: 'large',
+            width: 280,
+            text: 'continue_with',
+          });
+        }
+      });
+    };
+
+    if (window.google?.accounts?.id) {
+      render();
+      return;
+    }
+    // Le script GIS est charge en async/defer dans le head - on attend
+    // qu'il soit pret plutot que de supposer qu'il l'est deja.
+    const iv = setInterval(() => {
+      if (window.google?.accounts?.id) {
+        clearInterval(iv);
+        render();
+      }
+    }, 100);
+    setTimeout(() => clearInterval(iv), 10000);
+  }
+
+  async googleLogin(idToken) {
+    this.setLoading(true);
+    try {
+      const res = await fetch('https://rappelanniv.aaweb.fr/api/auth.php?action=google_login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'La connexion Google a echoue.');
+      localStorage.setItem('session_token', data.session_token);
+      if (data.user) {
+        localStorage.setItem('user_data', JSON.stringify(data.user));
+      }
+      this.updateUsernameDisplay(data.user && data.user.username ? data.user.username : 'Invité');
+      this.hideAuthModal();
+      window.location.reload();
+      document.dispatchEvent(new Event('authSuccess'));
+    } catch (e) {
+      this.showError(e.message);
+    } finally {
+      this.setLoading(false);
+    }
   }
 
   setupEvents() {

@@ -356,7 +356,105 @@ if (basename($_SERVER['PHP_SELF']) === 'auth.php') {
             
             sendResponse($session);
             break;
-            
+
+        case 'google_login':
+            // Connexion / inscription via Google Sign-In. Le frontend envoie
+            // le jeton d'identite (ID token) recu de Google Identity Services ;
+            // on le verifie cote serveur via l'endpoint tokeninfo de Google
+            // (evite d'avoir a embarquer une librairie JWT/JWKS pour un site
+            // en PHP pur sans gestionnaire de paquets).
+            global $pdo, $dbType;
+            $data = json_decode(file_get_contents('php://input'), true);
+            $idToken = $data['idToken'] ?? $data['id_token'] ?? '';
+
+            if (empty($idToken)) {
+                sendResponse(['error' => 'Jeton Google manquant'], 400);
+            }
+
+            $ch = curl_init('https://oauth2.googleapis.com/tokeninfo?id_token=' . urlencode($idToken));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            $tokenInfoResponse = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode !== 200 || !$tokenInfoResponse) {
+                sendResponse(['error' => 'Jeton Google invalide'], 401);
+            }
+
+            $payload = json_decode($tokenInfoResponse, true);
+            $expectedClientId = env('GOOGLE_CLIENT_ID', '');
+
+            if (empty($expectedClientId) || !isset($payload['aud']) || $payload['aud'] !== $expectedClientId) {
+                sendResponse(['error' => 'Jeton Google invalide'], 401);
+            }
+            if (empty($payload['email']) || ($payload['email_verified'] ?? 'false') !== 'true') {
+                sendResponse(['error' => 'Email Google non verifie'], 401);
+            }
+
+            $googleEmail = strtolower($payload['email']);
+            $googleId = $payload['sub'];
+
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE google_id = ?");
+            $stmt->execute([$googleId]);
+            $googleUser = $stmt->fetch();
+
+            if ($googleUser) {
+                $userId = $googleUser['id'];
+            } else {
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+                $stmt->execute([$googleEmail]);
+                $existingByEmail = $stmt->fetch();
+
+                if ($existingByEmail) {
+                    $stmt = $pdo->prepare("UPDATE users SET google_id = ?, email_verified = 1 WHERE id = ?");
+                    $stmt->execute([$googleId, $existingByEmail['id']]);
+                    $userId = $existingByEmail['id'];
+                } else {
+                    // Genere un nom d'utilisateur unique a partir de la partie
+                    // locale de l'email (l'inscription classique en exige un,
+                    // Google n'en fournit pas).
+                    $base = preg_replace('/[^a-zA-Z0-9_]/', '', explode('@', $googleEmail)[0]);
+                    if (strlen($base) < 3) $base = 'user' . $base;
+                    $username = $base;
+                    $suffix = 0;
+                    while (true) {
+                        $stmt = $pdo->prepare("SELECT COUNT(*) as c FROM users WHERE username = ?");
+                        $stmt->execute([$username]);
+                        if ((int)$stmt->fetch()['c'] === 0) break;
+                        $suffix++;
+                        $username = $base . $suffix;
+                    }
+
+                    $userId = uniqid();
+                    // password_hash est NOT NULL en base ; un hash d'une valeur
+                    // aleatoire et jamais revelee rend le mot de passe inutilisable
+                    // sans avoir a modifier le schema pour ce cas particulier.
+                    $dummyHash = password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
+                    $currentTime = $dbType === 'sqlite' ? "datetime('now')" : "NOW()";
+                    $stmt = $pdo->prepare("
+                        INSERT INTO users (id, username, email, password_hash, google_id, first_name, last_name, email_verified, created_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, 1, $currentTime)
+                    ");
+                    $stmt->execute([
+                        $userId,
+                        $username,
+                        $googleEmail,
+                        $dummyHash,
+                        $googleId,
+                        $payload['given_name'] ?? '',
+                        $payload['family_name'] ?? '',
+                    ]);
+                }
+            }
+
+            $session = createSession($userId);
+            if (!$session) {
+                sendResponse(['error' => 'Erreur lors de la creation de la session'], 500);
+            }
+            sendResponse($session);
+            break;
+
         case 'register':
             // Inscription
             $data = json_decode(file_get_contents('php://input'), true);

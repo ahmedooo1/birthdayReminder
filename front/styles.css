@@ -3689,3 +3689,27 @@ body.dark-theme .notification-bell:hover {
   color: var(--text-muted-color);
   margin-bottom: 1rem;
 }
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.1rem 0;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--text-muted-color);
+  opacity: 0.3;
+}
+.auth-divider span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted-color);
+}
+.google-signin-container {
+  display: flex;
+  justify-content: center;
+}
