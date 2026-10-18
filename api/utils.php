@@ -451,3 +451,52 @@ function sendTelegramMessage($botToken, $chatId, $message) {
     return $httpCode === 200;
 }
 
+
+/**
+ * Un seul rappel par destinataire, par anniversaire et par jour, quel que soit
+ * le nombre de déclenchements (plusieurs tâches planifiées appellent des
+ * scripts de rappel différents). Réserve l'envoi : renvoie true si ce rappel
+ * n'a pas encore été envoyé aujourd'hui, false s'il l'a déjà été.
+ * En cas d'erreur de base, on envoie quand même (mieux vaut un doublon
+ * qu'un rappel perdu).
+ */
+function claimReminder($pdo, $channel, $recipient, $birthdayId) {
+    static $tableReady = false;
+    try {
+        if (!$tableReady) {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS reminder_log (
+                channel VARCHAR(20) NOT NULL,
+                recipient VARCHAR(191) NOT NULL,
+                birthday_id INT NOT NULL,
+                sent_on CHAR(10) NOT NULL,
+                PRIMARY KEY (channel, recipient, birthday_id, sent_on)
+            )");
+            $tableReady = true;
+        }
+        $insert = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite' ? 'INSERT OR IGNORE' : 'INSERT IGNORE';
+        $stmt = $pdo->prepare("$insert INTO reminder_log (channel, recipient, birthday_id, sent_on) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$channel, reminderRecipient($recipient), (int) $birthdayId, reminderDay()]);
+        return $stmt->rowCount() === 1;
+    } catch (\Throwable $e) {
+        error_log('claimReminder: ' . $e->getMessage());
+        return true;
+    }
+}
+
+/** Libère la réservation si l'envoi a échoué, pour qu'un prochain passage réessaie. */
+function releaseReminder($pdo, $channel, $recipient, $birthdayId) {
+    try {
+        $stmt = $pdo->prepare("DELETE FROM reminder_log WHERE channel = ? AND recipient = ? AND birthday_id = ? AND sent_on = ?");
+        $stmt->execute([$channel, reminderRecipient($recipient), (int) $birthdayId, reminderDay()]);
+    } catch (\Throwable $e) {
+        error_log('releaseReminder: ' . $e->getMessage());
+    }
+}
+
+function reminderRecipient($recipient) {
+    return substr(strtolower(trim((string) $recipient)), 0, 191);
+}
+
+function reminderDay() {
+    return (new DateTime('now', new DateTimeZone('Europe/Paris')))->format('Y-m-d');
+}

@@ -121,10 +121,12 @@ try {
                 </html>";
             }
             
-            if ($shouldSendEmail) {
+            if ($shouldSendEmail && claimReminder($pdo, 'email', $member['email'], $birthday['id'])) {
                 if (sendEmail($member['email'], $emailSubject, $emailMessage)) {
                     $emailsSentForThisBirthday++;
                     $totalEmailsSent++;
+                } else {
+                    releaseReminder($pdo, 'email', $member['email'], $birthday['id']);
                 }
             }
         }

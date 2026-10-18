@@ -77,12 +77,15 @@ try {
                                     "Cordialement,<br>RappelAnniv";
             }
 
-            if ($shouldSendEmail) {
+            if ($shouldSendEmail && !claimReminder($pdo, 'email', $member['email'], $birthday['id'])) {
+                echo "Rappel déjà envoyé aujourd'hui à " . $member['email'] . " pour " . $birthdayName . ". Skip.\n";
+            } elseif ($shouldSendEmail) {
                 echo "Préparation de l'envoi d'un e-mail à " . $member['email'] . " pour l'anniversaire de " . $birthdayName . "...\n";
                 if (sendEmail($member['email'], $emailSubject, $emailMessageBody)) {
                     echo "E-mail envoyé avec succès à " . $member['email'] . "\n";
                     $emailsSentCount++;
                 } else {
+                    releaseReminder($pdo, 'email', $member['email'], $birthday['id']);
                     echo "Échec de l'envoi de l'e-mail à " . $member['email'] . ". Vérifiez la configuration du serveur mail et les logs.\n";
                 }
             }

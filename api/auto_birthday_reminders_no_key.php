@@ -100,10 +100,13 @@ try {
                 $telegramMessage = "⏰ <b>Rappel d'Anniversaire</b> ⏰\nL'anniversaire de <b>{$birthdayName}</b> est dans <b>{$daysUntil} jour{$plural}</b> !";
             }
             
-            if ($shouldSendEmail && !empty($member['email']) && (int)$member['email_notifications'] === 1) {
+            if ($shouldSendEmail && !empty($member['email']) && (int)$member['email_notifications'] === 1
+                && claimReminder($pdo, 'email', $member['email'], $birthday['id'])) {
                 if (sendEmail($member['email'], $emailSubject, $emailMessage)) {
                     $emailsSentForThisBirthday++;
                     $totalEmailsSent++;
+                } else {
+                    releaseReminder($pdo, 'email', $member['email'], $birthday['id']);
                 }
             }
 
@@ -112,7 +115,8 @@ try {
                 // Prefer global bot token if configured, else fallback to per-user token (legacy)
                 $globalBotToken = env('TELEGRAM_BOT_TOKEN', '');
                 $tokenToUse = !empty($globalBotToken) ? $globalBotToken : ($member['telegram_bot_token'] ?? '');
-                if (!empty($tokenToUse) && !empty($member['telegram_chat_id'])) {
+                if (!empty($tokenToUse) && !empty($member['telegram_chat_id'])
+                    && claimReminder($pdo, 'telegram', $member['telegram_chat_id'], $birthday['id'])) {
                     sendTelegramMessage($tokenToUse, $member['telegram_chat_id'], $telegramMessage);
                 }
             }
